@@ -3,7 +3,7 @@ import { ApiBody, ApiTags } from "@nestjs/swagger";
 import { Request } from "express";
 import { UserDocument } from "../user/entities/user.entity";
 import { AuthService } from "./auth.service";
-import { LoginRequestDTO } from "./dto/login-request.dto";
+import { LoginRequestDto } from "./dto/login-request.dto";
 import { LocalAuthGuard } from "./guard/local-auth.guard";
 
 @Controller("auth")
@@ -14,7 +14,7 @@ export class AuthController {
     ) { }
 
     @UseGuards(LocalAuthGuard)
-    @ApiBody({ type: LoginRequestDTO })
+    @ApiBody({ type: LoginRequestDto })
     @Post("login")
     async login(@Req() req: Request) {
         return this.authService.login(req.user as UserDocument);

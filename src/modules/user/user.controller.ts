@@ -22,7 +22,7 @@ export class UserController {
   }
 
   @Get()
-  @SystemRoles(ESystemRole.ADMIN)
+  // @SystemRoles(ESystemRole.ADMIN)
   async findAll(
     @ReqUser() user: UserDocument,
   ): Promise<User[]> {
@@ -39,6 +39,7 @@ export class UserController {
   }
 
   @Put(":id")
+  @SystemRoles(ESystemRole.ADMIN)
   async updateById(
     @ReqUser() user: UserDocument,
     @Param("id") id: string,
@@ -48,6 +49,7 @@ export class UserController {
   }
 
   @Delete(":id")
+  @SystemRoles(ESystemRole.ADMIN)
   async deleteById(
     @ReqUser() user: UserDocument,
     @Param("id") id: string,

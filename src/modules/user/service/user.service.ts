@@ -1,6 +1,7 @@
 import { AccessibleModel } from "@casl/mongoose";
 import { Injectable } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
+import { Model } from "mongoose";
 import { DB_USER } from "../../repository/db-collection";
 import { UserAbilityFactory } from "../common/user.ability";
 import { CreateUserDto } from "../dto/create-user.dto";

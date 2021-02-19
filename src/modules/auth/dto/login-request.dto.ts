@@ -1,4 +1,4 @@
-export class LoginRequestDTO {
+export class LoginRequestDto {
     /**
      * Username
      * @example username

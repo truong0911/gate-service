@@ -5,7 +5,7 @@ import { Model, mongo } from "mongoose";
 import { DB_USER } from "../repository/db-collection";
 import { UserDocument } from "../user/entities/user.entity";
 import { JwtPayload } from "./dto/jwt-payload";
-import { LoginResponseDTO } from "./dto/login-response.dto";
+import { LoginResponseDto } from "./dto/login-response.dto";
 
 @Injectable()
 export class AuthService {
@@ -29,7 +29,7 @@ export class AuthService {
         }
     }
 
-    async login(user: UserDocument): Promise<LoginResponseDTO> {
+    async login(user: UserDocument): Promise<LoginResponseDto> {
         const payload: JwtPayload = {
             sub: {
                 userId: user._id,

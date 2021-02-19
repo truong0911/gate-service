@@ -13,16 +13,15 @@ async function bootstrap() {
 
   app.useGlobalPipes(
     new ValidationPipe({
-      // disableErrorMessages: true,
+      disableErrorMessages: true,
       whitelist: true,
     }),
   );
 
   const config = new DocumentBuilder()
     .addBearerAuth()
-    .setTitle("Simple Project")
-    .setDescription("Simple Project API description")
-    .setVersion("1.0")
+    .setTitle(process.env.npm_package_name)
+    .setVersion("0.0.1")
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup("api", app, document);

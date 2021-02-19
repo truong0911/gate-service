@@ -3,6 +3,7 @@ import { Prop, raw, Schema, SchemaFactory } from "@nestjs/mongoose";
 import * as bcrypt from "bcryptjs";
 import { Type } from "class-transformer";
 import { IsEmail, IsEnum, IsString, ValidateNested } from "class-validator";
+import { Document } from "mongoose";
 import { DB_USER } from "../../repository/db-collection";
 import { ESystemRole } from "../common/user.constant";
 import { AuthorizationVersion, AuthorizationVersionSchema } from "./authorization-version.entity";
@@ -65,6 +66,7 @@ UserSchema.pre("save", async function save() {
     const authorizationProps: string[] = [
         "password",
         "email",
+        "systemRoles",
     ].filter(prop => this.isModified(prop));
     if (authorizationProps.length > 0) {
         this
