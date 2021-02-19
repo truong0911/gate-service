@@ -2,11 +2,10 @@ import { AccessibleFieldsDocument } from "@casl/mongoose";
 import { Prop, raw, Schema, SchemaFactory } from "@nestjs/mongoose";
 import * as bcrypt from "bcryptjs";
 import { Type } from "class-transformer";
-import { IsEmail, IsString, ValidateNested } from "class-validator";
-import { Document } from "mongoose";
+import { IsEmail, IsEnum, IsString, ValidateNested } from "class-validator";
 import { DB_USER } from "../../repository/db-collection";
 import { ESystemRole } from "../common/user.constant";
-import { AuthorizationVersion, AuthorizationVersionSchema } from "./authorization-version";
+import { AuthorizationVersion, AuthorizationVersionSchema } from "./authorization-version.entity";
 import { EmailVerify, EmailVerifySchema } from "./email-verify.entity";
 import { PasswordReset, PasswordResetSchema } from "./password-reset.entity";
 
@@ -51,8 +50,9 @@ export class User {
     @Prop(raw(EmailVerifySchema))
     emailVerify?: EmailVerify;
 
-    @Prop({ enum: Object.values(ESystemRole) })
-    systemRole: ESystemRole;
+    @IsEnum(ESystemRole, { each: true })
+    @Prop({ type: [String], enum: Object.values(ESystemRole), required: true })
+    systemRoles: ESystemRole[];
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);
@@ -66,7 +66,6 @@ UserSchema.pre("save", async function save() {
         "password",
         "email",
     ].filter(prop => this.isModified(prop));
-
     if (authorizationProps.length > 0) {
         this
             .updateOne({

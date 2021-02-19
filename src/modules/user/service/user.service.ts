@@ -6,7 +6,6 @@ import { UserAbilityFactory } from "../common/user.ability";
 import { CreateUserDto } from "../dto/create-user.dto";
 import { UpdateUserDto } from "../dto/update-user.dto";
 import { UserDocument } from "../entities/user.entity";
-import _ from "lodash";
 
 @Injectable()
 export class UserService {
@@ -22,27 +21,33 @@ export class UserService {
       .create(createUserDto);
   }
 
-  async findAll(user: UserDocument) {
+  userFindAll(user: UserDocument) {
     return this.userModel
-      .find();
+      .accessibleBy(this.userAbilityFactory.createForUser(user), "read")
+      .find()
+      .select("-authorizationVersion -passwordReset -emailVerify");
   }
 
-  async findOne(conditions: object) {
-    return this.userModel
-      .findOne(conditions);
-  }
-
-  async userFindById(user: UserDocument, id: string) {
+  userFindById(user: UserDocument, id: string) {
     return this.userModel
       .accessibleBy(this.userAbilityFactory.createForUser(user), "read")
       .findOne({ _id: id });
   }
 
-  async userUpdateById(id: string, updateUserDto: UpdateUserDto) {
-    return this.userModel.findByIdAndUpdate(id, { $set: updateUserDto }, { runValidators: true, new: true });
+  async userUpdateById(user: UserDocument, id: string, updateUserDto: UpdateUserDto) {
+    const updateUser = await this.userModel
+      .accessibleBy(this.userAbilityFactory.createForUser(user), "update")
+      .findOne({ _id: id });
+    if (updateUser) {
+      Object.assign(updateUser, updateUserDto);
+      return updateUser.save();
+    }
+    return null;
   }
 
-  async userDeleteById(id: string) {
-    return this.userModel.findByIdAndRemove(id);
+  userDeleteById(user: UserDocument, id: string) {
+    return this.userModel
+      .accessibleBy(this.userAbilityFactory.createForUser(user), "delete")
+      .findOneAndRemove({ _id: id });
   }
 }

@@ -1,13 +1,17 @@
 import { Injectable } from "@nestjs/common";
+import { InjectModel } from "@nestjs/mongoose";
 import { PassportStrategy } from "@nestjs/passport";
+import { Model } from "mongoose";
 import { ExtractJwt, Strategy } from "passport-jwt";
-import { UserService } from "../../user/service/user.service";
+import { DB_USER } from "../../repository/db-collection";
+import { UserDocument } from "../../user/entities/user.entity";
 import { JwtPayload } from "../dto/jwt-payload";
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
     constructor(
-        private readonly userService: UserService,
+        @InjectModel(DB_USER)
+        private readonly userModel: Model<UserDocument>,
     ) {
         super({
             jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
@@ -17,7 +21,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     }
 
     async validate(payload: JwtPayload) {
-        const user = await this.userService.findOne({ _id: payload.sub.userId });
+        const user = await this.userModel.findOne({ _id: payload.sub.userId });
         if (user) {
             if (payload.sub.authorizationVersion !== user.authorizationVersion.version) {
                 return undefined;

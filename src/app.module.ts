@@ -1,16 +1,14 @@
 import { Module } from "@nestjs/common";
 import { MongooseModule } from "@nestjs/mongoose";
-import { AppController } from "./app.controller";
 import { AppService } from "./app.service";
 import { AuthModule } from "./modules/auth/auth.module";
 import { RepositoryModule } from "./modules/repository/model.module";
 import { UserModule } from "./modules/user/user.module";
-import { ProfileModule } from "./profile/profile.module";
 
 @Module({
   imports: [
     MongooseModule.forRoot(
-      "mongodb://172.26.240.1:27017/simple-project",
+      "mongodb://localhost:27017/simple-project",
       {
         useUnifiedTopology: true,
         useNewUrlParser: true,
@@ -20,11 +18,9 @@ import { ProfileModule } from "./profile/profile.module";
       },
     ),
     RepositoryModule,
-    UserModule,
-    ProfileModule,
     AuthModule,
+    UserModule,
   ],
-  controllers: [AppController],
   providers: [
     AppService,
   ],

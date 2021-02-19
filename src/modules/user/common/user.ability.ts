@@ -9,16 +9,12 @@ import { ESystemRole } from "./user.constant";
 export class UserAbilityFactory {
     createForUser(user: UserDocument) {
         return defineAbility<Ability<[Action, string]>>((can, cannot) => {
-            switch (user.systemRole) {
-                case ESystemRole.ADMIN:
-                    can("manage", DB_USER);
-                    break;
-                case ESystemRole.USER:
-                    can("read", DB_USER, { _id: user._id });
-                    can("update", DB_USER, { _id: user._id });
-                    break;
-                default:
-                    break;
+            if (user.systemRoles.includes(ESystemRole.ADMIN)) {
+                can("manage", DB_USER);
+            }
+            if (user.systemRoles.includes(ESystemRole.USER)) {
+                can("read", DB_USER, { _id: user._id });
+                can("update", DB_USER, { _id: user._id });
             }
         });
     }
