@@ -2,7 +2,7 @@ import { Body, Controller, Delete, Get, Param, Post, Put } from "@nestjs/common"
 import { ApiTags } from "@nestjs/swagger";
 import { Authorization, SystemRoles } from "../../common/decorator/auth.decorator";
 import { ReqUser } from "../../common/decorator/user.decorator";
-import { ESystemRole } from "./common/user.constant";
+import { SystemRole } from "./common/user.constant";
 import { CreateUserDto } from "./dto/create-user.dto";
 import { UpdateUserDto } from "./dto/update-user.dto";
 import { User, UserDocument } from "./entities/user.entity";
@@ -39,7 +39,7 @@ export class UserController {
   }
 
   @Put(":id")
-  @SystemRoles(ESystemRole.ADMIN)
+  @SystemRoles(SystemRole.ADMIN)
   async updateById(
     @ReqUser() user: UserDocument,
     @Param("id") id: string,
@@ -49,7 +49,7 @@ export class UserController {
   }
 
   @Delete(":id")
-  @SystemRoles(ESystemRole.ADMIN)
+  @SystemRoles(SystemRole.ADMIN)
   async deleteById(
     @ReqUser() user: UserDocument,
     @Param("id") id: string,

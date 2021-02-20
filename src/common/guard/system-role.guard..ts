@@ -1,6 +1,6 @@
 import { Injectable, CanActivate, ExecutionContext } from "@nestjs/common";
 import { Reflector } from "@nestjs/core";
-import { ESystemRole } from "../../modules/user/common/user.constant";
+import { SystemRole } from "../../modules/user/common/user.constant";
 import { User } from "../../modules/user/entities/user.entity";
 
 @Injectable()
@@ -9,8 +9,8 @@ export class RolesGuard implements CanActivate {
 
     canActivate(context: ExecutionContext): boolean {
         const systemRoles =
-            this.reflector.get<ESystemRole[]>("system-roles", context.getHandler()) ||
-            this.reflector.get<ESystemRole[]>("system-roles", context.getClass());
+            this.reflector.get<SystemRole[]>("system-roles", context.getHandler()) ||
+            this.reflector.get<SystemRole[]>("system-roles", context.getClass());
         if (systemRoles === undefined) {
             return true;
         }

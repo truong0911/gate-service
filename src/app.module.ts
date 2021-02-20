@@ -6,6 +6,7 @@ import configuration from "./config/configuration";
 import { AuthModule } from "./modules/auth/auth.module";
 import { RepositoryModule } from "./modules/repository/repository.module";
 import { UserModule } from "./modules/user/user.module";
+import { ProfileModule } from './modules/profile/profile.module';
 
 @Module({
   imports: [
@@ -27,6 +28,7 @@ import { UserModule } from "./modules/user/user.module";
     RepositoryModule,
     AuthModule,
     UserModule,
+    ProfileModule,
   ],
   providers: [
     AppService,

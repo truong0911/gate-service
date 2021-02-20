@@ -3,9 +3,8 @@ import { Prop, raw, Schema, SchemaFactory } from "@nestjs/mongoose";
 import * as bcrypt from "bcryptjs";
 import { Type } from "class-transformer";
 import { IsEmail, IsEnum, IsString, ValidateNested } from "class-validator";
-import { Document } from "mongoose";
 import { DB_USER } from "../../repository/db-collection";
-import { ESystemRole } from "../common/user.constant";
+import { SystemRole } from "../common/user.constant";
 import { AuthorizationVersion, AuthorizationVersionSchema } from "./authorization-version.entity";
 import { EmailVerify, EmailVerifySchema } from "./email-verify.entity";
 import { PasswordReset, PasswordResetSchema } from "./password-reset.entity";
@@ -51,9 +50,9 @@ export class User {
     @Prop(raw(EmailVerifySchema))
     emailVerify?: EmailVerify;
 
-    @IsEnum(ESystemRole, { each: true })
-    @Prop({ type: [String], enum: Object.values(ESystemRole), required: true })
-    systemRoles: ESystemRole[];
+    @IsEnum(SystemRole, { each: true })
+    @Prop({ type: [String], enum: Object.values(SystemRole), required: true })
+    systemRoles: SystemRole[];
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);
