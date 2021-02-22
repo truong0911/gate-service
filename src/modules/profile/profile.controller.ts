@@ -24,8 +24,11 @@ export class ProfileController {
   }
 
   @Get(":id")
-  findOne(@Param("id") id: string) {
-    return this.profileService.findOne(+id);
+  findOne(
+    @ReqUser() user: UserDocument,
+    @Param("id") id: string,
+  ) {
+    return this.profileService.userFindById(user, id);
   }
 
   @Put("me")

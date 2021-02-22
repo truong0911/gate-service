@@ -4,9 +4,9 @@ import { MongooseModule } from "@nestjs/mongoose";
 import { AppService } from "./app.service";
 import configuration from "./config/configuration";
 import { AuthModule } from "./modules/auth/auth.module";
+import { ProfileModule } from "./modules/profile/profile.module";
 import { RepositoryModule } from "./modules/repository/repository.module";
 import { UserModule } from "./modules/user/user.module";
-import { ProfileModule } from './modules/profile/profile.module';
 
 @Module({
   imports: [
@@ -16,7 +16,9 @@ import { ProfileModule } from './modules/profile/profile.module';
     }),
     MongooseModule.forRootAsync({
       useFactory: async (configService: ConfigService) => ({
-        uri: configService.get("database.connectionUri"),
+        uri: `mongodb://${configService.get("database.host")}:${configService.get("database.host")}/${configService.get("database.dbName")}`,
+        user: configService.get("database.username"),
+        pass: configService.get("database.password"),
         useUnifiedTopology: true,
         useNewUrlParser: true,
         useFindAndModify: false,
