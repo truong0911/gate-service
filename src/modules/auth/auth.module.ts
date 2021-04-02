@@ -11,10 +11,14 @@ import { LocalStrategy } from "./strategy/local.strategy";
   imports: [
     PassportModule,
     JwtModule.registerAsync({
-      useFactory: async (configService: ConfigService) => ({
-        secret: configService.get("jwt.secret"),
-        signOptions: { expiresIn: configService.get("jwt.exp") },
-      }),
+      useFactory: (configService: ConfigService) => {
+        const expiresIn = configService.get("jwt.exp");
+        const signOptions = {...(expiresIn !== undefined && { expiresIn })};
+        return {
+          secret: configService.get("jwt.secret"),
+          signOptions,
+        };
+      },
       inject: [ConfigService],
     }),
   ],

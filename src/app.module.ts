@@ -1,12 +1,15 @@
 import { Module } from "@nestjs/common";
 import { ConfigModule, ConfigService } from "@nestjs/config";
+import { APP_FILTER, APP_INTERCEPTOR } from "@nestjs/core";
 import { MongooseModule } from "@nestjs/mongoose";
-import { AppService } from "./app.service";
+import { HttpExceptionFilter } from "./common/exception/http-exception.filter";
+import { TransformResponseInterceptor } from "./common/pipe/transform-response.intercepter";
 import configuration from "./config/configuration";
 import { AuthModule } from "./modules/auth/auth.module";
+import { ProfileModule } from "./modules/profile/profile.module";
 import { RepositoryModule } from "./modules/repository/repository.module";
+import { SettingModule } from "./modules/setting/setting.module";
 import { UserModule } from "./modules/user/user.module";
-import { ProfileModule } from './modules/profile/profile.module';
 
 @Module({
   imports: [
@@ -15,23 +18,39 @@ import { ProfileModule } from './modules/profile/profile.module';
       load: [configuration],
     }),
     MongooseModule.forRootAsync({
-      useFactory: async (configService: ConfigService) => ({
-        uri: configService.get("database.connectionUri"),
-        useUnifiedTopology: true,
-        useNewUrlParser: true,
-        useFindAndModify: false,
-        useCreateIndex: true,
-        retryDelay: 5000,
-      }),
+      useFactory: (configService: ConfigService) => {
+        const dbHost = configService.get<string>("database.host");
+        const dbPort = configService.get<number>("database.port");
+        const dbName = configService.get<string>("database.name");
+        return {
+          uri: `mongodb://${dbHost}:${dbPort}/${dbName}?authSource=admin`,
+          user: configService.get("database.username"),
+          pass: configService.get("database.password"),
+          useUnifiedTopology: true,
+          useNewUrlParser: true,
+          useFindAndModify: false,
+          useCreateIndex: true,
+          retryDelay: 5000,
+        };
+      },
       inject: [ConfigService],
     }),
     RepositoryModule,
     AuthModule,
+    SettingModule,
     UserModule,
     ProfileModule,
+    SettingModule,
   ],
   providers: [
-    AppService,
+    {
+      provide: APP_FILTER,
+      useClass: HttpExceptionFilter,
+    },
+    {
+      provide: APP_INTERCEPTOR,
+      useClass: TransformResponseInterceptor,
+    },
   ],
 })
 export class AppModule { }

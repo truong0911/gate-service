@@ -23,11 +23,15 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     }
 
     async validate(payload: JwtPayload) {
-        const user = await this.userModel.findOne({ _id: payload.sub.userId });
+        const user = await this.userModel
+            .findOne({ _id: payload.sub.userId });
         if (user) {
             if (payload.sub.authorizationVersion !== user.authorizationVersion.version) {
                 return undefined;
             }
+            user.clientDeviceId = payload.sub.deviceId;
+            user.clientPlatform = payload.sub.platform;
+            user.jti = payload.jti;
             return user;
         }
         return undefined;

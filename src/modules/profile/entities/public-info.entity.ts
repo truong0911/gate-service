@@ -1,16 +1,25 @@
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
+import { IsEnum } from "class-validator";
 import { Document } from "mongoose";
+import { PublicInfoScope } from "../common/profile.constant";
 
 @Schema()
 export class PublicInfo {
-    @Prop({ default: false })
-    dateOfBirth: boolean;
-    @Prop({ default: false })
-    gender: boolean;
-    @Prop({ default: false })
-    phoneNumber: boolean;
-    @Prop({ default: false })
-    address: boolean;
+    @IsEnum(PublicInfoScope)
+    @Prop({ type: String, enum: Object.values(PublicInfoScope), default: PublicInfoScope.PRIVATE })
+    dateOfBirth: PublicInfoScope;
+
+    @IsEnum(PublicInfoScope)
+    @Prop({ type: String, enum: Object.values(PublicInfoScope), default: PublicInfoScope.PRIVATE })
+    gender: PublicInfoScope;
+
+    @IsEnum(PublicInfoScope)
+    @Prop({ type: String, enum: Object.values(PublicInfoScope), default: PublicInfoScope.PRIVATE })
+    phoneNumber: PublicInfoScope;
+
+    @IsEnum(PublicInfoScope)
+    @Prop({ type: String, enum: Object.values(PublicInfoScope), default: PublicInfoScope.PRIVATE })
+    address: PublicInfoScope;
 }
 
 export const PublicInfoSchema = SchemaFactory.createForClass(PublicInfo);

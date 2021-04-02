@@ -3,8 +3,10 @@ import { Prop, raw, Schema, SchemaFactory } from "@nestjs/mongoose";
 import * as bcrypt from "bcryptjs";
 import { Type } from "class-transformer";
 import { IsEmail, IsEnum, IsString, ValidateNested } from "class-validator";
-import { DB_USER } from "../../repository/db-collection";
-import { SystemRole } from "../common/user.constant";
+import { Document } from "mongoose";
+import { Profile } from "passport";
+import { DB_PROFILE, DB_USER } from "../../repository/db-collection";
+import { getExtendedSystemRoles, SystemRole } from "../common/user.constant";
 import { AuthorizationVersion, AuthorizationVersionSchema } from "./authorization-version.entity";
 import { EmailVerify, EmailVerifySchema } from "./email-verify.entity";
 import { PasswordReset, PasswordResetSchema } from "./password-reset.entity";
@@ -53,6 +55,12 @@ export class User {
     @IsEnum(SystemRole, { each: true })
     @Prop({ type: [String], enum: Object.values(SystemRole), required: true })
     systemRoles: SystemRole[];
+
+    profile?: Profile;
+
+    clientDeviceId: string;
+    clientPlatform: string;
+    jti: string;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);
@@ -84,6 +92,25 @@ UserSchema.methods.comparePassword = function comparePassword(password): Promise
     return bcrypt.compare(password, this.get("password"));
 };
 
+UserSchema.methods.hasSystemRole = function hasSystemRole(role: SystemRole): boolean {
+    const userRoles: SystemRole[] = (this as Document).get("systemRoles");
+    for (const userRole of userRoles) {
+        const extendedRoles = getExtendedSystemRoles(userRole);
+        if (extendedRoles.includes(role)) {
+            return true;
+        }
+    }
+    return false;
+};
+
 export interface UserDocument extends User, AccessibleFieldsDocument {
     comparePassword: (password: string) => Promise<boolean>;
+    hasSystemRole: (role: SystemRole) => boolean;
 }
+
+UserSchema.virtual("profile", {
+    ref: DB_PROFILE,
+    localField: "username",
+    foreignField: "username",
+    justOne: true,
+});
