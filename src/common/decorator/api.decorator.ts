@@ -69,7 +69,7 @@ export const ApiPageableQuery = () =>
   );
 
 const getDoc = (errors: ErrorData[]) =>
-  `<table><thead><tr><th>Error code</th><th>Description</th></tr></thead><tbody>${errors
+  `<table><thead><tr><th>Error code</th><th>Error description</th></tr></thead><tbody>${errors
     .map(
       (e) => `<tr><td>${e.errorCode}</td><td>${e.errorDescription}</td></tr>`,
     )

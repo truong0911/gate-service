@@ -1,10 +1,12 @@
 import { BadRequestException, ConflictException, ForbiddenException, HttpException, HttpStatus, UnauthorizedException } from "@nestjs/common";
+import { ApiProperty } from "@nestjs/swagger";
 
 export class ErrorData {
-    readonly errorCode: string;
+    // @ApiProperty()
+    readonly errorCode: number | string;
     readonly errorDescription: string;
 
-    constructor(errorCode: string, errorDescription?: string) {
+    constructor(errorCode: number | string, errorDescription?: string) {
         this.errorCode = errorCode;
         this.errorDescription = errorDescription;
     }
@@ -13,19 +15,19 @@ export class ErrorData {
         return new HttpException(new ErrorData(errorCode, errorDescription), statusCode);
     }
 
-    static BadRequest(errorCode: string, errorDescription?: string): HttpException {
+    static BadRequest(errorCode: number | string, errorDescription?: string): HttpException {
         return new BadRequestException(new ErrorData(errorCode, errorDescription));
     }
 
-    static Unauthorized(errorCode: string, errorDescription?: string): HttpException {
+    static Unauthorized(errorCode: number | string, errorDescription?: string): HttpException {
         return new UnauthorizedException(new ErrorData(errorCode, errorDescription));
     }
 
-    static Forbidden(errorCode: string, errorDescription?: string): HttpException {
+    static Forbidden(errorCode: number | string, errorDescription?: string): HttpException {
         return new ForbiddenException(new ErrorData(errorCode, errorDescription));
     }
 
-    static Conflict(errorCode: string, errorDescription?: string): HttpException {
+    static Conflict(errorCode: number | string, errorDescription?: string): HttpException {
         return new ConflictException(new ErrorData(errorCode, errorDescription));
     }
 }
