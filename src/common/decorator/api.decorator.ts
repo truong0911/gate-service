@@ -56,12 +56,12 @@ export const ApiPageableQuery = () =>
   applyDecorators(
     ApiQuery({
       name: "page",
-      required: false,
+      required: true,
       example: 1,
     }),
     ApiQuery({
       name: "limit",
-      required: false,
+      required: true,
       example: 20,
     }),
     ApiSelectQuery(),
