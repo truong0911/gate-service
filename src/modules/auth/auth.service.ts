@@ -1,4 +1,4 @@
-import { HttpStatus, Injectable } from "@nestjs/common";
+import { Injectable } from "@nestjs/common";
 import { JwtService } from "@nestjs/jwt";
 import { InjectModel } from "@nestjs/mongoose";
 import { Model, mongo } from "mongoose";
@@ -19,7 +19,7 @@ export class AuthService {
     ) { }
 
     async validateUser(username: string, password: string): Promise<any> {
-        const user = await this.userModel.findOne({ username });
+        const user = await this.userModel.findOne({ username: username.toLowerCase() });
         if (user) {
             const matchPassword = await user.comparePassword(password);
             if (matchPassword) {
