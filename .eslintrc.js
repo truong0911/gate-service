@@ -21,9 +21,18 @@ module.exports = {
     "@typescript-eslint/explicit-function-return-type": "off",
     "@typescript-eslint/explicit-module-boundary-types": "off",
     "@typescript-eslint/no-explicit-any": "off",
+    "object-curly-spacing": "off",
+    "@typescript-eslint/object-curly-spacing": ["error", "always"],
+    "keyword-spacing": "off",
+    "@typescript-eslint/keyword-spacing": ["error", { "after": true }],
     "semi": "off",
+    "space-infix-ops": "off",
+    "@typescript-eslint/space-infix-ops": ["error", { "int32Hint": false }],
     "@typescript-eslint/semi": ["error"],
     "quotes": "off",
+    "@typescript-eslint/typedef": ["error", {
+      "parameter": true
+    }],
     "@typescript-eslint/quotes": ["error", "double"],
     "@typescript-eslint/no-floating-promises": "off",
     "@typescript-eslint/no-unsafe-call": "off",
