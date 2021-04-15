@@ -18,7 +18,7 @@ export class AuthService {
         private readonly jwtService: JwtService,
     ) { }
 
-    async validateUser(username: string, password: string): Promise<any> {
+    async validateUser(username: string, password: string): Promise<UserDocument> {
         const user = await this.userModel.findOne({ username: username.toLowerCase() });
         if (user) {
             const matchPassword = await user.comparePassword(password);
@@ -40,7 +40,7 @@ export class AuthService {
             },
             jti: new mongo.ObjectId().toHexString(),
         };
-        return { accessToken: this.jwtService.sign(payload) };
+        return { user, accessToken: this.jwtService.sign(payload) };
     }
 
     async loginMobile(user: UserDocument, loginInfo: LoginMobileRequestDto): Promise<LoginResultDto> {
@@ -53,7 +53,7 @@ export class AuthService {
             },
             jti: new mongo.ObjectId().toHexString(),
         };
-        return { accessToken: this.jwtService.sign(payload) };
+        return { user, accessToken: this.jwtService.sign(payload) };
     }
 
 }

@@ -90,6 +90,7 @@ export class UserService {
     }
     user.password = changePassword.newPassword;
     await user.save();
+    user.password = undefined;
     const payload: JwtPayload = {
       sub: {
         userId: user._id,
@@ -98,7 +99,7 @@ export class UserService {
       },
       jti: new mongo.ObjectId().toHexString(),
     };
-    return { accessToken: this.jwtService.sign(payload) };
+    return { user, accessToken: this.jwtService.sign(payload) };
   }
 
   async testRemove(user: UserDocument) {
