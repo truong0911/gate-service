@@ -19,11 +19,6 @@ async function bootstrap() {
   const configService = app.get(ConfigService);
   const environment = configService.get<Environment>("env");
 
-  // Security
-  app.disable("x-powered-by");
-  app.use(helmet());
-  app.enableCors();
-
   // Body Parser
   app.use(json({ limit: "10mb" }));
   app.use(urlencoded({ limit: "10mb", extended: true }));
@@ -49,6 +44,11 @@ async function bootstrap() {
       filter: true,
     },
   });
+
+  // Security
+  app.disable("x-powered-by");
+  app.use(helmet());
+  app.enableCors();
 
   // AWS
   const aws = configService.get<AWSConfiguration>("aws");
