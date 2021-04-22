@@ -10,6 +10,7 @@ import { ProfileModule } from "./modules/profile/profile.module";
 import { RepositoryModule } from "./modules/repository/repository.module";
 import { SettingModule } from "./modules/setting/setting.module";
 import { UserModule } from "./modules/user/user.module";
+import { FileManagerModule } from "./modules/file-manager/file-manager.module";
 
 @Module({
   imports: [
@@ -41,6 +42,7 @@ import { UserModule } from "./modules/user/user.module";
     UserModule,
     ProfileModule,
     SettingModule,
+    FileManagerModule,
   ],
   providers: [
     {

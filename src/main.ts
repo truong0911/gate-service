@@ -22,13 +22,11 @@ async function bootstrap() {
   // Security
   app.disable("x-powered-by");
   app.use(helmet());
+  app.enableCors();
 
   // Body Parser
   app.use(json({ limit: "10mb" }));
   app.use(urlencoded({ limit: "10mb", extended: true }));
-
-  // Log Morgan
-  app.use(morgan(environment === Environment.PRODUCTION ? "combined" : "dev"));
 
   // Validation
   app.useGlobalPipes(
@@ -64,8 +62,10 @@ async function bootstrap() {
     });
   }
 
+  // Log Morgan
+  app.use(morgan(environment === Environment.PRODUCTION ? "combined" : "dev"));
+
   const port = configService.get<number>("server.port");
-  app.enableCors();
   await app.listen(port);
 }
 bootstrap();
