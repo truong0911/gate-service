@@ -88,7 +88,7 @@ UserSchema.pre("save", async function save() {
     }
 });
 
-UserSchema.methods.comparePassword = function comparePassword(password): Promise<boolean> {
+UserSchema.methods.comparePassword = function comparePassword(password: string): Promise<boolean> {
     return bcrypt.compare(password, this.get("password"));
 };
 
