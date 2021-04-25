@@ -44,7 +44,7 @@ export class FileRetrieveService {
 
         if (retrievedFile.public === false) {
             const payload = this.validateJwt(req.headers.authorization);
-            console.log(payload);
+            // TODO: Implement authorization
         }
 
         const ext = path.extname(path.basename(retrievedFile.path));
