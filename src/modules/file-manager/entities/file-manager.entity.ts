@@ -1,6 +1,6 @@
 import { Prop, raw, Schema, SchemaFactory } from "@nestjs/mongoose";
 import { Type } from "class-transformer";
-import { IsIn, IsString, Matches, ValidateNested } from "class-validator";
+import { IsBoolean, IsIn, IsOptional, IsString, Matches, ValidateNested } from "class-validator";
 import { Document } from "mongoose";
 import { DB_FILE_MANAGER } from "../../repository/db-collection";
 import { AllowMimeTypes, FilenameMatches } from "../common/file-manager.constant";
@@ -15,6 +15,11 @@ export class FileManager {
     @FilenameMatches()
     @Prop({ required: true })
     filename: string;
+
+    @IsBoolean()
+    @IsOptional()
+    @Prop({ default: () => false })
+    public?: boolean;
 
     @IsString()
     @IsIn([
