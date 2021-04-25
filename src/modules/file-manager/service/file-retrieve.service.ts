@@ -20,8 +20,7 @@ export class FileRetrieveService {
     ) { }
 
     private validateJwt(bearerToken: string): JwtPayload {
-        console.log(bearerToken);
-        if (bearerToken.startsWith("Bearer ")) {
+        if (bearerToken?.startsWith("Bearer ")) {
             const jwt = bearerToken.substr(7);
             try {
                 return this.jwtService.verify(jwt);
@@ -53,7 +52,7 @@ export class FileRetrieveService {
 
         res.setHeader("Content-Type", retrievedFile.mimetype);
         res.setHeader("Content-Disposition", `filename="${newFilename}"`);
-        
+
         const filePath = path.join(__dirname, "../../../..", retrievedFile.path);
         fs.createReadStream(filePath).pipe(res);
     }
