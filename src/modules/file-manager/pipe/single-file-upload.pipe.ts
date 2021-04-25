@@ -1,5 +1,5 @@
 import { ArgumentMetadata, PipeTransform } from "@nestjs/common";
-import { SingleFileUploadDto } from "../../file-manager/dto/single-file-upload.dto";
+import { SingleFileUploadDto } from "../dto/single-file-upload.dto";
 
 
 export class SingleFileUploadTransform implements PipeTransform<SingleFileUploadDto, SingleFileUploadDto> {

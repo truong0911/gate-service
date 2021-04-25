@@ -5,7 +5,7 @@ import { ApiBadRequestDoc } from "../../../common/decorator/api.decorator";
 import { Authorization } from "../../../common/decorator/auth.decorator";
 import { ReqUser } from "../../../common/decorator/user.decorator";
 import { ResponseDto } from "../../../common/dto/response/response.dto";
-import { SingleFileUploadTransform } from "../../profile/pipe/single-file-upload.pipe";
+import { SingleFileUploadTransform } from "../pipe/single-file-upload.pipe";
 import { UserDocument } from "../../user/entities/user.entity";
 import { AllowMimeTypes, FileManagerError } from "../common/file-manager.constant";
 import { UploadFileParams } from "../dto/params/upload-file.params";
