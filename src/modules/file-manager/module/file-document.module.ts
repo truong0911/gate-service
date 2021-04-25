@@ -16,7 +16,7 @@ import { FileUploadService } from "../service/file-upload.service";
             storage: multer.diskStorage({
                 destination: UPLOAD_DIR,
                 filename: (req: Express.Request, file: Express.Multer.File, cb) => {
-                    if (!AllowMimeTypes.image.includes(file.mimetype)) {
+                    if (AllowMimeTypes.document.findIndex((t => t.type === file.mimetype)) === -1) {
                         return cb(
                             ErrorData.BadRequest(
                                 FileManagerError.BAD_REQUEST_INVALID_MIME_TYPE,

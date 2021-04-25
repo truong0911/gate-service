@@ -10,7 +10,7 @@ export enum UploadType {
     DATA = "data",
 }
 
-const filenameRegex = /^[ 0-9a-z_-aàáạảãâầấậẩẫăằắặẳẵeèéẹẻẽêềếệểễiìíịỉĩoòóọỏõôồốộổỗơờớợởỡuùúụủũưừứựửữyỳýỵỷỹdđ]{1,100}$/i;
+const filenameRegex = /^[ 0-9a-z_\-aàáạảãâầấậẩẫăằắặẳẵeèéẹẻẽêềếệểễiìíịỉĩoòóọỏõôồốộổỗơờớợởỡuùúụủũưừứựửữyỳýỵỷỹdđ]{1,100}$/i;
 
 export const FilenameMatches = () => applyDecorators(
     Matches(filenameRegex),
@@ -23,22 +23,21 @@ export enum FileManagerError {
 
 export const AllowMimeTypes = {
     image: [
-        "image/webp",
-        "image/img",
-        "image/jpeg",
-        "image/jpg",
-        "image/png",
-        "image/gif",
+        { ext: "webp", type: "image/webp" },
+        { ext: "bmp", type: "image/bmp" },
+        { ext: "jpeg", type: "image/jpeg" },
+        { ext: "png", type: "image/png" },
+        { ext: "gif", type: "image/gif" },
     ],
 
     document: [
-        "text/plain",
-        "application/pdf",
-        "application/msword",
-        "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-        "application/vnd.ms-excel",
-        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-        "application/vnd.ms-powerpoint",
-        "application/vnd.openxmlformats-officedocument.presentationml.presentation",
+        { ext: "txt", type: "text/plain" },
+        { ext: "pdf", type: "application/pdf" },
+        { ext: "doc", type: "application/msword" },
+        { ext: "docx", type: "application/vnd.openxmlformats-officedocument.wordprocessingml.document" },
+        { ext: "xls", type: "application/vnd.ms-excel" },
+        { ext: "xlsx", type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" },
+        { ext: "ppt", type: "application/vnd.ms-powerpoint" },
+        { ext: "pptx", type: "application/vnd.openxmlformats-officedocument.presentationml.presentation" },
     ],
 };

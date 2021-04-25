@@ -20,12 +20,15 @@ export class FileRetrieveService {
         fileId: string,
         res: Response
     ): Promise<void> {
-        const file = await this.fileManagerModel.findById(fileId);
-        if (!file) {
-            throw new NotFoundException("File not found");
+        const retrievedFile = await this.fileManagerModel.findById(fileId);
+        if (!retrievedFile) {
+            throw new NotFoundException();
         }
-        res.setHeader("content-type", file.mimetype);
-        const filePath = path.join(__dirname, "../../../..", file.path);
+        const ext = path.extname(path.basename(retrievedFile.path));
+        const newFilename = `${retrievedFile.filename}${ext}`;
+        res.setHeader("Content-Type", retrievedFile.mimetype);
+        res.setHeader("Content-Disposition", `filename="${newFilename}"`);
+        const filePath = path.join(__dirname, "../../../..", retrievedFile.path);
         fs.createReadStream(filePath).pipe(res);
     }
 }

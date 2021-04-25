@@ -23,7 +23,7 @@ export class FileDocumentController {
     @ApiBadRequestDoc(
         {
             errorCode: FileManagerError.BAD_REQUEST_INVALID_MIME_TYPE,
-            errorDescription: `<p>Invalid document MIME types<p><p>Valid types:<ul>${AllowMimeTypes.document.map(t => `<li>${t}</li>`).join("")}<ul>`,
+            errorDescription: `<p>Invalid document MIME types<p><p>Valid types:<ul>${AllowMimeTypes.document.map(t => `<li>${t.type}</li>`).join("")}<ul>`,
         },
     )
     @ApiConsumes("multipart/form-data")

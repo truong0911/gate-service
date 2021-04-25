@@ -8,7 +8,7 @@ import { FileRetrieveService } from "./service/file-retrieve.service";
 
 @Controller("file")
 @ApiTags("file")
-@Authorization()
+// @Authorization()
 export class FileController {
     constructor(
         private readonly fileRetrieveService: FileRetrieveService,
