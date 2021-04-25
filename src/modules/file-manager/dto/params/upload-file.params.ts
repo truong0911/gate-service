@@ -1,7 +1,8 @@
-import { IsIn } from "class-validator";
-import { ParamOption } from "../../../../common/types";
+import { IsIn, IsOptional } from "class-validator";
+import { ParamOption01 } from "../../../../common/types";
 
 export class UploadFileParams {
     @IsIn(["0", "1"])
-    compress: ParamOption;
+    @IsOptional()
+    compress?: ParamOption01;
 }

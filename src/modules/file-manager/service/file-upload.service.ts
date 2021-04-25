@@ -10,7 +10,7 @@ import { AllowMimeTypes, UPLOAD_DIR } from "../common/file-manager.constant";
 import { FileCreatedDto } from "../dto/file-created.dto";
 import { SingleFileUploadDto } from "../dto/single-file-upload.dto";
 import { FileManager, FileManagerDocument } from "../entities/file-manager.entity";
-import { ParamOption } from "../../../common/types";
+import { ParamOption01 } from "../../../common/types";
 
 @Injectable()
 export class FileUploadService {
@@ -36,6 +36,7 @@ export class FileUploadService {
             filename: doc.filename,
             path: fileUpload.path,
             mimetype: fileUpload.mimetype,
+            public: doc.public as boolean,
             author: {
                 username: user.username,
                 email: user.email,
@@ -55,7 +56,7 @@ export class FileUploadService {
         user: UserDocument,
         fileUpload: Express.Multer.File,
         doc: SingleFileUploadDto,
-        compress: ParamOption,
+        compress: ParamOption01,
     ): Promise<FileCreatedDto> {
         if (compress == "1") {
             const fileType = AllowMimeTypes.image.find(t => t.type === fileUpload.mimetype);

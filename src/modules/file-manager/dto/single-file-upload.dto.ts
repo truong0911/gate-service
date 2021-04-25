@@ -1,10 +1,13 @@
 import { ApiProperty, PickType } from "@nestjs/swagger";
+import { IsIn } from "class-validator";
 import { FileManager } from "../entities/file-manager.entity";
 
-export class SingleFileUploadDto  extends PickType(FileManager, [
+export class SingleFileUploadDto extends PickType(FileManager, [
     "filename",
-    "public",
 ]) {
+    @IsIn(["true", "false"])
+    @ApiProperty({ type: Boolean })
+    public: string | boolean;
     @ApiProperty({ type: "string", format: "binary" })
     file: any;
 }

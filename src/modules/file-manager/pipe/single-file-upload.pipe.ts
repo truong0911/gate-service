@@ -7,9 +7,7 @@ export class SingleFileUploadTransform implements PipeTransform<SingleFileUpload
         value: SingleFileUploadDto,
         metadata: ArgumentMetadata,
     ): SingleFileUploadDto {
-        if (value.public !== undefined) {
-            value.public = Boolean(value.public);
-        }
+        value.public = value.public === "true";
         return value;
     }
 }
