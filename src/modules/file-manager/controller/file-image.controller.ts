@@ -5,7 +5,7 @@ import { ApiBadRequestDoc } from "../../../common/decorator/api.decorator";
 import { Authorization } from "../../../common/decorator/auth.decorator";
 import { ReqUser } from "../../../common/decorator/user.decorator";
 import { ResponseDto } from "../../../common/dto/response/response.dto";
-import { ParamOption } from "../../../common/types";
+import { SingleFileUploadTransform } from "../../profile/pipe/single-file-upload.pipe";
 import { UserDocument } from "../../user/entities/user.entity";
 import { AllowMimeTypes, FileManagerError } from "../common/file-manager.constant";
 import { UploadFileParams } from "../dto/params/upload-file.params";
@@ -34,7 +34,7 @@ export class FileImageController {
     async uploadImage(
         @ReqUser() user: UserDocument,
         @UploadedFile() fileUpload: Express.Multer.File,
-        @Body() doc: SingleFileUploadDto,
+        @Body(SingleFileUploadTransform) doc: SingleFileUploadDto,
         @Query() query: UploadFileParams,
     ): Promise<FileCreatedResponseDto> {
         const data = await this.fileManagerService.createSingleImageFile(user, fileUpload, doc, query.compress);

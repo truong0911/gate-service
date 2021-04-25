@@ -5,6 +5,7 @@ import { ApiBadRequestDoc } from "../../../common/decorator/api.decorator";
 import { Authorization } from "../../../common/decorator/auth.decorator";
 import { ReqUser } from "../../../common/decorator/user.decorator";
 import { ResponseDto } from "../../../common/dto/response/response.dto";
+import { SingleFileUploadTransform } from "../../profile/pipe/single-file-upload.pipe";
 import { UserDocument } from "../../user/entities/user.entity";
 import { AllowMimeTypes, FileManagerError } from "../common/file-manager.constant";
 import { FileCreatedResponseDto } from "../dto/response/file-created-response.dto";
@@ -31,7 +32,7 @@ export class FileDocumentController {
     async uploadImage(
         @ReqUser() user: UserDocument,
         @UploadedFile() file: Express.Multer.File,
-        @Body() doc: SingleFileUploadDto,
+        @Body(SingleFileUploadTransform) doc: SingleFileUploadDto,
     ): Promise<FileCreatedResponseDto> {
         const data = await this.fileManagerService.createSingleFile(user, file, doc);
         return ResponseDto.create(data);
