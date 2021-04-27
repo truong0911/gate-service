@@ -1,5 +1,5 @@
 import { Controller, Get, Param, Req, Res } from "@nestjs/common";
-import { ApiTags } from "@nestjs/swagger";
+import { ApiBearerAuth, ApiTags } from "@nestjs/swagger";
 import { Request, Response } from "express";
 import { FileRetrieveService } from "../service/file-retrieve.service";
 
@@ -11,7 +11,7 @@ export class FileController {
     ) { }
 
     @Get(":fileId")
-    ApiBearerAuth()
+    @ApiBearerAuth()
     async retrieveFile(
         @Param("fileId") fileId: string,
         @Req() req: Request,
