@@ -11,6 +11,7 @@ export class FileController {
     ) { }
 
     @Get(":fileId")
+    ApiBearerAuth()
     async retrieveFile(
         @Param("fileId") fileId: string,
         @Req() req: Request,
