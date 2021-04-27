@@ -14,7 +14,7 @@ const filenameRegex = /^[ 0-9a-z_\-aàáạảãâầấậẩẫăằắặẳ�
 
 export const FilenameMatches = () => applyDecorators(
     Matches(filenameRegex),
-    ApiProperty({ description: `regex: <pre>${String(filenameRegex)}</pre>` })
+    ApiProperty({ description: `regex: <pre>${JSON.stringify(String(filenameRegex)).slice(1, -1)}</pre>` })
 );
 
 export enum FileManagerError {
