@@ -18,5 +18,3 @@ export class ProfileAbitityFactory {
         });
     }
 }
-
-const x = new ProfileAbitityFactory().createForUser({systemRoles: [SystemRole.USER]} as UserDocument);

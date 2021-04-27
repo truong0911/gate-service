@@ -8,11 +8,15 @@ export abstract class MongoRepository<T extends Document> {
     ) { }
 
     count(condition?: Record<string, unknown>): Query<number> {
-        if (ObjectUtil.isEmptyObject(condition)) {
+        if (ObjectUtil.isEmptyObject(condition) && !this.model.baseModelName) {
             return this.model.estimatedDocumentCount();
         } else {
             return this.model.countDocuments(condition);
         }
+    }
+
+    get(condition: Record<string, unknown>): DocumentQuery<T[], T> {
+        return this.model.find(condition);
     }
 
     getOne(condition: Record<string, unknown>): DocumentQuery<T, T> {
