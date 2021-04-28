@@ -55,12 +55,6 @@ export class User {
     @IsEnum(SystemRole, { each: true })
     @Prop({ type: [String], enum: Object.values(SystemRole), required: true })
     systemRoles: SystemRole[];
-
-    profile?: Profile;
-
-    clientDeviceId: string;
-    clientPlatform: string;
-    jti: string;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);

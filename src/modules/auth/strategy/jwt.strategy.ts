@@ -5,6 +5,7 @@ import { PassportStrategy } from "@nestjs/passport";
 import { Model } from "mongoose";
 import { ExtractJwt, Strategy } from "passport-jwt";
 import { DB_USER } from "../../repository/db-collection";
+import { UserAuthorizedDocument } from "../../user/dto/user-authorized.dto";
 import { UserDocument } from "../../user/entities/user.entity";
 import { JwtPayload } from "../dto/jwt-payload";
 
@@ -22,8 +23,8 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
         });
     }
 
-    async validate(payload: JwtPayload) {
-        const user = await this.userModel
+    async validate(payload: JwtPayload): Promise<UserAuthorizedDocument> {
+        const user: UserAuthorizedDocument = await this.userModel
             .findOne({ _id: payload.sub.userId });
         if (user) {
             if (payload.sub.authorizationVersion !== user.authorizationVersion.version) {

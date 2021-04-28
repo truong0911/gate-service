@@ -1,16 +1,17 @@
 import { Injectable } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { InjectModel } from "@nestjs/mongoose";
+import * as fs from "fs";
 import { Model } from "mongoose";
 import * as sharp from "sharp";
-import * as fs from "fs";
+import { ParamOption01 } from "../../../common/types";
 import { DB_FILE_MANAGER } from "../../repository/db-collection";
+import { UserPopulateDocument } from "../../user/dto/user-populate.dto";
 import { UserDocument } from "../../user/entities/user.entity";
-import { AllowMimeTypes, UPLOAD_DIR } from "../common/file-manager.constant";
+import { AllowMimeTypes } from "../common/file-manager.constant";
 import { FileCreatedDto } from "../dto/file-created.dto";
 import { SingleFileUploadDto } from "../dto/single-file-upload.dto";
 import { FileManager, FileManagerDocument } from "../entities/file-manager.entity";
-import { ParamOption01 } from "../../../common/types";
 
 @Injectable()
 export class FileUploadService {
@@ -28,7 +29,7 @@ export class FileUploadService {
     }
 
     async createSingleFile(
-        user: UserDocument,
+        user: UserPopulateDocument,
         fileUpload: Express.Multer.File,
         doc: SingleFileUploadDto,
     ): Promise<FileCreatedDto> {

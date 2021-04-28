@@ -1,6 +1,6 @@
-import { User } from "../../user/entities/user.entity";
+import { UserAuthorizedDto } from "../../user/dto/user-authorized.dto";
 
 export class LoginResultDto {
-    user: User;
+    user: UserAuthorizedDto;
     accessToken: string;
 }

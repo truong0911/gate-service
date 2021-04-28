@@ -14,6 +14,7 @@ import { UserErrorCode } from "../common/user.constant";
 import { ChangePasswordDto } from "../dto/change-password.dto";
 import { CreateUserDto } from "../dto/create-user.dto";
 import { UpdateUserDto } from "../dto/update-user.dto";
+import { UserAuthorizedDocument } from "../dto/user-authorized.dto";
 import { UserPageableDto } from "../dto/user-pageable.dto";
 import { UserDocument } from "../entities/user.entity";
 @Injectable()
@@ -76,7 +77,7 @@ export class UserService {
       .findOneAndRemove({ _id: id });
   }
 
-  async changePassword(user: UserDocument, changePassword: ChangePasswordDto): Promise<LoginResultDto> {
+  async changePassword(user: UserAuthorizedDocument, changePassword: ChangePasswordDto): Promise<LoginResultDto> {
     const correctOldPassword = await user.comparePassword(changePassword.oldPassword);
     if (!correctOldPassword) {
       throw ErrorData.BadRequest(
