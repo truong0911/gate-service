@@ -9,7 +9,7 @@ import { ParamOption01 } from "../../../common/types";
 import { DB_FILE_MANAGER } from "../../repository/db-collection";
 import { UserPopulateDocument } from "../../user/dto/user-populate.dto";
 import { UserDocument } from "../../user/entities/user.entity";
-import { AllowMimeTypes } from "../common/file-manager.constant";
+import { AllowMimeTypes, getFileUrl } from "../common/file-manager.constant";
 import { FileCreatedDto } from "../dto/file-created.dto";
 import { SingleFileUploadDto } from "../dto/single-file-upload.dto";
 import { FileManager, FileManagerDocument } from "../entities/file-manager.entity";
@@ -25,8 +25,7 @@ export class FileUploadService {
 
     private getFileUrl(fileId: string): string {
         const serverAddress = this.configService.get<string>("server.address");
-        const url = `${serverAddress}/file/${fileId}`;
-        return url;
+        return getFileUrl(serverAddress, fileId);
     }
 
     async createSingleFile(
@@ -35,12 +34,10 @@ export class FileUploadService {
         doc: SingleFileUploadDto,
     ): Promise<FileCreatedDto> {
         const id = new ObjectId();
-        const url = this.getFileUrl(id.toHexString());
         const fileDoc: FileManager = {
             filename: doc.filename,
             path: fileUpload.path,
             mimetype: fileUpload.mimetype,
-            url,
             public: doc.public as boolean,
             author: {
                 username: user.username,
@@ -49,10 +46,9 @@ export class FileUploadService {
                 lastname: user.profile?.lastname,
             },
         };
-        Object.assign(fileDoc, { _id: id });
         const file = await this.fileManagerModel.create(fileDoc);
         file.path = undefined;
-        return { url, file };
+        return { url: this.getFileUrl(file._id), file };
     }
 
     async createSingleImageFile(

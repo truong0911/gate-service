@@ -11,7 +11,8 @@ import { RepositoryModule } from "./modules/repository/repository.module";
 import { SettingModule } from "./modules/setting/setting.module";
 import { UserModule } from "./modules/user/user.module";
 import { FileManagerModule } from "./modules/file-manager/module/file-manager.module";
-import { DeviceDataModule } from './modules/device-data/device-data.module';
+import { DeviceDataModule } from "./modules/device-data/device-data.module";
+import { MongooseConfigService } from "./config/mongodb-config.service";
 
 @Module({
   imports: [
@@ -20,21 +21,7 @@ import { DeviceDataModule } from './modules/device-data/device-data.module';
       load: [configuration],
     }),
     MongooseModule.forRootAsync({
-      useFactory: (configService: ConfigService) => {
-        const dbHost = configService.get<string>("database.host");
-        const dbPort = configService.get<number>("database.port");
-        const dbName = configService.get<string>("database.name");
-        return {
-          uri: `mongodb://${dbHost}:${dbPort}/${dbName}?authSource=admin`,
-          user: configService.get("database.username"),
-          pass: configService.get("database.password"),
-          useUnifiedTopology: true,
-          useNewUrlParser: true,
-          useFindAndModify: false,
-          useCreateIndex: true,
-          retryDelay: 5000,
-        };
-      },
+      useClass: MongooseConfigService,
       inject: [ConfigService],
     }),
     RepositoryModule,

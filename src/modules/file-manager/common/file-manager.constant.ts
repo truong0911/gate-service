@@ -41,3 +41,5 @@ export const AllowMimeTypes = {
         { ext: "pptx", type: "application/vnd.openxmlformats-officedocument.presentationml.presentation" },
     ],
 };
+
+export const getFileUrl = (serverAddress: string, fileId: string) => `${serverAddress}/file/${fileId}`;
