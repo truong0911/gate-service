@@ -53,7 +53,6 @@ export class AuthController {
     @Post("logout/mobile")
     async logoutMobile(
         @ReqUser() user: UserAuthorizedDocument,
-        @Body() loginInfo: LoginMobileRequestDto,
     ): Promise<ResponseDto> {
         const data = await this.authService.logoutMobile(user);
         return ResponseDto.create(data);
