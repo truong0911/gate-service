@@ -2,6 +2,7 @@ import { Injectable } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { InjectModel } from "@nestjs/mongoose";
 import * as fs from "fs";
+import { ObjectId } from "mongodb";
 import { Model } from "mongoose";
 import * as sharp from "sharp";
 import { ParamOption01 } from "../../../common/types";
@@ -33,10 +34,13 @@ export class FileUploadService {
         fileUpload: Express.Multer.File,
         doc: SingleFileUploadDto,
     ): Promise<FileCreatedDto> {
+        const id = new ObjectId();
+        const url = this.getFileUrl(id.toHexString());
         const fileDoc: FileManager = {
             filename: doc.filename,
             path: fileUpload.path,
             mimetype: fileUpload.mimetype,
+            url,
             public: doc.public as boolean,
             author: {
                 username: user.username,
@@ -44,12 +48,9 @@ export class FileUploadService {
                 firstname: user.profile?.firstname,
                 lastname: user.profile?.lastname,
             },
-        } as FileManager;
+        };
+        Object.assign(fileDoc, { _id: id });
         const file = await this.fileManagerModel.create(fileDoc);
-        const url = this.getFileUrl(file._id);
-        this.fileManagerModel
-            .updateOne({ _id: file._id }, { $set: { url } })
-            .exec();
         file.path = undefined;
         return { url, file };
     }
