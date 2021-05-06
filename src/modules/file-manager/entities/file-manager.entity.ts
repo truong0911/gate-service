@@ -33,6 +33,10 @@ export class FileManager {
     @Prop({ required: true })
     path: string;
 
+    @IsString()
+    @Prop({ required: true })
+    url: string;
+
     @ValidateNested()
     @Type(() => Author)
     @Prop({ type: raw(AuthorSchema), required: true })
