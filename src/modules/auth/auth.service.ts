@@ -2,9 +2,12 @@ import { Injectable } from "@nestjs/common";
 import { JwtService } from "@nestjs/jwt";
 import { InjectModel } from "@nestjs/mongoose";
 import { Model, mongo } from "mongoose";
+import * as uuid from "uuid";
 import { ErrorData } from "../../common/exception/error-data";
 import { ClientPlatform } from "../../config/constant";
-import { DB_USER } from "../repository/db-collection";
+import { DeviceData, DeviceDataDocument } from "../device-data/entities/device-data.entity";
+import { DB_DEVICE_DATA, DB_USER } from "../repository/db-collection";
+import { UserAuthorizedDocument } from "../user/dto/user-authorized.dto";
 import { UserDocument } from "../user/entities/user.entity";
 import { AuthErrorCode } from "./common/auth.constant";
 import { JwtPayload } from "./dto/jwt-payload";
@@ -15,6 +18,9 @@ export class AuthService {
     constructor(
         @InjectModel(DB_USER)
         private readonly userModel: Model<UserDocument>,
+        @InjectModel(DB_DEVICE_DATA)
+        private readonly deviceData: Model<DeviceDataDocument>,
+
         private readonly jwtService: JwtService,
     ) { }
 
@@ -44,6 +50,7 @@ export class AuthService {
     }
 
     async loginMobile(user: UserDocument, loginInfo: LoginMobileRequestDto): Promise<LoginResultDto> {
+        const jti = uuid.v4();
         const payload: JwtPayload = {
             sub: {
                 userId: user._id,
@@ -51,9 +58,26 @@ export class AuthService {
                 platform: ClientPlatform.MOBILE,
                 deviceId: loginInfo.deviceId,
             },
-            jti: new mongo.ObjectId().toHexString(),
+            jti,
         };
+        if (loginInfo.oneSignalId !== undefined) {
+            this.deviceData.updateOne(
+                { oneSignalId: loginInfo.oneSignalId },
+                {
+                    $set: {
+                        username: user.username,
+                        deviceId: loginInfo.deviceId,
+                        jti,
+                    } as DeviceData,
+                },
+                { upsert: true }
+            ).exec();
+        }
         return { user, accessToken: this.jwtService.sign(payload) };
+    }
+
+    async logoutMobile(user: UserAuthorizedDocument): Promise<void> {
+        this.deviceData.deleteOne({ jti: user.jti }).exec();
     }
 
 }

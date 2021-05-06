@@ -1,8 +1,10 @@
-import { Body, Controller, HttpStatus, Post, UseGuards } from "@nestjs/common";
+import { Body, Controller, Post, UseGuards } from "@nestjs/common";
 import { ApiBody, ApiTags } from "@nestjs/swagger";
-import { ApiErrorDoc, ApiUnauthorizedDoc } from "../../common/decorator/api.decorator";
+import { ApiUnauthorizedDoc } from "../../common/decorator/api.decorator";
+import { Authorization } from "../../common/decorator/auth.decorator";
 import { ReqUser } from "../../common/decorator/user.decorator";
 import { ResponseDto } from "../../common/dto/response/response.dto";
+import { UserAuthorizedDocument } from "../user/dto/user-authorized.dto";
 import { UserDocument } from "../user/entities/user.entity";
 import { AuthService } from "./auth.service";
 import { AuthErrorCode } from "./common/auth.constant";
@@ -44,6 +46,16 @@ export class AuthController {
         @Body() loginInfo: LoginMobileRequestDto,
     ): Promise<LoginResultResponseDto> {
         const data = await this.authService.loginMobile(user, loginInfo);
+        return ResponseDto.create(data);
+    }
+
+    @Authorization()
+    @Post("logout/mobile")
+    async logoutMobile(
+        @ReqUser() user: UserAuthorizedDocument,
+        @Body() loginInfo: LoginMobileRequestDto,
+    ): Promise<ResponseDto> {
+        const data = await this.authService.logoutMobile(user);
         return ResponseDto.create(data);
     }
 

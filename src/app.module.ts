@@ -11,6 +11,7 @@ import { RepositoryModule } from "./modules/repository/repository.module";
 import { SettingModule } from "./modules/setting/setting.module";
 import { UserModule } from "./modules/user/user.module";
 import { FileManagerModule } from "./modules/file-manager/module/file-manager.module";
+import { DeviceDataModule } from './modules/device-data/device-data.module';
 
 @Module({
   imports: [
@@ -43,6 +44,7 @@ import { FileManagerModule } from "./modules/file-manager/module/file-manager.mo
     ProfileModule,
     SettingModule,
     FileManagerModule,
+    DeviceDataModule,
   ],
   providers: [
     {

@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsString } from "class-validator";
+import { IsNotEmpty, IsOptional, IsString } from "class-validator";
 
 export class LoginMobileRequestDto {
     /**
@@ -18,6 +18,9 @@ export class LoginMobileRequestDto {
      * @example deviceId
      */
     @IsString()
-    @IsNotEmpty()
     deviceId: string;
+
+    @IsString()
+    @IsOptional()
+    oneSignalId?: string;
 }
