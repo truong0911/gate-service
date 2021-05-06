@@ -44,13 +44,14 @@ export class FileUploadService {
                 firstname: user.profile?.firstname,
                 lastname: user.profile?.lastname,
             },
-        };
+        } as FileManager;
         const file = await this.fileManagerModel.create(fileDoc);
+        const url = this.getFileUrl(file._id);
+        this.fileManagerModel
+            .updateOne({ _id: file._id }, { $set: { url } })
+            .exec();
         file.path = undefined;
-        return {
-            url: this.getFileUrl(file._id),
-            file,
-        };
+        return { url, file };
     }
 
     async createSingleImageFile(
