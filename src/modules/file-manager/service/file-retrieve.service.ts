@@ -51,7 +51,7 @@ export class FileRetrieveService {
         const newFilename = `${retrievedFile.filename}${ext}`;
 
         res.setHeader("Content-Type", retrievedFile.mimetype);
-        res.setHeader("Content-Disposition", `filename="${newFilename}"`);
+        res.setHeader("Content-Disposition", encodeURIComponent(`filename="${newFilename}"`));
 
         const filePath = path.join(__dirname, "../../../..", retrievedFile.path);
         fs.createReadStream(filePath).pipe(res);
