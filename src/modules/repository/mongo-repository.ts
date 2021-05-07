@@ -1,4 +1,4 @@
-import { Document, DocumentQuery, Model, Query } from "mongoose";
+import { Document, DocumentQuery, Model, Query, QueryFindOneAndUpdateOptions } from "mongoose";
 import { FetchQueryOption } from "../../common/pipe/fetch-query-option.interface";
 import { ObjectUtil } from "../../util/object.util";
 
@@ -38,8 +38,16 @@ export abstract class MongoRepository<T extends Document> {
         return this.model.create(doc);
     }
 
-    async updateById(id: string, update: unknown): Promise<T> {
-        return this.model.findByIdAndUpdate(id, update, { new: true, runValidators: true });
+    async updateOne(conditions: unknown, update: unknown, options?: QueryFindOneAndUpdateOptions): Promise<T> {
+        return this.model.findOneAndUpdate(conditions, update, options);
+    }
+
+    async updateById(id: string, update: unknown, options?: QueryFindOneAndUpdateOptions): Promise<T> {
+        return this.model.findByIdAndUpdate(id, update, options);
+    }
+
+    async deleteOne(conditions: unknown): Promise<T> {
+        return this.model.findOneAndDelete(conditions);
     }
 
     async deleteById(id: string): Promise<T> {
