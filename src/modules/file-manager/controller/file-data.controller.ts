@@ -14,10 +14,10 @@ import { SingleFileUploadDto } from "../dto/single-file-upload.dto";
 import { FileUploadTransform } from "../pipe/file-upload.pipe";
 import { FileUploadService } from "../service/file-upload.service";
 
-@Controller("file/document")
-@ApiTags("file-document")
+@Controller("file/data")
+@ApiTags("file-data")
 @Authorization()
-export class FileDocumentController {
+export class FileDataController {
     constructor(
         private readonly fileManagerService: FileUploadService,
     ) { }
@@ -26,12 +26,12 @@ export class FileDocumentController {
     @ApiBadRequestDoc(
         {
             errorCode: FileManagerError.BAD_REQUEST_INVALID_MIME_TYPE,
-            errorDescription: `<p>Invalid document MIME types<p><p>Valid types:<ul>${AllowMimeTypes.document.map(t => `<li>${t.type}</li>`).join("")}<ul>`,
+            errorDescription: `<p>Invalid data MIME types<p><p>Valid types:<ul>${AllowMimeTypes.data.map(t => `<li>${t.type}</li>`).join("")}<ul>`,
         },
     )
     @ApiConsumes("multipart/form-data")
     @UseInterceptors(FileInterceptor("file"))
-    async uploadImage(
+    async uploadSingleImage(
         @ReqUser() user: UserDocument,
         @UploadedFile() file: Express.Multer.File,
         @Body(FileUploadTransform) doc: SingleFileUploadDto,
@@ -44,7 +44,7 @@ export class FileDocumentController {
     @ApiBadRequestDoc(
         {
             errorCode: FileManagerError.BAD_REQUEST_INVALID_MIME_TYPE,
-            errorDescription: `<p>Invalid document MIME types<p><p>Valid types:<ul>${AllowMimeTypes.document.map(t => `<li>${t.type}</li>`).join("")}<ul>`,
+            errorDescription: `<p>Invalid data MIME types<p><p>Valid types:<ul>${AllowMimeTypes.data.map(t => `<li>${t.type}</li>`).join("")}<ul>`,
         },
     )
     @ApiConsumes("multipart/form-data")

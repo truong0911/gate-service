@@ -6,7 +6,7 @@ export class SingleFileUploadDto extends PickType(FileManager, [
     "filename",
 ]) {
     @IsIn(["true", "false"])
-    @ApiProperty({ type: Boolean })
+    @ApiProperty({ type: String, enum: ["true", "false"] })
     public: string | boolean;
     @ApiProperty({ type: "string", format: "binary" })
     file: any;

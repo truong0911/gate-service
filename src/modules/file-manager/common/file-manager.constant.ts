@@ -21,7 +21,7 @@ export enum FileManagerError {
     BAD_REQUEST_INVALID_MIME_TYPE = "BAD_REQUEST_INVALID_MIME_TYPE",
 }
 
-export const AllowMimeTypes = {
+export const AllowMimeTypes: {[key in "image" | "document" | "data"]: Array<{ ext: string, type: string }>} = {
     image: [
         { ext: "webp", type: "image/webp" },
         { ext: "bmp", type: "image/bmp" },
@@ -40,6 +40,13 @@ export const AllowMimeTypes = {
         { ext: "ppt", type: "application/vnd.ms-powerpoint" },
         { ext: "pptx", type: "application/vnd.openxmlformats-officedocument.presentationml.presentation" },
     ],
+
+    data: [],
 };
+
+AllowMimeTypes.data = [
+    ...AllowMimeTypes.image,
+    ...AllowMimeTypes.document,
+];
 
 export const getFileUrl = (serverAddress: string, fileId: string) => `${serverAddress}/file/${fileId}`;

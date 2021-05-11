@@ -5,6 +5,7 @@ import { FileController } from "../controller/file.controller";
 import { FileDocumentModule } from "./file-document.module";
 import { FileImageModule } from "./file-image.module";
 import { FileRetrieveService } from "../service/file-retrieve.service";
+import { FileDataModule } from "./file-data.module";
 
 @Module({
   imports: [
@@ -13,6 +14,7 @@ import { FileRetrieveService } from "../service/file-retrieve.service";
     }),
     FileDocumentModule,
     FileImageModule,
+    FileDataModule,
   ],
   providers: [
     FileRetrieveService,

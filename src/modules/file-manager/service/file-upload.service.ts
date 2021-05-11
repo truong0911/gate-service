@@ -11,6 +11,7 @@ import { UserPopulateDocument } from "../../user/dto/user-populate.dto";
 import { UserDocument } from "../../user/entities/user.entity";
 import { AllowMimeTypes, getFileUrl } from "../common/file-manager.constant";
 import { FileCreatedDto } from "../dto/file-created.dto";
+import { MultipleFileUploadDto } from "../dto/multiple-file-upload.dto";
 import { SingleFileUploadDto } from "../dto/single-file-upload.dto";
 import { FileManager, FileManagerDocument } from "../entities/file-manager.entity";
 
@@ -33,7 +34,6 @@ export class FileUploadService {
         fileUpload: Express.Multer.File,
         doc: SingleFileUploadDto,
     ): Promise<FileCreatedDto> {
-        const id = new ObjectId();
         const fileDoc: FileManager = {
             filename: doc.filename,
             path: fileUpload.path,
@@ -49,6 +49,36 @@ export class FileUploadService {
         const file = await this.fileManagerModel.create(fileDoc);
         file.path = undefined;
         return { url: this.getFileUrl(file._id), file };
+    }
+
+    async createMultipleFiles(
+        user: UserPopulateDocument,
+        filesUpload: Express.Multer.File[],
+        doc: MultipleFileUploadDto,
+    ): Promise<FileCreatedDto[]> {
+        const insertDocs = filesUpload.map((file, index) => {
+            const fileDoc: FileManager = {
+                filename: `${doc.prefix}_${index}`,
+                path: file.path,
+                mimetype: file.mimetype,
+                public: doc.public as boolean,
+                author: {
+                    username: user.username,
+                    email: user.email,
+                    firstname: user.profile?.firstname,
+                    lastname: user.profile?.lastname,
+                },
+            };
+            Object.assign(fileDoc, { _id: new ObjectId() });
+            return fileDoc;
+        });
+        await this.fileManagerModel.insertMany(insertDocs);
+        return insertDocs.map(fileDoc => {
+            return {
+                url: this.getFileUrl(fileDoc["_id"]),
+                file: fileDoc,
+            };
+        });
     }
 
     async createSingleImageFile(
