@@ -18,7 +18,7 @@ export class TransformResponseInterceptor implements NestInterceptor {
                 }
                 return data;
             }),
-            
+
         );
     }
 }

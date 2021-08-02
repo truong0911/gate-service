@@ -87,7 +87,7 @@ export class FileUploadService {
         doc: SingleFileUploadDto,
         compress: ParamOption01,
     ): Promise<FileCreatedDto> {
-        if (compress == "1") {
+        if (compress === "1") {
             const fileType = AllowMimeTypes.image.find(t => t.type === fileUpload.mimetype);
             let p: Promise<Buffer>;
             switch (fileType.ext) {

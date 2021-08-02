@@ -9,7 +9,6 @@ import { AllowMimeTypes, FileManagerError, UploadType, UPLOAD_DIR } from "../com
 import { FileImageController } from "../controller/file-image.controller";
 import { FileUploadService } from "../service/file-upload.service";
 
-
 @Module({
     imports: [
         MulterModule.register({
