@@ -1,14 +1,13 @@
-import { Injectable, NotFoundException, UnauthorizedException } from "@nestjs/common";
+import { HttpStatus, Injectable, NotFoundException, UnauthorizedException } from "@nestjs/common";
+import { JwtService } from "@nestjs/jwt";
 import { InjectModel } from "@nestjs/mongoose";
 import { Request, Response } from "express";
-import { Model } from "mongoose";
-import { DB_FILE_MANAGER } from "../../repository/db-collection";
-import { UserDocument } from "../../user/entities/user.entity";
-import { FileManagerDocument } from "../entities/file-manager.entity";
 import * as fs from "fs";
+import { Model } from "mongoose";
 import * as path from "path";
-import { JwtService } from "@nestjs/jwt";
 import { JwtPayload } from "../../auth/dto/jwt-payload";
+import { DB_FILE_MANAGER } from "../../repository/db-collection";
+import { FileManagerDocument } from "../entities/file-manager.entity";
 
 @Injectable()
 export class FileRetrieveService {
@@ -41,6 +40,7 @@ export class FileRetrieveService {
         if (!retrievedFile) {
             throw new NotFoundException();
         }
+        const filePath = path.join(__dirname, "../../../..", retrievedFile.path);
 
         if (retrievedFile.public === false) {
             const payload = this.validateJwt(req.headers.authorization);
@@ -50,10 +50,15 @@ export class FileRetrieveService {
         const ext = path.extname(path.basename(retrievedFile.path));
         const newFilename = `${retrievedFile.filename}${ext}`;
 
+        res.setHeader("Access-Control-Expose-Headers", "Content-Disposition");
         res.setHeader("Content-Type", retrievedFile.mimetype);
         res.setHeader("Content-Disposition", `filename="${encodeURIComponent(newFilename)}"`);
 
-        const filePath = path.join(__dirname, "../../../..", retrievedFile.path);
-        fs.createReadStream(filePath).pipe(res);
+        const readStream = fs.createReadStream(filePath).on("error", () => {
+            res.status(HttpStatus.NOT_FOUND).send("not-found");
+        });
+        readStream.pipe(res).on("error", () => {
+            res.status(HttpStatus.NOT_FOUND).send("not-found");
+        });
     }
 }
