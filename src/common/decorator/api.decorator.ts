@@ -1,7 +1,9 @@
 import { applyDecorators, HttpStatus, Query } from "@nestjs/common";
 import { ApiQuery, ApiResponse } from "@nestjs/swagger";
+import { ClassConstructor } from "class-transformer";
 import { ErrorResponseDto } from "../dto/response/error-response.dto";
 import { ErrorData } from "../exception/error-data";
+import { ConditionPipe } from "../pipe/condition.pipe";
 import { FetchPageableQueryPipe } from "../pipe/fetch-pageable-query.pipe";
 import { FetchQueryPipe } from "../pipe/fetch-query.pipe";
 
@@ -51,6 +53,9 @@ export const ApiSortQuery = () =>
 
 export const ApiListQuery = () =>
   applyDecorators(ApiSelectQuery(), ApiSortQuery());
+
+export const ApiCondition = () => ApiQuery({ name: "condition", type: String, required: false });
+export const QueryCondition = (schema: ClassConstructor<unknown>) => Query("condition", new ConditionPipe(schema));
 
 export const ApiPageableQuery = () =>
   applyDecorators(

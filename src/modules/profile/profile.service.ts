@@ -28,9 +28,9 @@ export class ProfileService {
     }
 
     private async userGetPublicProfile(user: UserDocument, profile: ProfileDocument) {
-        if (user.systemRoles.includes(SystemRole.ADMIN)) {
+        if (user.hasSystemRole(SystemRole.ADMIN)) {
             return profile;
-        } else if (user.systemRoles.includes(SystemRole.USER)) {
+        } else if (user.hasSystemRole(SystemRole.USER)) {
             const info: PublicInfo = {
                 address: PublicInfoScope.PUBLIC,
                 dateOfBirth: PublicInfoScope.PUBLIC,

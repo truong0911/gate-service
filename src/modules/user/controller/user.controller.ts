@@ -1,6 +1,6 @@
 import { Body, Controller, Delete, Get, Param, Post, Put } from "@nestjs/common";
 import { ApiTags } from "@nestjs/swagger";
-import { ApiBadRequestDoc, ApiPageableQuery, ApiSortQuery, FetchPageableQuery } from "../../../common/decorator/api.decorator";
+import { ApiBadRequestDoc, ApiCondition, ApiPageableQuery, ApiSortQuery, FetchPageableQuery, QueryCondition } from "../../../common/decorator/api.decorator";
 import { AllowSystemRoles, Authorization } from "../../../common/decorator/auth.decorator";
 import { ReqUser } from "../../../common/decorator/user.decorator";
 import { ResponseDto } from "../../../common/dto/response/response.dto";
@@ -12,6 +12,7 @@ import { CreateUserDto } from "../dto/create-user.dto";
 import { UserPageableResponseDto } from "../dto/response/user-pageable-response.dto";
 import { UserResponseDto } from "../dto/response/user-response.dto";
 import { UpdateUserDto } from "../dto/update-user.dto";
+import { UserCondition } from "../dto/user-condition.dto";
 import { UserDocument } from "../entities/user.entity";
 import { UserService } from "../service/user.service";
 
@@ -34,14 +35,14 @@ export class UserController {
 
     @Get("pageable")
     @AllowSystemRoles(SystemRole.ADMIN)
-    @ApiSortQuery()
+    @ApiCondition()
     @ApiPageableQuery()
     async findPageable(
         @FetchPageableQuery() option: FetchQueryOption,
+        @QueryCondition(UserCondition) condition: UserCondition,
     ): Promise<UserPageableResponseDto> {
-        const conditions = {};
         const data = await this.userService
-            .findPageable(conditions, option);
+            .findPageable(condition, option);
         return ResponseDto.create(data);
     }
 

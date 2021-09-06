@@ -11,9 +11,9 @@ import { PublicInfo, PublicInfoSchema } from "./public-info.entity";
     collection: DB_PROFILE,
 })
 export class Profile {
-    @IsString()
-    @Prop({ unique: true })
-    username: string;
+    // @IsString()
+    // @Prop({ unique: true })
+    // username: string;
 
     @IsString()
     @Prop()

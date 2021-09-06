@@ -5,14 +5,13 @@ import { MongooseModule } from "@nestjs/mongoose";
 import { HttpExceptionFilter } from "./common/exception/http-exception.filter";
 import { TransformResponseInterceptor } from "./common/pipe/transform-response.intercepter";
 import configuration from "./config/configuration";
+import { MongooseConfigService } from "./config/mongodb-config.service";
 import { AuthModule } from "./modules/auth/auth.module";
-import { ProfileModule } from "./modules/profile/profile.module";
+import { DeviceDataModule } from "./modules/device-data/device-data.module";
+import { FileManagerModule } from "./modules/file-manager/module/file-manager.module";
 import { RepositoryModule } from "./modules/repository/repository.module";
 import { SettingModule } from "./modules/setting/setting.module";
 import { UserModule } from "./modules/user/user.module";
-import { FileManagerModule } from "./modules/file-manager/module/file-manager.module";
-import { DeviceDataModule } from "./modules/device-data/device-data.module";
-import { MongooseConfigService } from "./config/mongodb-config.service";
 
 @Module({
   imports: [
@@ -28,7 +27,7 @@ import { MongooseConfigService } from "./config/mongodb-config.service";
     AuthModule,
     SettingModule,
     UserModule,
-    ProfileModule,
+    // ProfileModule,
     SettingModule,
     FileManagerModule,
     DeviceDataModule,

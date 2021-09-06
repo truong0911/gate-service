@@ -9,9 +9,9 @@ import { UserDocument } from "../../user/entities/user.entity";
 export class ProfileAbitityFactory {
     createForUser(user: UserDocument) {
         return defineAbility<Ability<[Action, any]>>((can, cannot) => {
-            if (user.systemRoles.includes(SystemRole.ADMIN)) {
+            if (user.hasSystemRole(SystemRole.ADMIN)) {
                 can("manage", DB_PROFILE);
-            } else if (user.systemRoles.includes(SystemRole.USER)) {
+            } else if (user.hasSystemRole(SystemRole.USER)) {
                 can("read", DB_PROFILE, { username: user.username });
                 can("update", DB_PROFILE, { username: user.username });
             }

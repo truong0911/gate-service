@@ -1,4 +1,5 @@
 import { Document, DocumentQuery, Model, Query, QueryFindOneAndUpdateOptions } from "mongoose";
+import { PageableDto } from "../../common/dto/pageable.dto";
 import { FetchQueryOption } from "../../common/pipe/fetch-query-option.interface";
 import { ObjectUtil } from "../../util/object.util";
 
@@ -23,7 +24,7 @@ export abstract class MongoRepository<T extends Document> {
         return this.model.findOne(condition);
     }
 
-    getPaging(condition: Record<string, unknown>, option: FetchQueryOption): {
+    getPagingComponent(condition: any, option: FetchQueryOption): {
         total: Query<number>,
         data: DocumentQuery<T[], T>,
     } {
@@ -32,6 +33,12 @@ export abstract class MongoRepository<T extends Document> {
             .find(condition)
             .setOptions(option);
         return { total, data };
+    }
+
+    async getPaging(condition: any, option: FetchQueryOption): Promise<PageableDto<any>> {
+        const { data: p1, total: p2 } = this.getPagingComponent(condition, option);
+        const [result, total] = await Promise.all([p1, p2]);
+        return PageableDto.create(option, total, result);
     }
 
     async create(doc: unknown): Promise<T> {

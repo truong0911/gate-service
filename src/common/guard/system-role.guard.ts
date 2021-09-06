@@ -18,11 +18,9 @@ export class RolesGuard implements CanActivate {
         }
 
         const user = context.switchToHttp().getRequest<Request>().user as User;
-        for (const role of user.systemRoles) {
-            const extendedSystemRoles = getExtendedSystemRoles(role).filter(extendedRole => systemRoles.includes(extendedRole));
-            if (extendedSystemRoles.length > 0) {
-                return true;
-            }
+        const extendedSystemRoles = getExtendedSystemRoles(user.systemRole).filter(extendedRole => systemRoles.includes(extendedRole));
+        if (extendedSystemRoles.length > 0) {
+            return true;
         }
         return false;
     }
