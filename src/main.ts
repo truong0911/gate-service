@@ -18,6 +18,7 @@ async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
   const configService = app.get(ConfigService);
   const environment = configService.get<Environment>("env");
+  const project = configService.get<{ name: string }>("project");
 
   // Body Parser
   app.use(json({ limit: "10mb" }));
@@ -34,7 +35,7 @@ async function bootstrap() {
   // Swagger
   const swaggerConfig = new DocumentBuilder()
     .addBearerAuth()
-    .setTitle(process.env.npm_package_name)
+    .setTitle(project.name)
     .setVersion("0.0.1")
     .build();
   const document = SwaggerModule.createDocument(app, swaggerConfig);

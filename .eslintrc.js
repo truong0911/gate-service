@@ -48,6 +48,7 @@ module.exports = {
     "eqeqeq": ["error", "always"],
     "no-trailing-spaces": "error",
     "no-multiple-empty-lines": ["error", { "max": 1 }],
-    "max-classes-per-file": "error"
+    "max-classes-per-file": "error",
+    "quote-props": ["error", "consistent-as-needed"]
   },
 };

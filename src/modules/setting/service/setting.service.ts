@@ -47,25 +47,4 @@ export class SettingService {
             return PeriodOfTime.AFTERNOON;
         }
     }
-
-    async getWorkTime(date: Date) {
-        const periodOfTime = await this.getPeriodOfTime(date);
-        let workFromSettingKey: SettingKey;
-        let workToSettingKey: SettingKey;
-        switch (periodOfTime) {
-            case PeriodOfTime.MORNING:
-                workFromSettingKey = SettingKey.MORNING_WORK_FROM;
-                workToSettingKey = SettingKey.MORNING_WORK_TO;
-                break;
-            case PeriodOfTime.AFTERNOON:
-                workFromSettingKey = SettingKey.AFTERNOON_WORK_FROM;
-                workToSettingKey = SettingKey.AFTERNOON_WORK_TO;
-                break;
-        }
-        const [workFrom, workTo] = await Promise.all([
-            this.getSettingValue<string>(workFromSettingKey),
-            this.getSettingValue<string>(workToSettingKey),
-        ]);
-        return { periodOfTime, workFrom, workTo };
-    }
 }

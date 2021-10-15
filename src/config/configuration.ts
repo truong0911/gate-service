@@ -23,6 +23,9 @@ export interface AWSConfiguration {
 }
 
 export interface Configuration {
+    project: {
+        name: string;
+    }
     env: Environment;
     server: {
         port: number,
@@ -40,9 +43,22 @@ export interface Configuration {
         exp: number,
     };
     aws?: AWSConfiguration;
+    oneSignal: {
+        appId: string,
+        apiKey: string,
+    },
+    redis: {
+        host: string,
+        port: number,
+        password: string,
+    },
 }
 
 export default (): Configuration => {
+    // Project
+    const project = {
+        name: getEnv("PROJECT_NAME"),
+    };
     // Environment
     const env = getEnv("NODE_ENV") as Environment;
 
@@ -74,7 +90,21 @@ export default (): Configuration => {
         };
     }
 
+    // ONE SIGNAL
+    const oneSignal = {
+        appId: getEnv("ONE_SIGNAL_APP_ID"),
+        apiKey: getEnv("ONE_SIGNAL_API_KEY"),
+    };
+
+    // REDIS
+    const redis = {
+        host: getEnv("REDIS_HOST"),
+        port: Number(getEnv("REDIS_PORT")),
+        password: getEnv("REDIS_PASSWORD"),
+    };
+
     return {
+        project,
         env,
         server: {
             port: serverPort,
@@ -92,5 +122,7 @@ export default (): Configuration => {
             exp: jwtExp && parseInt(jwtExp, 10),
         },
         aws,
+        oneSignal,
+        redis,
     };
 };

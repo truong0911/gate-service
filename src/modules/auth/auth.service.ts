@@ -1,4 +1,4 @@
-import { Injectable } from "@nestjs/common";
+import { Inject, Injectable } from "@nestjs/common";
 import { JwtService } from "@nestjs/jwt";
 import { InjectModel } from "@nestjs/mongoose";
 import { Model, mongo } from "mongoose";
@@ -6,6 +6,8 @@ import * as uuid from "uuid";
 import { ErrorData } from "../../common/exception/error-data";
 import { ClientPlatform } from "../../config/constant";
 import { DeviceData, DeviceDataDocument } from "../device-data/entities/device-data.entity";
+import { OneSignalClient } from "../one-signal/one-signal";
+import { ONE_SIGNAL_CLIENT } from "../one-signal/one-signal-client";
 import { DB_DEVICE_DATA, DB_USER } from "../repository/db-collection";
 import { UserAuthorizedDocument } from "../user/dto/user-authorized.dto";
 import { UserDocument } from "../user/entities/user.entity";
@@ -19,7 +21,9 @@ export class AuthService {
         @InjectModel(DB_USER)
         private readonly userModel: Model<UserDocument>,
         @InjectModel(DB_DEVICE_DATA)
-        private readonly deviceData: Model<DeviceDataDocument>,
+        private readonly deviceDataModel: Model<DeviceDataDocument>,
+        @Inject(ONE_SIGNAL_CLIENT)
+        private readonly oneSignalClient: OneSignalClient,
 
         private readonly jwtService: JwtService,
     ) { }
@@ -61,23 +65,27 @@ export class AuthService {
             jti,
         };
         if (loginInfo.oneSignalId !== undefined) {
-            this.deviceData.updateOne(
-                { oneSignalId: loginInfo.oneSignalId },
-                {
-                    $set: {
-                        username: user.username,
-                        deviceId: loginInfo.deviceId,
-                        jti,
-                    } as DeviceData,
-                },
-                { upsert: true }
-            ).exec();
+            this.oneSignalClient.viewDevice(loginInfo.oneSignalId).catch(err => err).then(oneSignalRes => {
+                if (oneSignalRes.statusCode === 200) {
+                    this.deviceDataModel.findOneAndUpdate(
+                        { oneSignalId: loginInfo.oneSignalId },
+                        {
+                            $set: {
+                                username: user.username,
+                                deviceId: loginInfo.deviceId,
+                                jti,
+                            } as DeviceData,
+                        },
+                        { new: true, upsert: true }
+                    ).exec();
+                }
+            });
         }
         return { user, accessToken: this.jwtService.sign(payload) };
     }
 
     async logoutMobile(user: UserAuthorizedDocument): Promise<void> {
-        this.deviceData.deleteOne({ jti: user.jti }).exec();
+        this.deviceDataModel.deleteOne({ jti: user.jti }).exec();
     }
 
 }
