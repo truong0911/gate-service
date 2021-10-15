@@ -13,7 +13,7 @@ export const ApiSelectQuery = () =>
       name: "select",
       required: false,
       examples: {
-        Default: {
+        "Default": {
           value: "",
         },
         "MongoDB - include": {
