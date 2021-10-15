@@ -6,6 +6,8 @@ cp example.env .env
 nano .env
 
 PROJECT_NAME=simple-project
+PROJECT_DEFAULT_ADMIN_PASSWORD=password
+PROJECT_DEFAULT_USER_PASSWORD=password
 
 SERVER_PORT=3000
 JWT_SECRET=my_secret

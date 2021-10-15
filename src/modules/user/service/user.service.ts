@@ -1,5 +1,6 @@
 import { AccessibleModel } from "@casl/mongoose";
-import { Injectable } from "@nestjs/common";
+import { Injectable, Logger, OnModuleInit } from "@nestjs/common";
+import { ConfigService } from "@nestjs/config";
 import { JwtService } from "@nestjs/jwt";
 import { InjectModel } from "@nestjs/mongoose";
 import { DocumentQuery, mongo } from "mongoose";
@@ -8,17 +9,20 @@ import { ErrorData } from "../../../common/exception/error-data";
 import { FetchQueryOption } from "../../../common/pipe/fetch-query-option.interface";
 import { JwtPayload } from "../../auth/dto/jwt-payload";
 import { LoginResultDto } from "../../auth/dto/login-result.dto";
+import { Gender } from "../../profile/common/profile.constant";
 import { DB_USER } from "../../repository/db-collection";
 import { UserAbilityFactory } from "../common/user.ability";
-import { UserErrorCode } from "../common/user.constant";
+import { SystemRole, UserErrorCode } from "../common/user.constant";
 import { ChangePasswordDto } from "../dto/change-password.dto";
 import { CreateUserDto } from "../dto/create-user.dto";
 import { UpdateUserDto } from "../dto/update-user.dto";
 import { UserAuthorizedDocument } from "../dto/user-authorized.dto";
 import { UserPageableDto } from "../dto/user-pageable.dto";
-import { UserDocument } from "../entities/user.entity";
+import { User, UserDocument } from "../entities/user.entity";
 @Injectable()
-export class UserService {
+export class UserService implements OnModuleInit {
+
+  private readonly logger: Logger = new Logger(UserService.name);
 
   constructor(
     @InjectModel(DB_USER)
@@ -26,7 +30,33 @@ export class UserService {
 
     private readonly userAbilityFactory: UserAbilityFactory,
     private readonly jwtService: JwtService,
+    private readonly configService: ConfigService,
   ) { }
+
+  async onModuleInit() {
+    await this.initAdmin();
+  }
+
+  async initAdmin() {
+    const exists = await this.userModel.exists({ username: "admin" });
+    if (!exists) {
+      this.logger.verbose("Initializing Administrator");
+      await this.userModel.create({
+        username: "admin",
+        password: this.configService.get<string>("project.defaultAdminPassword"),
+        systemRole: SystemRole.ADMIN,
+        email: "administrator@project.com",
+        profile: {
+          firstname: "Admin",
+          lastname: "Manager",
+          dateOfBirth: new Date(),
+          gender: Gender.MALE,
+        },
+      } as User);
+    } else {
+      this.logger.verbose("Administrator initialized");
+    }
+  }
 
   create(createUserDto: CreateUserDto) {
     return this.userModel

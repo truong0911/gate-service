@@ -25,6 +25,7 @@ export interface AWSConfiguration {
 export interface Configuration {
     project: {
         name: string;
+        defaultAdminPassword: string;
     }
     env: Environment;
     server: {
@@ -58,6 +59,8 @@ export default (): Configuration => {
     // Project
     const project = {
         name: getEnv("PROJECT_NAME"),
+        defaultAdminPassword: getEnv("PROJECT_DEFAULT_ADMIN_PASSWORD") || "password",
+        defaultUserPassword: getEnv("PROJECT_DEFAULT_USER_PASSWORD") || "password",
     };
     // Environment
     const env = getEnv("NODE_ENV") as Environment;

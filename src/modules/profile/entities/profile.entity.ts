@@ -7,7 +7,7 @@ import { Gender } from "../common/profile.constant";
 import { PublicInfo, PublicInfoSchema } from "./public-info.entity";
 
 @Schema({
-    timestamps: true,
+    // timestamps: true,
     collection: DB_PROFILE,
 })
 export class Profile {
