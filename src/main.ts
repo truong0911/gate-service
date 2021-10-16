@@ -19,6 +19,7 @@ async function bootstrap() {
   const configService = app.get(ConfigService);
   const environment = configService.get<Environment>("env");
   const project = configService.get<{ name: string }>("project");
+  const serverAddress = configService.get<string>("server.address");
 
   // Body Parser
   app.use(json({ limit: "10mb" }));
@@ -34,6 +35,7 @@ async function bootstrap() {
 
   // Swagger
   const swaggerConfig = new DocumentBuilder()
+    .addServer(serverAddress)
     .addBearerAuth()
     .setTitle(project.name)
     .setVersion("0.0.1")
