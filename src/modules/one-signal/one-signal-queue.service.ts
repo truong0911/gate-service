@@ -51,7 +51,10 @@ export class OneSignalQueueService {
                     };
                     this.oneSignalQueue.add(OneSignalQueueType.SEND_BATCH, data, jobOptions);
                 }
-            });
+            })
+            .on("error", (err => {
+                console.error("Error handle send batch", err);
+            }));
     }
 
 }
