@@ -4,8 +4,13 @@ module.exports = {
         project: "tsconfig.json",
         sourceType: "module",
     },
-    plugins: ["@typescript-eslint"],
-    extends: ["eslint:recommended", "plugin:@typescript-eslint/eslint-recommended", "plugin:@typescript-eslint/recommended"],
+    plugins: ["@typescript-eslint", "prettier"],
+    extends: [
+        "eslint:recommended",
+        "plugin:@typescript-eslint/eslint-recommended",
+        "plugin:@typescript-eslint/recommended",
+        "prettier",
+    ],
     root: true,
     env: {
         node: true,
@@ -50,5 +55,6 @@ module.exports = {
         "max-classes-per-file": "error",
         "quote-props": ["error", "consistent-as-needed"],
         "object-shorthand": ["error", "properties"],
+        "prettier/prettier": 2,
     },
 };
