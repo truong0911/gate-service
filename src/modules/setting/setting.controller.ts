@@ -11,9 +11,7 @@ import { SettingService } from "./service/setting.service";
 @ApiTags("setting")
 @Authorization()
 export class SettingController {
-    constructor(
-        private readonly settingService: SettingService,
-    ) { }
+    constructor(private readonly settingService: SettingService) {}
 
     @Get("/:key")
     async getByKey(@Param("key") key: SettingKey): Promise<Setting> {

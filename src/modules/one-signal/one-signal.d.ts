@@ -5,5 +5,5 @@ export type OneSignalClient = Client;
 export interface SendOneSignalJobData {
     oneSignalId?: string;
     oneSignalIds?: string[];
-    notif: Notification,
+    notif: Notification;
 }

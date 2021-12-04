@@ -7,17 +7,8 @@ import { TopicService } from "./service/topic.service";
 
 @Global()
 @Module({
-  providers: [
-    TopicService,
-    NotificationService,
-    NotificationRepository,
-    NotifyReadService,
-  ],
-  controllers: [NotificationController],
-  exports: [
-    TopicService,
-    NotificationService,
-    NotificationRepository,
-  ],
+    providers: [TopicService, NotificationService, NotificationRepository, NotifyReadService],
+    controllers: [NotificationController],
+    exports: [TopicService, NotificationService, NotificationRepository],
 })
 export class NotificationModule {}

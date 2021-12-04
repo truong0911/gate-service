@@ -24,12 +24,7 @@ import * as db from "./db-collection";
             { name: db.DB_NOTIFY_READ, schema: NotifyReadSchema },
         ]),
     ],
-    providers: [
-        FileManagerProvider,
-    ],
-    exports: [
-        FileManagerProvider,
-        MongooseModule,
-    ],
+    providers: [FileManagerProvider],
+    exports: [FileManagerProvider, MongooseModule],
 })
-export class RepositoryModule { }
+export class RepositoryModule {}

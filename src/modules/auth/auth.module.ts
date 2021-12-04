@@ -8,14 +8,14 @@ import { JwtStrategy } from "./strategy/jwt.strategy";
 import { LocalStrategy } from "./strategy/local.strategy";
 
 @Module({
-  imports: [
-    PassportModule,
-    JwtModule.registerAsync({
-      useClass: JwtConfigService,
-    }),
-  ],
-  providers: [AuthService, LocalStrategy, JwtStrategy],
-  controllers: [AuthController],
-  exports: [AuthService, JwtModule],
+    imports: [
+        PassportModule,
+        JwtModule.registerAsync({
+            useClass: JwtConfigService,
+        }),
+    ],
+    providers: [AuthService, LocalStrategy, JwtStrategy],
+    controllers: [AuthController],
+    exports: [AuthService, JwtModule],
 })
-export class AuthModule { }
+export class AuthModule {}

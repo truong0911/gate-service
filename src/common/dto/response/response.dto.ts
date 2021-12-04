@@ -1,4 +1,3 @@
-
 export class ResponseDto<T = any> {
     statusCode: number;
     data: T;

@@ -19,17 +19,15 @@ import { MultipleFileUploadDto } from "../dto/multiple-file-upload.dto";
 @ApiTags("file-image")
 @Authorization()
 export class FileImageController {
-    constructor(
-        private readonly fileManagerService: FileUploadService,
-    ) { }
+    constructor(private readonly fileManagerService: FileUploadService) {}
 
     @Post("single")
-    @ApiBadRequestDoc(
-        {
-            errorCode: FileManagerError.BAD_REQUEST_INVALID_MIME_TYPE,
-            errorDescription: `<p>Invalid image MIME types<p><p>Valid types:<ul>${AllowMimeTypes.image.map(t => `<li>${t.type}</li>`).join("")}<ul>`,
-        },
-    )
+    @ApiBadRequestDoc({
+        errorCode: FileManagerError.BAD_REQUEST_INVALID_MIME_TYPE,
+        errorDescription: `<p>Invalid image MIME types<p><p>Valid types:<ul>${AllowMimeTypes.image
+            .map((t) => `<li>${t.type}</li>`)
+            .join("")}<ul>`,
+    })
     @ApiConsumes("multipart/form-data")
     @UseInterceptors(FileInterceptor("file"))
     @ApiQuery({ name: "compress", required: false, enum: ["0", "1"] })
@@ -44,12 +42,12 @@ export class FileImageController {
     }
 
     @Post("multiple")
-    @ApiBadRequestDoc(
-        {
-            errorCode: FileManagerError.BAD_REQUEST_INVALID_MIME_TYPE,
-            errorDescription: `<p>Invalid image MIME types<p><p>Valid types:<ul>${AllowMimeTypes.image.map(t => `<li>${t.type}</li>`).join("")}<ul>`,
-        },
-    )
+    @ApiBadRequestDoc({
+        errorCode: FileManagerError.BAD_REQUEST_INVALID_MIME_TYPE,
+        errorDescription: `<p>Invalid image MIME types<p><p>Valid types:<ul>${AllowMimeTypes.image
+            .map((t) => `<li>${t.type}</li>`)
+            .join("")}<ul>`,
+    })
     @ApiConsumes("multipart/form-data")
     @UseInterceptors(FilesInterceptor("files", 10))
     async uploadMultipleImage(

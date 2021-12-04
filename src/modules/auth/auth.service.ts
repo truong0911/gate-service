@@ -26,7 +26,7 @@ export class AuthService {
         private readonly oneSignalClient: OneSignalClient,
 
         private readonly jwtService: JwtService,
-    ) { }
+    ) {}
 
     async validateUser(username: string, password: string): Promise<UserDocument> {
         const user = await this.userModel.findOne({ username: username.toLowerCase() });
@@ -65,21 +65,26 @@ export class AuthService {
             jti,
         };
         if (loginInfo.oneSignalId !== undefined) {
-            this.oneSignalClient.viewDevice(loginInfo.oneSignalId).catch(err => err).then(oneSignalRes => {
-                if (oneSignalRes.statusCode === 200) {
-                    this.deviceDataModel.findOneAndUpdate(
-                        { oneSignalId: loginInfo.oneSignalId },
-                        {
-                            $set: {
-                                username: user.username,
-                                deviceId: loginInfo.deviceId,
-                                jti,
-                            } as DeviceData,
-                        },
-                        { new: true, upsert: true }
-                    ).exec();
-                }
-            });
+            this.oneSignalClient
+                .viewDevice(loginInfo.oneSignalId)
+                .catch((err) => err)
+                .then((oneSignalRes) => {
+                    if (oneSignalRes.statusCode === 200) {
+                        this.deviceDataModel
+                            .findOneAndUpdate(
+                                { oneSignalId: loginInfo.oneSignalId },
+                                {
+                                    $set: {
+                                        username: user.username,
+                                        deviceId: loginInfo.deviceId,
+                                        jti,
+                                    } as DeviceData,
+                                },
+                                { new: true, upsert: true },
+                            )
+                            .exec();
+                    }
+                });
         }
         return { user, accessToken: this.jwtService.sign(payload) };
     }
@@ -87,5 +92,4 @@ export class AuthService {
     async logoutMobile(user: UserAuthorizedDocument): Promise<void> {
         this.deviceDataModel.deleteOne({ jti: user.jti }).exec();
     }
-
 }

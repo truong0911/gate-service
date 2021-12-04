@@ -7,5 +7,4 @@ import { SettingController } from "./setting.controller";
     providers: [SettingService],
     exports: [SettingService],
 })
-
-export class SettingModule { }
+export class SettingModule {}

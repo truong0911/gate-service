@@ -8,4 +8,4 @@ export class CreateNotificationUser extends PickType(Notification, [
     "content",
     "imageUrl",
     "userIds",
-]) { }
+]) {}

@@ -10,7 +10,5 @@ export const OneSignalClient: Provider = {
         const { appId, apiKey } = configService.get("oneSignal");
         return new OneSignal.Client(appId, apiKey);
     },
-    inject: [
-        ConfigService,
-    ],
+    inject: [ConfigService],
 };
