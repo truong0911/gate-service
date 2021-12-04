@@ -53,13 +53,6 @@ export interface Configuration {
         port: number;
         password: string;
     };
-    minio: {
-        endPoint: string;
-        port: number;
-        accessKey: string;
-        secretKey: string;
-        bucketName: string;
-    };
 }
 
 export default (): Configuration => {
@@ -142,12 +135,5 @@ export default (): Configuration => {
         aws,
         oneSignal,
         redis,
-        minio: {
-            endPoint: minioEndpoint,
-            port: minioPort,
-            accessKey: minioAccessKey,
-            secretKey: minioSecretKey,
-            bucketName: minioBucketName,
-        },
     };
 };
