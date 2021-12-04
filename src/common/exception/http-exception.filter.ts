@@ -39,6 +39,5 @@ export class HttpExceptionFilter implements ExceptionFilter {
         response.status(statusCode).json(errorObject);
         console.error(exception);
         console.error(JSON.stringify(errorObject, null, 2));
-
     }
 }

@@ -16,4 +16,3 @@ export enum NotifyReadType {
 }
 
 export const EVERYONE_TOPIC_ID = "EVERYONE_TOPIC";
-

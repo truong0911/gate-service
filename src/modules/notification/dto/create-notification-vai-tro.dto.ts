@@ -9,5 +9,4 @@ export class CreateNotificationVaiTro extends PickType(Notification, [
     "content",
     "imageUrl",
     "roles",
-]) {
-}
+]) {}

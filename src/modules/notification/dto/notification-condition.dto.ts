@@ -2,16 +2,16 @@ import { IsOptional } from "class-validator";
 
 export class NotificationCondition {
     @IsOptional()
-    title: any;
+    "title": any;
 
     @IsOptional()
-    senderName: any;
+    "senderName": any;
 
     @IsOptional()
-    notifType: any;
+    "notifType": any;
 
     @IsOptional()
-    info: any;
+    "info": any;
 
     @IsOptional()
     "info.idLopHanhChinh": any;
@@ -20,5 +20,5 @@ export class NotificationCondition {
     "info.idLopTinChi": any;
 
     @IsOptional()
-    createdAt: any;
+    "createdAt": any;
 }

@@ -22,7 +22,7 @@ export class FileUploadService {
         private readonly fileManagerModel: Model<FileManagerDocument>,
 
         private readonly configService: ConfigService,
-    ) { }
+    ) {}
 
     private getFileUrl(fileId: string): string {
         const serverAddress = this.configService.get<string>("server.address");
@@ -73,7 +73,7 @@ export class FileUploadService {
             return fileDoc;
         });
         await this.fileManagerModel.insertMany(insertDocs);
-        return insertDocs.map(fileDoc => {
+        return insertDocs.map((fileDoc) => {
             return {
                 url: this.getFileUrl(fileDoc["_id"]),
                 file: fileDoc,
@@ -88,30 +88,21 @@ export class FileUploadService {
         compress: ParamOption01,
     ): Promise<FileCreatedDto> {
         if (compress === "1") {
-            const fileType = AllowMimeTypes.image.find(t => t.type === fileUpload.mimetype);
+            const fileType = AllowMimeTypes.image.find((t) => t.type === fileUpload.mimetype);
             let p: Promise<Buffer>;
             switch (fileType.ext) {
                 case "jpeg":
-                    p = sharp(fileUpload.path)
-                        .toFormat("jpeg")
-                        .jpeg({ quality: 80 })
-                        .toBuffer();
+                    p = sharp(fileUpload.path).toFormat("jpeg").jpeg({ quality: 80 }).toBuffer();
                     break;
                 case "png":
-                    p = sharp(fileUpload.path)
-                        .toFormat("png")
-                        .png({ quality: 80 })
-                        .toBuffer();
+                    p = sharp(fileUpload.path).toFormat("png").png({ quality: 80 }).toBuffer();
                     break;
                 case "webp":
-                    p = sharp(fileUpload.path)
-                        .toFormat("webp")
-                        .webp({ quality: 80, alphaQuality: 80 })
-                        .toBuffer();
+                    p = sharp(fileUpload.path).toFormat("webp").webp({ quality: 80, alphaQuality: 80 }).toBuffer();
                     break;
             }
-            p.then(buffer => {
-                fs.writeFile(fileUpload.path, buffer, err => {
+            p.then((buffer) => {
+                fs.writeFile(fileUpload.path, buffer, (err) => {
                     if (err) {
                         console.error("Error compress file", fileUpload.filename, err);
                     }

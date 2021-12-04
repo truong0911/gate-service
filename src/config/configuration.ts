@@ -26,33 +26,33 @@ export interface Configuration {
     project: {
         name: string;
         defaultAdminPassword: string;
-    }
+    };
     env: Environment;
     server: {
-        port: number,
-        address: string,
+        port: number;
+        address: string;
     };
     database: {
-        host: string,
-        port: number,
-        username?: string,
-        password?: string,
-        name: string,
+        host: string;
+        port: number;
+        username?: string;
+        password?: string;
+        name: string;
     };
     jwt: {
-        secret: string,
-        exp: number,
+        secret: string;
+        exp: number;
     };
     aws?: AWSConfiguration;
     oneSignal: {
-        appId: string,
-        apiKey: string,
-    },
+        appId: string;
+        apiKey: string;
+    };
     redis: {
-        host: string,
-        port: number,
-        password: string,
-    },
+        host: string;
+        port: number;
+        password: string;
+    };
 }
 
 export default (): Configuration => {
@@ -81,7 +81,7 @@ export default (): Configuration => {
     const jwtExp = getEnv("JWT_EXP");
 
     // AWS
-    let aws: { region: string; accessKeyId: string; secretAccessKey: string; };
+    let aws: { region: string; accessKeyId: string; secretAccessKey: string };
     const awsRegion = getEnv("AWS_REGION");
     const awsAccessKeyId = getEnv("AWS_ACCESS_KEY_ID");
     const awsSecretAccessKey = getEnv("AWS_SECRET_ACCESS_KEY");

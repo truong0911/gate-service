@@ -3,4 +3,4 @@ import { UpdateProfileDto } from "./update-profile.dto";
 
 export class UserUpdateProfileDto extends OmitType(UpdateProfileDto, [
     // "username",
-]) { }
+]) {}

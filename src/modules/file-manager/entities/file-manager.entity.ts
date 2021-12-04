@@ -27,10 +27,7 @@ export class FileManager {
     public?: boolean;
 
     @IsString()
-    @IsIn([
-        ...AllowMimeTypes.image,
-        ...AllowMimeTypes.document,
-    ])
+    @IsIn([...AllowMimeTypes.image, ...AllowMimeTypes.document])
     @Prop({ required: true })
     mimetype: string;
 
@@ -51,10 +48,7 @@ export type FileManagerDocument = FileManager & mongoose.Document;
 
 export const FileManagerProvider: Provider = {
     provide: getModelToken(DB_FILE_MANAGER),
-    useFactory: (
-        configService: ConfigService,
-        connection: mongoose.Connection,
-    ): mongoose.Model<FileManagerDocument> => {
+    useFactory: (configService: ConfigService, connection: mongoose.Connection): mongoose.Model<FileManagerDocument> => {
         FileManagerSchema.virtual("url").get(function () {
             const serverAddress = configService.get<string>("server.address");
             const fileId = this.get("_id");
@@ -62,8 +56,5 @@ export const FileManagerProvider: Provider = {
         });
         return connection.model(DB_FILE_MANAGER, FileManagerSchema);
     },
-    inject: [
-        ConfigService,
-        getConnectionToken(),
-    ],
+    inject: [ConfigService, getConnectionToken()],
 };

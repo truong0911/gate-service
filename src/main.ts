@@ -13,62 +13,62 @@ import { AppModule } from "./app.module";
 import { AWSConfiguration, Environment } from "./config/configuration";
 
 async function bootstrap() {
-  mongoose.plugin(accessibleRecordsPlugin);
-  mongoose.plugin(accessibleFieldsPlugin);
-  const app = await NestFactory.create<NestExpressApplication>(AppModule);
-  const configService = app.get(ConfigService);
-  const environment = configService.get<Environment>("env");
-  const project = configService.get<{ name: string }>("project");
-  const serverAddress = configService.get<string>("server.address");
+    mongoose.plugin(accessibleRecordsPlugin);
+    mongoose.plugin(accessibleFieldsPlugin);
+    const app = await NestFactory.create<NestExpressApplication>(AppModule);
+    const configService = app.get(ConfigService);
+    const environment = configService.get<Environment>("env");
+    const project = configService.get<{ name: string }>("project");
+    const serverAddress = configService.get<string>("server.address");
 
-  // Body Parser
-  app.use(json({ limit: "10mb" }));
-  app.use(urlencoded({ limit: "10mb", extended: true }));
+    // Body Parser
+    app.use(json({ limit: "10mb" }));
+    app.use(urlencoded({ limit: "10mb", extended: true }));
 
-  // Validation
-  app.useGlobalPipes(
-    new ValidationPipe({
-      disableErrorMessages: environment === Environment.PRODUCTION,
-      whitelist: true,
-    }),
-  );
+    // Validation
+    app.useGlobalPipes(
+        new ValidationPipe({
+            disableErrorMessages: environment === Environment.PRODUCTION,
+            whitelist: true,
+        }),
+    );
 
-  // Swagger
-  const swaggerConfig = new DocumentBuilder()
-    .addServer(serverAddress)
-    .addBearerAuth()
-    .setTitle(project.name)
-    .setVersion("0.0.1")
-    .build();
-  const document = SwaggerModule.createDocument(app, swaggerConfig);
-  SwaggerModule.setup("api", app, document, {
-    swaggerOptions: {
-      displayRequestDuration: true,
-      filter: true,
-    },
-  });
-
-  // Security
-  app.disable("x-powered-by");
-  app.use(helmet());
-  app.enableCors();
-
-  // AWS
-  const aws = configService.get<AWSConfiguration>("aws");
-  if (aws) {
-    awsConfig.update({
-      region: aws.region,
-      credentials: {
-        accessKeyId: aws.accessKeyId,
-        secretAccessKey: aws.secretAccessKey,
-      },
+    // Swagger
+    const swaggerConfig = new DocumentBuilder()
+        .addServer(serverAddress)
+        .addBearerAuth()
+        .setTitle(project.name)
+        .setVersion("0.0.1")
+        .build();
+    const document = SwaggerModule.createDocument(app, swaggerConfig);
+    SwaggerModule.setup("api", app, document, {
+        swaggerOptions: {
+            displayRequestDuration: true,
+            filter: true,
+        },
     });
-  }
 
-  // Log Morgan
-  app.use(morgan(environment === Environment.PRODUCTION ? "combined" : "dev"));
+    // Security
+    app.disable("x-powered-by");
+    app.use(helmet());
+    app.enableCors();
 
-  const port = configService.get<number>("server.port");
-  await app.listen(port);
+    // AWS
+    const aws = configService.get<AWSConfiguration>("aws");
+    if (aws) {
+        awsConfig.update({
+            region: aws.region,
+            credentials: {
+                accessKeyId: aws.accessKeyId,
+                secretAccessKey: aws.secretAccessKey,
+            },
+        });
+    }
+
+    // Log Morgan
+    app.use(morgan(environment === Environment.PRODUCTION ? "combined" : "dev"));
+
+    const port = configService.get<number>("server.port");
+    await app.listen(port);
 }
 bootstrap();

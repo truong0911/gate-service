@@ -5,7 +5,7 @@ export enum SystemRole {
 }
 
 export type SystemRoleProp = {
-    parent?: SystemRole,
+    parent?: SystemRole;
 };
 
 export const SystemRoleMap: { [role: string]: SystemRoleProp } = {

@@ -9,7 +9,6 @@ import { SettingKey } from "./../common/setting.constant";
     collection: DB_SETTING,
     timestamps: true,
 })
-
 export class Setting {
     @IsEnum(SettingKey)
     @Prop({ required: true, unique: true, type: String, enum: Object.values(SettingKey) })
@@ -36,4 +35,4 @@ export class Setting {
 }
 
 export const SettingSchema = SchemaFactory.createForClass(Setting);
-export interface SettingDocument extends Setting, mongoose.Document { }
+export interface SettingDocument extends Setting, mongoose.Document {}

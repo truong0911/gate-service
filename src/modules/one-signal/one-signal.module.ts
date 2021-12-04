@@ -22,15 +22,7 @@ import { OneSignalService } from "./one-signal.service";
             inject: [ConfigService],
         }),
     ],
-    providers: [
-        OneSignalClient,
-        OneSignalService,
-        SendOneSignalProcessor,
-        OneSignalQueueService,
-    ],
-    exports: [
-        OneSignalClient,
-        OneSignalService,
-    ],
+    providers: [OneSignalClient, OneSignalService, SendOneSignalProcessor, OneSignalQueueService],
+    exports: [OneSignalClient, OneSignalService],
 })
 export class OneSignalModule {}

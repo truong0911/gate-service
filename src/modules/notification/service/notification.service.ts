@@ -37,10 +37,10 @@ export class NotificationService implements OnModuleInit {
         private readonly notifRepo: NotificationRepository,
         private readonly settingService: SettingService,
         private readonly oneSignalService: OneSignalService,
-    ) { }
+    ) {}
 
     async onModuleInit() {
-        const initStatus = await this.settingService.getSettingValue<InitTopicStatus>(SettingKey.INIT_TOPIC_STATUS) || {};
+        const initStatus = (await this.settingService.getSettingValue<InitTopicStatus>(SettingKey.INIT_TOPIC_STATUS)) || {};
         if (initStatus.everyone !== true) {
             this.initEveryoneTopic();
             initStatus.everyone = true;
@@ -59,31 +59,25 @@ export class NotificationService implements OnModuleInit {
         const res = await this.topicModel.findOneAndUpdate(
             { _id: EVERYONE_TOPIC_ID, type: TopicType.EVERYONE },
             { $set: { name: "Everyone" } },
-            { upsert: true, new: true }
+            { upsert: true, new: true },
         );
     }
 
-    async userGetById(
-        u: UserAuthorizedDocument,
-        id: string
-    ) {
+    async userGetById(u: UserAuthorizedDocument, id: string) {
         const condition = {
             _id: id,
-            ...await this.userAccessCondition(u),
+            ...(await this.userAccessCondition(u)),
         };
         return this.notificationModel.findOne(condition);
     }
 
-     /**
+    /**
      * Gửi thông báo tới tất cả người dùng
      * @param dto Dữ liệu gửi thông báo
      * @param sender Người gửi
      * @returns Document Notification
      */
-      async createNotifAll(
-        dto: CreateNotificationUser,
-        sender: UserAuthorizedDocument,
-    ): Promise<NotificationDocument> {
+    async createNotifAll(dto: CreateNotificationUser, sender: UserAuthorizedDocument): Promise<NotificationDocument> {
         const id = v4();
         const notifDto: Notification = {
             _id: id,
@@ -107,10 +101,7 @@ export class NotificationService implements OnModuleInit {
      * @param sender Người gửi
      * @returns Document Notification
      */
-    async createNotifUser(
-        dto: CreateNotificationUser,
-        sender: UserAuthorizedDocument,
-    ): Promise<NotificationDocument> {
+    async createNotifUser(dto: CreateNotificationUser, sender: UserAuthorizedDocument): Promise<NotificationDocument> {
         const id = v4();
         const notifDto: Notification = {
             _id: id,
@@ -128,16 +119,13 @@ export class NotificationService implements OnModuleInit {
         return doc;
     }
 
-     /**
+    /**
      * Gửi thông báo tới các người dùng theo vai trò
      * @param dto Dữ liệu gửi thông báo
      * @param sender Người gửi
      * @returns Document Notification
      */
-    async createNotifVaiTro(
-        dto: CreateNotificationVaiTro,
-        sender: UserAuthorizedDocument,
-    ): Promise<NotificationDocument> {
+    async createNotifVaiTro(dto: CreateNotificationVaiTro, sender: UserAuthorizedDocument): Promise<NotificationDocument> {
         const id = v4();
         const notifDto: Notification = {
             _id: id,
@@ -171,10 +159,7 @@ export class NotificationService implements OnModuleInit {
         return { $or };
     }
 
-    async getPageable(
-        condition: NotificationCondition,
-        option: FetchQueryOption,
-    ): Promise<NotificationPageable> {
+    async getPageable(condition: NotificationCondition, option: FetchQueryOption): Promise<NotificationPageable> {
         return this.notifRepo.getPaging(condition, option);
     }
 
@@ -184,10 +169,7 @@ export class NotificationService implements OnModuleInit {
         condition: NotificationCondition,
     ): Promise<NotificationPageable> {
         const finalConditions = {
-            $and: [
-                await this.userAccessCondition(u),
-                condition,
-            ],
+            $and: [await this.userAccessCondition(u), condition],
         };
         const res = await this.notifRepo.getPaging(finalConditions, option);
         res.result = await this.assignReadStatus(u, res.result);
@@ -196,23 +178,23 @@ export class NotificationService implements OnModuleInit {
 
     private async assignReadStatus(
         user: UserAuthorizedDocument,
-        notifList: NotificationDocument[]
+        notifList: NotificationDocument[],
     ): Promise<NotificationDocument[]> {
         const userId = String(user._id);
         const [readAll, readOneSet] = await Promise.all([
             this.notifyReadModel.findOne({ userId, type: NotifyReadType.ALL }).select("readAt"),
-            this.notifyReadModel.find({ userId, type: NotifyReadType.ONE }).then(res => new Set(res.map(read => String(read.notificationId)))),
+            this.notifyReadModel
+                .find({ userId, type: NotifyReadType.ONE })
+                .then((res) => new Set(res.map((read) => String(read.notificationId)))),
         ]);
-        return notifList.map(notif => {
+        return notifList.map((notif) => {
             const unread = !readOneSet.has(String(notif._id)) && (!readAll || readAll.readAt < notif.createdAt);
             notif.set("unread", unread, { strict: false });
             return notif;
         });
     }
 
-    async createNotification(
-        dto: Notification,
-    ) {
+    async createNotification(dto: Notification) {
         // Create Notification
         const doc = new this.notificationModel(dto);
         // return doc;

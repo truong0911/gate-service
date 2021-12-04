@@ -8,19 +8,15 @@ import { FileRetrieveService } from "../service/file-retrieve.service";
 import { FileDataModule } from "./file-data.module";
 
 @Module({
-  imports: [
-    JwtModule.registerAsync({
-      useClass: JwtConfigService,
-    }),
-    FileDocumentModule,
-    FileImageModule,
-    FileDataModule,
-  ],
-  providers: [
-    FileRetrieveService,
-  ],
-  controllers: [
-    FileController,
-  ],
+    imports: [
+        JwtModule.registerAsync({
+            useClass: JwtConfigService,
+        }),
+        FileDocumentModule,
+        FileImageModule,
+        FileDataModule,
+    ],
+    providers: [FileRetrieveService],
+    controllers: [FileController],
 })
 export class FileManagerModule {}

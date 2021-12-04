@@ -10,7 +10,7 @@ import { ErrorData } from "../exception/error-data";
 export class TransformResponseInterceptor implements NestInterceptor {
     intercept(context: ExecutionContext, next: CallHandler): Observable<ResponseDto> {
         return next.handle().pipe(
-            map(data => {
+            map((data) => {
                 const ctx = context.switchToHttp();
                 const res = ctx.getResponse<Response>();
                 if (data instanceof ResponseDto) {
@@ -18,7 +18,6 @@ export class TransformResponseInterceptor implements NestInterceptor {
                 }
                 return data;
             }),
-
         );
     }
 }

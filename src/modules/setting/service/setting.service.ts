@@ -12,7 +12,7 @@ export class SettingService {
     constructor(
         @InjectModel(DB_SETTING)
         private readonly settingModel: Model<SettingDocument>,
-    ) { }
+    ) {}
 
     create(createSettingDto: CreateSettingDTO) {
         return this.settingModel.create(createSettingDto);

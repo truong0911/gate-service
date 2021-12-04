@@ -16,9 +16,7 @@ import { LocalAuthGuard } from "./guard/local-auth.guard";
 @Controller("auth")
 @ApiTags("auth")
 export class AuthController {
-    constructor(
-        private readonly authService: AuthService,
-    ) { }
+    constructor(private readonly authService: AuthService) {}
 
     @UseGuards(LocalAuthGuard)
     @ApiBody({ type: LoginRequestDto })
@@ -27,9 +25,7 @@ export class AuthController {
         { errorCode: AuthErrorCode.UNAUTHORIZED_USERNAME_NOT_FOUND, errorDescription: "Không tìm thấy username" },
         { errorCode: AuthErrorCode.UNAUTHORIZED_WRONG_PASSWORD, errorDescription: "Sai mật khẩu" },
     )
-    async loginWeb(
-        @ReqUser() user: UserDocument,
-    ): Promise<LoginResultResponseDto> {
+    async loginWeb(@ReqUser() user: UserDocument): Promise<LoginResultResponseDto> {
         const data = await this.authService.loginWeb(user);
         return ResponseDto.create(data);
     }
@@ -51,11 +47,8 @@ export class AuthController {
 
     @Authorization()
     @Post("logout/mobile")
-    async logoutMobile(
-        @ReqUser() user: UserAuthorizedDocument,
-    ): Promise<ResponseDto> {
+    async logoutMobile(@ReqUser() user: UserAuthorizedDocument): Promise<ResponseDto> {
         const data = await this.authService.logoutMobile(user);
         return ResponseDto.create(data);
     }
-
 }

@@ -16,35 +16,35 @@ import { SettingModule } from "./modules/setting/setting.module";
 import { UserModule } from "./modules/user/user.module";
 
 @Module({
-  imports: [
-    ConfigModule.forRoot({
-      isGlobal: true,
-      load: [configuration],
-    }),
-    MongooseModule.forRootAsync({
-      useClass: MongooseConfigService,
-      inject: [ConfigService],
-    }),
-    RepositoryModule,
-    AuthModule,
-    SettingModule,
-    UserModule,
-    // ProfileModule,
-    SettingModule,
-    FileManagerModule,
-    DeviceDataModule,
-    NotificationModule,
-    OneSignalModule,
-  ],
-  providers: [
-    {
-      provide: APP_FILTER,
-      useClass: HttpExceptionFilter,
-    },
-    {
-      provide: APP_INTERCEPTOR,
-      useClass: TransformResponseInterceptor,
-    },
-  ],
+    imports: [
+        ConfigModule.forRoot({
+            isGlobal: true,
+            load: [configuration],
+        }),
+        MongooseModule.forRootAsync({
+            useClass: MongooseConfigService,
+            inject: [ConfigService],
+        }),
+        RepositoryModule,
+        AuthModule,
+        SettingModule,
+        UserModule,
+        // ProfileModule,
+        SettingModule,
+        FileManagerModule,
+        DeviceDataModule,
+        NotificationModule,
+        OneSignalModule,
+    ],
+    providers: [
+        {
+            provide: APP_FILTER,
+            useClass: HttpExceptionFilter,
+        },
+        {
+            provide: APP_INTERCEPTOR,
+            useClass: TransformResponseInterceptor,
+        },
+    ],
 })
-export class AppModule { }
+export class AppModule {}

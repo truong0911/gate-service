@@ -25,7 +25,7 @@ export class NotificationController {
     constructor(
         private readonly notificationService: NotificationService,
         private readonly notifyReadService: NotifyReadService,
-    ) { }
+    ) {}
 
     @Get("test")
     async test() {
@@ -40,9 +40,7 @@ export class NotificationController {
         @QueryCondition(NotificationCondition) condition: any,
         @FetchPageableQuery() option: FetchQueryOption,
     ): Promise<NotificationPageableResponse> {
-        const data = await this.notificationService.userGetNotif(
-            u, option, condition
-        );
+        const data = await this.notificationService.userGetNotif(u, option, condition);
         return ResponseDto.create(data);
     }
 
@@ -51,22 +49,15 @@ export class NotificationController {
     @ApiPageableQuery()
     @AllowSystemRoles(SystemRole.ADMIN)
     async getPageable(
-
         @QueryCondition(NotificationCondition) condition: any,
         @FetchPageableQuery() option: FetchQueryOption,
     ): Promise<NotificationPageableResponse> {
-        const data = await this.notificationService.getPageable(
-            condition,
-            option,
-        );
+        const data = await this.notificationService.getPageable(condition, option);
         return ResponseDto.create(data);
     }
 
     @Get(":id/me")
-    async userGetById(
-        @ReqUser() u: UserAuthorizedDocument,
-        @Param("id") id: string,
-    ): Promise<NotificationResponse> {
+    async userGetById(@ReqUser() u: UserAuthorizedDocument, @Param("id") id: string): Promise<NotificationResponse> {
         const data = await this.notificationService.userGetById(u, id);
         return ResponseDto.create(data);
     }
@@ -102,18 +93,13 @@ export class NotificationController {
     }
 
     @Post("me/read/one")
-    async userReadOne(
-        @ReqUser() u: UserAuthorizedDocument,
-        @Body() dto: NotifyReadOne,
-    ): Promise<NotifyReadResponse> {
+    async userReadOne(@ReqUser() u: UserAuthorizedDocument, @Body() dto: NotifyReadOne): Promise<NotifyReadResponse> {
         const data = await this.notifyReadService.readOne(u, dto);
         return ResponseDto.create(data);
     }
 
     @Post("me/read/all")
-    async userReadAll(
-        @ReqUser() u: UserAuthorizedDocument,
-    ): Promise<NotifyReadResponse> {
+    async userReadAll(@ReqUser() u: UserAuthorizedDocument): Promise<NotifyReadResponse> {
         const data = await this.notifyReadService.readAll(u);
         return ResponseDto.create(data);
     }

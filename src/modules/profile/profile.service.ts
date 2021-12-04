@@ -20,7 +20,7 @@ export class ProfileService {
         @InjectModel(DB_PROFILE)
         private readonly profileModel: AccessibleModel<ProfileDocument>,
         private readonly profileAbilityFactory: ProfileAbitityFactory,
-    ) { }
+    ) {}
 
     private isFobbidenProp(profile: ProfileDocument, prop: string): boolean {
         // TODO: Implement FRIEND scope
@@ -38,8 +38,8 @@ export class ProfileService {
                 phoneNumber: PublicInfoScope.PUBLIC,
             };
             Object.keys(info)
-                .filter(prop => this.isFobbidenProp(profile, prop))
-                .forEach(fobbidenProp => {
+                .filter((prop) => this.isFobbidenProp(profile, prop))
+                .forEach((fobbidenProp) => {
                     profile.set(fobbidenProp, undefined);
                 });
             return profile;
@@ -55,7 +55,7 @@ export class ProfileService {
     async findPageable(conditions: any, option: FetchQueryOption): Promise<ProfilePageableDto> {
         const total = this.profileModel.countDocuments(conditions);
         const result = this.profileModel.find(conditions).setOptions(option);
-        return Promise.all([total, result]).then(p => PageableDto.create(option, p[0], p[1]));
+        return Promise.all([total, result]).then((p) => PageableDto.create(option, p[0], p[1]));
     }
 
     async findAll(query: FetchQueryOption) {
@@ -67,10 +67,7 @@ export class ProfileService {
         return this.userGetPublicProfile(user, profile);
     }
 
-    async userUpdate(
-        user: UserDocument,
-        updateProfileDto: UserUpdateProfileDto,
-    ) {
+    async userUpdate(user: UserDocument, updateProfileDto: UserUpdateProfileDto) {
         return this.profileModel.findOneAndUpdate(
             { username: user.username },
             { $set: updateProfileDto },

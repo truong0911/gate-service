@@ -16,7 +16,7 @@ export class FileRetrieveService {
         private readonly fileManagerModel: Model<FileManagerDocument>,
 
         private readonly jwtService: JwtService,
-    ) { }
+    ) {}
 
     private validateJwt(bearerToken: string): JwtPayload {
         if (bearerToken?.startsWith("Bearer ")) {
@@ -31,11 +31,7 @@ export class FileRetrieveService {
         }
     }
 
-    async retrieveFile(
-        fileId: string,
-        req: Request,
-        res: Response
-    ): Promise<void> {
+    async retrieveFile(fileId: string, req: Request, res: Response): Promise<void> {
         const retrievedFile = await this.fileManagerModel.findById(fileId);
         if (!retrievedFile) {
             throw new NotFoundException();
