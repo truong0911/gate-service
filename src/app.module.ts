@@ -9,7 +9,6 @@ import { MongooseConfigService } from "./config/mongodb-config.service";
 import { AuthModule } from "./modules/auth/auth.module";
 import { DeviceDataModule } from "./modules/device-data/device-data.module";
 import { FileManagerModule } from "./modules/file-manager/module/file-manager.module";
-import { MinioClientModule } from "./modules/minio-client/minio-client.module";
 import { NotificationModule } from "./modules/notification/notification.module";
 import { OneSignalModule } from "./modules/one-signal/one-signal.module";
 import { RepositoryModule } from "./modules/repository/repository.module";
@@ -36,7 +35,6 @@ import { UserModule } from "./modules/user/user.module";
         DeviceDataModule,
         NotificationModule,
         OneSignalModule,
-        MinioClientModule,
     ],
     providers: [
         {

@@ -53,7 +53,7 @@ module.exports = {
         "no-trailing-spaces": "error",
         "no-multiple-empty-lines": ["error", { max: 1 }],
         "max-classes-per-file": "error",
-        // "quote-props": ["error", "consistent-as-needed"],
+        "quote-props": ["error", "as-needed"],
         "object-shorthand": ["error", "properties"],
         "prettier/prettier": 2,
     },
