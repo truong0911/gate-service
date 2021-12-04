@@ -53,6 +53,13 @@ export interface Configuration {
         port: number;
         password: string;
     };
+    minio: {
+        endPoint: string;
+        port: number;
+        accessKey: string;
+        secretKey: string;
+        bucketName: string;
+    };
 }
 
 export default (): Configuration => {
@@ -106,6 +113,14 @@ export default (): Configuration => {
         password: getEnv("REDIS_PASSWORD"),
     };
 
+    // MINIO
+    const minioEndpoint = getEnv("MINIO_ENDPOINT");
+    const minioPort = parseInt(getEnv("MINIO_PORT"));
+    const minioAccessKey = getEnv("MINIO_ACCESS_KEY");
+    const minioSecretKey = getEnv("MINIO_SECRET_KEY");
+
+    const minioBucketName = getEnv("MINIO_BUCKET_NAME");
+
     return {
         project,
         env,
@@ -127,5 +142,12 @@ export default (): Configuration => {
         aws,
         oneSignal,
         redis,
+        minio: {
+            endPoint: minioEndpoint,
+            port: minioPort,
+            accessKey: minioAccessKey,
+            secretKey: minioSecretKey,
+            bucketName: minioBucketName,
+        },
     };
 };
