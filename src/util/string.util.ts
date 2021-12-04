@@ -13,7 +13,7 @@ export class StringUtil {
         }
         return s
             .split(" ")
-            .map(component => this.capitalize(component))
+            .map((component) => this.capitalize(component))
             .join(" ");
     }
 
@@ -27,7 +27,7 @@ export class StringUtil {
         }
         name.trim();
         try {
-            const temp = name.split(" ").map(component => this.capitalize(component));
+            const temp = name.split(" ").map((component) => this.capitalize(component));
             const fullname = temp.join(" ");
             const firstname = temp.splice(-1)[0];
             const lastname = temp.join(" ");
@@ -45,14 +45,14 @@ export class StringUtil {
 
     static normalizeFileName(filename: string): string {
         return this.removeAccents(filename).replace(
-            /!|@|%|\^|\*|\(|\)|\+|\=|\<|\>|\?|\/|,|\:|\;|\'|\"|\&|\#|\[|\]|~|\$|_|`|-|{|}|\||\\/g,
+            /!|@|%|\^|\*|\(|\)|\+|=|<|>|\?|\/|,|:|;|'|"|&|#|\[|\]|~|\$|_|`|-|{|}|\||\\/g,
             "",
         );
     }
 
     static regexMatch(keyword: string): string {
         let str = keyword;
-        str = str.replace(/!|@|%|\^|\*|\(|\)|\+|\=|\<|\>|\?|\/|,|\.|\:|\;|\'|\"|\&|\#|\[|\]|~|\$|_|`|-|{|}|\||\\/g, "");
+        str = str.replace(/!|@|%|\^|\*|\(|\)|\+|=|<|>|\?|\/|,|:|;|'|"|&|#|\[|\]|~|\$|_|`|-|{|}|\||\\/g, "");
         str = this.removeAccents(str);
         str = str.replace(/a|â|ă/g, "[aàáạảãâầấậẩẫăằắặẳẵ]");
         str = str.replace(/e|ê/g, "[eèéẹẻẽêềếệểễ]");

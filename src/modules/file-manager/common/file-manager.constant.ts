@@ -12,16 +12,17 @@ export enum UploadType {
 
 const filenameRegex = /^[ 0-9a-z_\-aàáạảãâầấậẩẫăằắặẳẵeèéẹẻẽêềếệểễiìíịỉĩoòóọỏõôồốộổỗơờớợởỡuùúụủũưừứựửữyỳýỵỷỹdđ]{1,100}$/i;
 
-export const FilenameMatches = () => applyDecorators(
-    Matches(filenameRegex),
-    ApiProperty({ description: `regex: <pre>${JSON.stringify(String(filenameRegex)).slice(1, -1)}</pre>` })
-);
+export const FilenameMatches = () =>
+    applyDecorators(
+        Matches(filenameRegex),
+        ApiProperty({ description: `regex: <pre>${JSON.stringify(String(filenameRegex)).slice(1, -1)}</pre>` }),
+    );
 
 export enum FileManagerError {
     BAD_REQUEST_INVALID_MIME_TYPE = "BAD_REQUEST_INVALID_MIME_TYPE",
 }
 
-export const AllowMimeTypes: {[key in "image" | "document" | "data"]: Array<{ ext: string, type: string }>} = {
+export const AllowMimeTypes: { [key in "image" | "document" | "data"]: Array<{ ext: string; type: string }> } = {
     image: [
         { ext: "webp", type: "image/webp" },
         { ext: "bmp", type: "image/bmp" },
@@ -44,9 +45,6 @@ export const AllowMimeTypes: {[key in "image" | "document" | "data"]: Array<{ ex
     data: [],
 };
 
-AllowMimeTypes.data = [
-    ...AllowMimeTypes.image,
-    ...AllowMimeTypes.document,
-];
+AllowMimeTypes.data = [...AllowMimeTypes.image, ...AllowMimeTypes.document];
 
 export const getFileUrl = (serverAddress: string, fileId: string) => `${serverAddress}/file/${fileId}`;
