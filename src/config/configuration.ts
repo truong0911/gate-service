@@ -63,7 +63,7 @@ export default (): Configuration => {
         defaultUserPassword: getEnv("PROJECT_DEFAULT_USER_PASSWORD") || "password",
     };
     // Environment
-    const env = getEnv("NODE_ENV") as Environment;
+    const env = getEnv("ENV") as Environment;
 
     // Server
     const serverPort = parseInt(getEnv("SERVER_PORT"), 10) || 3000;
