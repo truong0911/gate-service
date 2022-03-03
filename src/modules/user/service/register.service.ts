@@ -1,3 +1,1 @@
-export class RegisterService {
-
-}
+export class RegisterService {}

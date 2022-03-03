@@ -7,9 +7,7 @@ import { ErrorData } from "../exception/error-data";
 
 @Injectable()
 export class WorkspaceIpAddressGuard implements CanActivate {
-    constructor(
-        private readonly settingService: SettingService,
-    ) { }
+    constructor(private readonly settingService: SettingService) {}
 
     async canActivate(context: ExecutionContext): Promise<boolean> {
         const req = context.switchToHttp().getRequest<Request>();

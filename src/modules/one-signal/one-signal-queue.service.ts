@@ -13,17 +13,14 @@ export class OneSignalQueueService {
     constructor(
         @InjectQueue(QueueName.ONE_SIGNAL)
         private readonly oneSignalQueue: Queue,
-    ) { }
+    ) {}
 
     /**
      *
      * @param findQuery MongoDB query to find device data which are going to receive notification
      * @param notif Notification
      */
-    handleSendBatch(
-        findQuery: DocumentQuery<DeviceDataDocument[], DeviceDataDocument>,
-        notif: Notification,
-    ) {
+    handleSendBatch(findQuery: DocumentQuery<DeviceDataDocument[], DeviceDataDocument>, notif: Notification) {
         const list: string[] = [];
         const jobOptions: JobOptions = {
             delay: 32,
@@ -52,9 +49,8 @@ export class OneSignalQueueService {
                     this.oneSignalQueue.add(OneSignalQueueType.SEND_BATCH, data, jobOptions);
                 }
             })
-            .on("error", (err => {
+            .on("error", (err) => {
                 console.error("Error handle send batch", err);
-            }));
+            });
     }
-
 }

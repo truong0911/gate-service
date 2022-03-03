@@ -1,6 +1,13 @@
 import { Body, Controller, Delete, Get, Param, Post, Put } from "@nestjs/common";
 import { ApiTags } from "@nestjs/swagger";
-import { ApiBadRequestDoc, ApiCondition, ApiPageableQuery, ApiSortQuery, FetchPageableQuery, QueryCondition } from "../../../common/decorator/api.decorator";
+import {
+    ApiBadRequestDoc,
+    ApiCondition,
+    ApiPageableQuery,
+    ApiSortQuery,
+    FetchPageableQuery,
+    QueryCondition,
+} from "../../../common/decorator/api.decorator";
 import { AllowSystemRoles, Authorization } from "../../../common/decorator/auth.decorator";
 import { ReqUser } from "../../../common/decorator/user.decorator";
 import { ResponseDto } from "../../../common/dto/response/response.dto";
@@ -20,15 +27,11 @@ import { UserService } from "../service/user.service";
 @ApiTags("user")
 @Authorization()
 export class UserController {
-    constructor(
-        private readonly userService: UserService,
-    ) { }
+    constructor(private readonly userService: UserService) {}
 
     @Post()
     @AllowSystemRoles(SystemRole.ADMIN)
-    async create(
-        @Body() createUserDto: CreateUserDto,
-    ): Promise<UserResponseDto> {
+    async create(@Body() createUserDto: CreateUserDto): Promise<UserResponseDto> {
         const data = await this.userService.create(createUserDto);
         return ResponseDto.create(data);
     }
@@ -41,15 +44,12 @@ export class UserController {
         @FetchPageableQuery() option: FetchQueryOption,
         @QueryCondition(UserCondition) condition: UserCondition,
     ): Promise<UserPageableResponseDto> {
-        const data = await this.userService
-            .findPageable(condition, option);
+        const data = await this.userService.findPageable(condition, option);
         return ResponseDto.create(data);
     }
 
     @Get("me")
-    async findMe(
-        @ReqUser() user: UserDocument,
-    ): Promise<UserResponseDto> {
+    async findMe(@ReqUser() user: UserDocument): Promise<UserResponseDto> {
         const data = await this.userService
             .findById(user._id)
             .populate("profile")
@@ -58,10 +58,7 @@ export class UserController {
     }
 
     @Get(":id")
-    async findById(
-        @Param("id") id: string,
-        @ReqUser() user: UserDocument,
-    ): Promise<UserResponseDto> {
+    async findById(@Param("id") id: string, @ReqUser() user: UserDocument): Promise<UserResponseDto> {
         const data = await this.userService.userFindById(user, id);
         return ResponseDto.create(data);
     }
@@ -98,10 +95,7 @@ export class UserController {
 
     @Delete(":id")
     @AllowSystemRoles(SystemRole.ADMIN)
-    async deleteById(
-        @ReqUser() user: UserDocument,
-        @Param("id") id: string,
-    ): Promise<UserResponseDto> {
+    async deleteById(@ReqUser() user: UserDocument, @Param("id") id: string): Promise<UserResponseDto> {
         const data = await this.userService.userDeleteById(user, id);
         return ResponseDto.create(data);
     }

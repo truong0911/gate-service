@@ -18,17 +18,15 @@ import { FileUploadService } from "../service/file-upload.service";
 @ApiTags("file-document")
 @Authorization()
 export class FileDocumentController {
-    constructor(
-        private readonly fileManagerService: FileUploadService,
-    ) { }
+    constructor(private readonly fileManagerService: FileUploadService) {}
 
     @Post("single")
-    @ApiBadRequestDoc(
-        {
-            errorCode: FileManagerError.BAD_REQUEST_INVALID_MIME_TYPE,
-            errorDescription: `<p>Invalid document MIME types<p><p>Valid types:<ul>${AllowMimeTypes.document.map(t => `<li>${t.type}</li>`).join("")}<ul>`,
-        },
-    )
+    @ApiBadRequestDoc({
+        errorCode: FileManagerError.BAD_REQUEST_INVALID_MIME_TYPE,
+        errorDescription: `<p>Invalid document MIME types<p><p>Valid types:<ul>${AllowMimeTypes.document
+            .map((t) => `<li>${t.type}</li>`)
+            .join("")}<ul>`,
+    })
     @ApiConsumes("multipart/form-data")
     @UseInterceptors(FileInterceptor("file"))
     async uploadImage(
@@ -41,12 +39,12 @@ export class FileDocumentController {
     }
 
     @Post("multiple")
-    @ApiBadRequestDoc(
-        {
-            errorCode: FileManagerError.BAD_REQUEST_INVALID_MIME_TYPE,
-            errorDescription: `<p>Invalid document MIME types<p><p>Valid types:<ul>${AllowMimeTypes.document.map(t => `<li>${t.type}</li>`).join("")}<ul>`,
-        },
-    )
+    @ApiBadRequestDoc({
+        errorCode: FileManagerError.BAD_REQUEST_INVALID_MIME_TYPE,
+        errorDescription: `<p>Invalid document MIME types<p><p>Valid types:<ul>${AllowMimeTypes.document
+            .map((t) => `<li>${t.type}</li>`)
+            .join("")}<ul>`,
+    })
     @ApiConsumes("multipart/form-data")
     @UseInterceptors(FilesInterceptor("files", 10))
     async uploadMultipleImage(

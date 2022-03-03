@@ -6,18 +6,13 @@ import { UserController } from "./controller/user.controller";
 import { UserService } from "./service/user.service";
 
 @Module({
-  imports: [
-    JwtModule.registerAsync({
-      useClass: JwtConfigService,
-    }),
-  ],
-  controllers: [
-    UserController,
-  ],
-  providers: [
-    UserService,
-    UserAbilityFactory,
-  ],
-  exports: [UserService],
+    imports: [
+        JwtModule.registerAsync({
+            useClass: JwtConfigService,
+        }),
+    ],
+    controllers: [UserController],
+    providers: [UserService, UserAbilityFactory],
+    exports: [UserService],
 })
-export class UserModule { }
+export class UserModule {}

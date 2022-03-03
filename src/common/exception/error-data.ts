@@ -1,4 +1,11 @@
-import { BadRequestException, ConflictException, ForbiddenException, HttpException, HttpStatus, UnauthorizedException } from "@nestjs/common";
+import {
+    BadRequestException,
+    ConflictException,
+    ForbiddenException,
+    HttpException,
+    HttpStatus,
+    UnauthorizedException,
+} from "@nestjs/common";
 import { ApiProperty } from "@nestjs/swagger";
 
 export class ErrorData {

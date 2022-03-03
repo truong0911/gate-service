@@ -23,4 +23,4 @@ export class PublicInfo {
 }
 
 export const PublicInfoSchema = SchemaFactory.createForClass(PublicInfo);
-export interface PublicInfoSchemaDocument extends PublicInfo, Document { }
+export interface PublicInfoSchemaDocument extends PublicInfo, Document {}

@@ -13,20 +13,16 @@ export class SendOneSignalProcessor {
     constructor(
         @Inject(ONE_SIGNAL_CLIENT)
         private readonly oneSignalClient: OneSignalClient,
-    ) { }
+    ) {}
 
     @OnQueueActive()
     onActive(job: Job) {
-        this.logger.verbose(
-            `Processing job ${job.id} of type ${job.name}`,
-        );
+        this.logger.verbose(`Processing job ${job.id} of type ${job.name}`);
     }
 
     @OnQueueCompleted()
     onComplete(job: Job) {
-        this.logger.verbose(
-            `Completed job ${job.id} of type ${job.name}`,
-        );
+        this.logger.verbose(`Completed job ${job.id} of type ${job.name}`);
     }
 
     @OnQueueFailed()

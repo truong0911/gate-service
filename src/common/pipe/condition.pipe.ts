@@ -3,9 +3,7 @@ import { ClassConstructor, plainToClass } from "class-transformer";
 import { validateOrReject } from "class-validator";
 
 export class ConditionPipe implements PipeTransform {
-    constructor(
-        private readonly schema: ClassConstructor<unknown>
-    ) { }
+    constructor(private readonly schema: ClassConstructor<unknown>) {}
 
     async transform(value: string, metadata: ArgumentMetadata) {
         try {

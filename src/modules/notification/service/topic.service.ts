@@ -18,5 +18,5 @@ export class TopicService {
         private readonly deviceDataModel: Model<DeviceDataDocument>,
 
         private readonly settingService: SettingService,
-    ) { }
+    ) {}
 }

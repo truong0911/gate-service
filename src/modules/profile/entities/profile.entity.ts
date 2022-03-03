@@ -43,8 +43,7 @@ export class Profile {
     @Type(() => PublicInfo)
     @Prop(raw(PublicInfoSchema))
     publicInfo: PublicInfo;
-
 }
 
 export const ProfileSchema = SchemaFactory.createForClass(Profile);
-export interface ProfileDocument extends Profile, AccessibleFieldsDocument { }
+export interface ProfileDocument extends Profile, AccessibleFieldsDocument {}

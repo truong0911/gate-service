@@ -4,9 +4,7 @@ import { FetchQueryOption } from "../../common/pipe/fetch-query-option.interface
 import { ObjectUtil } from "../../util/object.util";
 
 export abstract class MongoRepository<T extends Document> {
-    constructor(
-        private readonly model: Model<T>,
-    ) { }
+    constructor(private readonly model: Model<T>) {}
 
     count(condition?: Record<string, unknown>): Query<number> {
         if (ObjectUtil.isEmptyObject(condition) && !this.model.baseModelName) {
@@ -24,14 +22,15 @@ export abstract class MongoRepository<T extends Document> {
         return this.model.findOne(condition);
     }
 
-    getPagingComponent(condition: any, option: FetchQueryOption): {
-        total: Query<number>,
-        data: DocumentQuery<T[], T>,
+    getPagingComponent(
+        condition: any,
+        option: FetchQueryOption,
+    ): {
+        total: Query<number>;
+        data: DocumentQuery<T[], T>;
     } {
         const total = this.count(condition);
-        const data = this.model
-            .find(condition)
-            .setOptions(option);
+        const data = this.model.find(condition).setOptions(option);
         return { total, data };
     }
 

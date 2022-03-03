@@ -10,4 +10,4 @@ export class CreateNotification extends PickType(Notification, [
     "content",
     "htmlContent",
     "imageUrl",
-]) { }
+]) {}

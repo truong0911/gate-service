@@ -1,9 +1,7 @@
 import { OmitType } from "@nestjs/swagger";
 import { ResponseDto } from "./response.dto";
 
-export class ErrorResponseDto extends OmitType(ResponseDto, [
-    "data",
-]) {
+export class ErrorResponseDto extends OmitType(ResponseDto, ["data"]) {
     timestamp: Date;
     method: string;
     path: string;
