@@ -27,10 +27,11 @@ export interface Configuration {
         name: string;
         defaultAdminPassword: string;
     };
-    env: Environment;
     server: {
         port: number;
         address: string;
+        swaggerPath: string;
+        env: Environment;
     };
     database: {
         host: string;
@@ -63,11 +64,12 @@ export default (): Configuration => {
         defaultUserPassword: getEnv("PROJECT_DEFAULT_USER_PASSWORD") || "password",
     };
     // Environment
-    const env = getEnv("ENV") as Environment;
+    const env = getEnv("SERVER_ENV") as Environment;
 
     // Server
     const serverPort = parseInt(getEnv("SERVER_PORT"), 10) || 3000;
     const serverAddress = getEnv("SERVER_ADDRESS") || `http://localhost:${serverPort}`;
+    const serverSwaggerPath = getEnv("SERVER_SWAGGER_PATH") || "api";
 
     // Database
     const databaseHost = encodeURI(getEnv("DB_HOST"));
@@ -116,10 +118,11 @@ export default (): Configuration => {
 
     return {
         project,
-        env,
         server: {
             port: serverPort,
             address: serverAddress,
+            swaggerPath: serverSwaggerPath,
+            env,
         },
         database: {
             host: databaseHost,

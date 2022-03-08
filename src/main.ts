@@ -17,9 +17,10 @@ async function bootstrap() {
     mongoose.plugin(accessibleFieldsPlugin);
     const app = await NestFactory.create<NestExpressApplication>(AppModule);
     const configService = app.get(ConfigService);
-    const environment = configService.get<Environment>("env");
+    const environment = configService.get<Environment>("server.env");
     const project = configService.get<{ name: string }>("project");
     const serverAddress = configService.get<string>("server.address");
+    const swaggerPath = configService.get<string>("server.swaggerPath");
 
     // Body Parser
     app.use(json({ limit: "10mb" }));
@@ -41,7 +42,7 @@ async function bootstrap() {
         .setVersion("0.0.1")
         .build();
     const document = SwaggerModule.createDocument(app, swaggerConfig);
-    SwaggerModule.setup("api", app, document, {
+    SwaggerModule.setup(swaggerPath, app, document, {
         swaggerOptions: {
             displayRequestDuration: true,
             filter: true,
