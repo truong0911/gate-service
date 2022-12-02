@@ -1,24 +1,35 @@
-FROM node:12-alpine as builder
+# Docker Multistage construction 
 
-WORKDIR /app
+### DEV ###
+FROM node:14-alpine AS builder
 
-COPY ["package.json", "package-lock.json", "tsconfig.*", "nest-cli.json", "./"]
-COPY ["src", "./src"]
+#  Navigate to the container working directory 
+WORKDIR /usr/src/app
+#  Copy package.json
+COPY package*.json ./
+RUN npm install glob rimraf
+RUN npm install --only=development
+COPY . .
+RUN npm run build-bundle
 
-RUN npm install
-RUN npm run build
 
-FROM node:12-alpine
+### PROD ###
+FROM node:14-alpine as production
 
-WORKDIR /app
+WORKDIR /usr/src/app
 
-RUN npm install -g pm2
-RUN pm2 set pm2-logrotate:max_size 1024K
-RUN pm2 set pm2-logrotate:retain 8
+RUN apk update
+RUN apk add libreoffice
+RUN apk --no-cache add msttcorefonts-installer fontconfig && \
+    update-ms-fonts && \
+    fc-cache -f
 
-COPY ecosystem.config.js ./
-COPY --from=builder /app/dist ./dist
-COPY --from=builder /app/package.json /app/package-lock.json ./
-RUN npm install -only=prod
+COPY package*.json ./
 
-CMD ["pm2-runtime", "ecosystem.config.js"]
+RUN npm install --only=production
+
+COPY . .
+
+COPY --from=builder /usr/src/app/dist ./dist
+
+CMD ["node", "dist/main"]
