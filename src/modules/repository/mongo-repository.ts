@@ -56,6 +56,10 @@ export abstract class MongoRepository<T extends Document> {
         return this.model.findOneAndDelete(conditions);
     }
 
+    async exists(conditions: unknown): Promise<boolean> {
+        return this.model.exists(conditions);
+    }
+
     async deleteById(id: string): Promise<T> {
         return this.model.findByIdAndDelete(id);
     }

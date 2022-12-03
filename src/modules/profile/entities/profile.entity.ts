@@ -42,7 +42,7 @@ export class Profile {
     @ValidateNested()
     @Type(() => PublicInfo)
     @Prop(raw(PublicInfoSchema))
-    publicInfo: PublicInfo;
+    publicInfo?: PublicInfo;
 }
 
 export const ProfileSchema = SchemaFactory.createForClass(Profile);

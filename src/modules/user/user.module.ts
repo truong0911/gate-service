@@ -4,6 +4,7 @@ import { JwtConfigService } from "../auth/strategy/jwt-config-service";
 import { UserAbilityFactory } from "./common/user.ability";
 import { UserController } from "./controller/user.controller";
 import { UserService } from "./service/user.service";
+import { UserRepository } from "./user.repository";
 
 @Module({
     imports: [
@@ -12,7 +13,7 @@ import { UserService } from "./service/user.service";
         }),
     ],
     controllers: [UserController],
-    providers: [UserService, UserAbilityFactory],
+    providers: [UserService, UserRepository, UserAbilityFactory],
     exports: [UserService],
 })
 export class UserModule {}
