@@ -115,14 +115,14 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "lint-staged"
+      "pre-commit": "lint-staged",
+      "pre-push": "npm run test"
     }
   },
   "lint-staged": {
     "*.ts": [
-      "npm run test",
-      "npm run lint",
-      "npm run format"
+      "npm run format",
+      "npm run lint"
     ]
   }
 }
