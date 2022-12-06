@@ -44,11 +44,19 @@ export abstract class MongoRepository<T extends Document> {
         return this.model.create(doc);
     }
 
-    async updateOne(conditions: unknown, update: unknown, options?: QueryFindOneAndUpdateOptions): Promise<T> {
+    async updateOne(
+        conditions: unknown,
+        update: unknown,
+        options?: QueryFindOneAndUpdateOptions,
+    ): Promise<T> {
         return this.model.findOneAndUpdate(conditions, update, options);
     }
 
-    async updateById(id: string, update: unknown, options?: QueryFindOneAndUpdateOptions): Promise<T> {
+    async updateById(
+        id: string,
+        update: unknown,
+        options?: QueryFindOneAndUpdateOptions,
+    ): Promise<T> {
         return this.model.findByIdAndUpdate(id, update, options);
     }
 

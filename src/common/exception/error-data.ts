@@ -18,7 +18,11 @@ export class ErrorData {
         this.errorDescription = errorDescription;
     }
 
-    static create(statusCode: HttpStatus, errorCode: string, errorDescription?: string): HttpException {
+    static create(
+        statusCode: HttpStatus,
+        errorCode: string,
+        errorDescription?: string,
+    ): HttpException {
         return new HttpException(new ErrorData(errorCode, errorDescription), statusCode);
     }
 

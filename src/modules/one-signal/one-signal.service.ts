@@ -23,12 +23,17 @@ export class OneSignalService {
     }
 
     sendToUserIds(notif: Notification, userIds: string[]) {
-        this.oneSignalQueueService.handleSendBatch(this.deviceDataModel.find({ userId: { $in: userIds } }), notif);
+        this.oneSignalQueueService.handleSendBatch(
+            this.deviceDataModel.find({ userId: { $in: userIds } }),
+            notif,
+        );
     }
 
     async sendToVaiTro(notif: Notification, roles: string[]) {
         const [userIds] = await Promise.all([
-            this.userModel.find({ systemRole: { $in: roles } }, { _id: 1 }).then((res) => res.map((u) => String(u._id))),
+            this.userModel
+                .find({ systemRole: { $in: roles } }, { _id: 1 })
+                .then((res) => res.map((u) => String(u._id))),
         ]);
         this.sendToUserIds(notif, userIds);
     }

@@ -28,7 +28,9 @@ export class ProfileController {
     @Get("pageable")
     @AllowSystemRoles(SystemRole.ADMIN)
     @ApiPageableQuery()
-    async findPageable(@FetchPageableQuery() option: FetchQueryOption): Promise<ProfilePageableResponseDto> {
+    async findPageable(
+        @FetchPageableQuery() option: FetchQueryOption,
+    ): Promise<ProfilePageableResponseDto> {
         const conditions: any = {};
         const data = await this.profileService.findPageable(conditions, option);
         return ResponseDto.create(data);
@@ -43,14 +45,20 @@ export class ProfileController {
     // }
 
     @Put("me")
-    async updateMe(@ReqUser() user: UserDocument, @Body() updateProfileDto: UserUpdateProfileDto): Promise<ProfileResponseDto> {
+    async updateMe(
+        @ReqUser() user: UserDocument,
+        @Body() updateProfileDto: UserUpdateProfileDto,
+    ): Promise<ProfileResponseDto> {
         const data = await this.profileService.userUpdate(user, updateProfileDto);
         return ResponseDto.create(data);
     }
 
     @Get(":id")
     @AllowSystemRoles(SystemRole.ADMIN)
-    async findById(@ReqUser() user: UserDocument, @Param("id") id: string): Promise<ProfileResponseDto> {
+    async findById(
+        @ReqUser() user: UserDocument,
+        @Param("id") id: string,
+    ): Promise<ProfileResponseDto> {
         const data = await this.profileService.userFindById(user, id);
         return ResponseDto.create(data);
     }

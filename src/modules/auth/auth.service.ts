@@ -53,7 +53,10 @@ export class AuthService {
         return { user, accessToken: this.jwtService.sign(payload) };
     }
 
-    async loginMobile(user: UserDocument, loginInfo: LoginMobileRequestDto): Promise<LoginResultDto> {
+    async loginMobile(
+        user: UserDocument,
+        loginInfo: LoginMobileRequestDto,
+    ): Promise<LoginResultDto> {
         const jti = uuid.v4();
         const payload: JwtPayload = {
             sub: {

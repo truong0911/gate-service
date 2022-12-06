@@ -1,4 +1,12 @@
-import { Body, Controller, Post, Query, UploadedFile, UploadedFiles, UseInterceptors } from "@nestjs/common";
+import {
+    Body,
+    Controller,
+    Post,
+    Query,
+    UploadedFile,
+    UploadedFiles,
+    UseInterceptors,
+} from "@nestjs/common";
 import { FileInterceptor, FilesInterceptor } from "@nestjs/platform-express";
 import { ApiConsumes, ApiQuery, ApiTags } from "@nestjs/swagger";
 import { ApiBadRequestDoc } from "../../../common/decorator/api.decorator";
@@ -37,7 +45,12 @@ export class FileImageController {
         @Body(FileUploadTransform) doc: SingleFileUploadDto,
         @Query() query: UploadFileParams,
     ): Promise<FileCreatedResponseDto> {
-        const data = await this.fileManagerService.createSingleImageFile(user, fileUpload, doc, query.compress);
+        const data = await this.fileManagerService.createSingleImageFile(
+            user,
+            fileUpload,
+            doc,
+            query.compress,
+        );
         return ResponseDto.create(data);
     }
 

@@ -1,6 +1,11 @@
 import { Body, Controller, Get, Param, Post } from "@nestjs/common";
 import { ApiTags } from "@nestjs/swagger";
-import { ApiCondition, ApiPageableQuery, FetchPageableQuery, QueryCondition } from "../../common/decorator/api.decorator";
+import {
+    ApiCondition,
+    ApiPageableQuery,
+    FetchPageableQuery,
+    QueryCondition,
+} from "../../common/decorator/api.decorator";
 import { AllowSystemRoles, Authorization } from "../../common/decorator/auth.decorator";
 import { ReqUser } from "../../common/decorator/user.decorator";
 import { ResponseDto } from "../../common/dto/response/response.dto";
@@ -57,7 +62,10 @@ export class NotificationController {
     }
 
     @Get(":id/me")
-    async userGetById(@ReqUser() u: UserAuthorizedDocument, @Param("id") id: string): Promise<NotificationResponse> {
+    async userGetById(
+        @ReqUser() u: UserAuthorizedDocument,
+        @Param("id") id: string,
+    ): Promise<NotificationResponse> {
         const data = await this.notificationService.userGetById(u, id);
         return ResponseDto.create(data);
     }
@@ -93,7 +101,10 @@ export class NotificationController {
     }
 
     @Post("me/read/one")
-    async userReadOne(@ReqUser() u: UserAuthorizedDocument, @Body() dto: NotifyReadOne): Promise<NotifyReadResponse> {
+    async userReadOne(
+        @ReqUser() u: UserAuthorizedDocument,
+        @Body() dto: NotifyReadOne,
+    ): Promise<NotifyReadResponse> {
         const data = await this.notifyReadService.readOne(u, dto);
         return ResponseDto.create(data);
     }

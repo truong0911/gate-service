@@ -10,7 +10,11 @@ export class FileController {
 
     @Get(":fileId")
     @ApiBearerAuth()
-    async retrieveFile(@Param("fileId") fileId: string, @Req() req: Request, @Res() res: Response): Promise<void> {
+    async retrieveFile(
+        @Param("fileId") fileId: string,
+        @Req() req: Request,
+        @Res() res: Response,
+    ): Promise<void> {
         await this.fileRetrieveService.retrieveFile(fileId, req, res);
     }
 }

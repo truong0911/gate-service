@@ -70,7 +70,9 @@ UserSchema.pre("save", async function save() {
         const password = this.get("password");
         this.set("password", password ? await bcrypt.hash(password, 10) : undefined);
     }
-    const authorizationProps: string[] = ["password", "email", "systemRole"].filter((prop) => this.isModified(prop));
+    const authorizationProps: string[] = ["password", "email", "systemRole"].filter((prop) =>
+        this.isModified(prop),
+    );
     if (authorizationProps.length > 0) {
         this.updateOne({
             $inc: { "authorizationVersion.version": 1 },

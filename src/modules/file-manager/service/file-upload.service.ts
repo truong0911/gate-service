@@ -98,7 +98,10 @@ export class FileUploadService {
                     p = sharp(fileUpload.path).toFormat("png").png({ quality: 80 }).toBuffer();
                     break;
                 case "webp":
-                    p = sharp(fileUpload.path).toFormat("webp").webp({ quality: 80, alphaQuality: 80 }).toBuffer();
+                    p = sharp(fileUpload.path)
+                        .toFormat("webp")
+                        .webp({ quality: 80, alphaQuality: 80 })
+                        .toBuffer();
                     break;
             }
             p.then((buffer) => {

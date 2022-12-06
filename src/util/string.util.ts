@@ -42,7 +42,11 @@ export class StringUtil {
     static compareName(name1: string, name2: string): number {
         const c1 = this.getNameComponent(name1);
         const c2 = this.getNameComponent(name2);
-        return c1.firstname?.localeCompare(c2.firstname) || c1.lastname?.localeCompare(c2.lastname) || 0;
+        return (
+            c1.firstname?.localeCompare(c2.firstname) ||
+            c1.lastname?.localeCompare(c2.lastname) ||
+            0
+        );
     }
 
     static normalizeFileName(filename: string): string {
@@ -54,7 +58,10 @@ export class StringUtil {
 
     static regexMatch(keyword: string): string {
         let str = keyword;
-        str = str.replace(/!|@|%|\^|\*|\(|\)|\+|=|<|>|\?|\/|,|:|;|'|"|&|#|\[|\]|~|\$|_|`|-|{|}|\||\\/g, "");
+        str = str.replace(
+            /!|@|%|\^|\*|\(|\)|\+|=|<|>|\?|\/|,|:|;|'|"|&|#|\[|\]|~|\$|_|`|-|{|}|\||\\/g,
+            "",
+        );
         str = this.removeAccents(str);
         str = str.replace(/a|â|ă/g, "[aàáạảãâầấậẩẫăằắặẳẵ]");
         str = str.replace(/e|ê/g, "[eèéẹẻẽêềếệểễ]");

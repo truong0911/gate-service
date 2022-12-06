@@ -9,7 +9,14 @@ export class ErrorResponseDto extends OmitType(ResponseDto, ["data"]) {
     errorDescription: string;
     message: string;
 
-    constructor(timestamp: Date, method: string, path: string, errorCode: string, errorDescription: string, message: string) {
+    constructor(
+        timestamp: Date,
+        method: string,
+        path: string,
+        errorCode: string,
+        errorDescription: string,
+        message: string,
+    ) {
         super();
         this.timestamp = timestamp;
         this.method = method;

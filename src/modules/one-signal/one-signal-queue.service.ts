@@ -20,7 +20,10 @@ export class OneSignalQueueService {
      * @param findQuery MongoDB query to find device data which are going to receive notification
      * @param notif Notification
      */
-    handleSendBatch(findQuery: DocumentQuery<DeviceDataDocument[], DeviceDataDocument>, notif: Notification) {
+    handleSendBatch(
+        findQuery: DocumentQuery<DeviceDataDocument[], DeviceDataDocument>,
+        notif: Notification,
+    ) {
         const list: string[] = [];
         const jobOptions: JobOptions = {
             delay: 32,

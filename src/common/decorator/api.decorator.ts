@@ -13,7 +13,7 @@ export const ApiSelectQuery = () =>
             name: "select",
             required: false,
             examples: {
-                Default: {
+                "Default": {
                     value: "",
                 },
                 "MongoDB - include": {
@@ -54,7 +54,8 @@ export const ApiSortQuery = () =>
 export const ApiListQuery = () => applyDecorators(ApiSelectQuery(), ApiSortQuery());
 
 export const ApiCondition = () => ApiQuery({ name: "condition", type: String, required: false });
-export const QueryCondition = (schema: ClassConstructor<unknown>) => Query("condition", new ConditionPipe(schema));
+export const QueryCondition = (schema: ClassConstructor<unknown>) =>
+    Query("condition", new ConditionPipe(schema));
 
 export const ApiPageableQuery = () =>
     applyDecorators(

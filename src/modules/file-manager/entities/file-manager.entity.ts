@@ -1,6 +1,13 @@
 import { Provider } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
-import { getConnectionToken, getModelToken, Prop, raw, Schema, SchemaFactory } from "@nestjs/mongoose";
+import {
+    getConnectionToken,
+    getModelToken,
+    Prop,
+    raw,
+    Schema,
+    SchemaFactory,
+} from "@nestjs/mongoose";
 import { Type } from "class-transformer";
 import { IsBoolean, IsIn, IsOptional, IsString, ValidateNested } from "class-validator";
 import * as mongoose from "mongoose";
@@ -48,7 +55,10 @@ export type FileManagerDocument = FileManager & mongoose.Document;
 
 export const FileManagerProvider: Provider = {
     provide: getModelToken(DB_FILE_MANAGER),
-    useFactory: (configService: ConfigService, connection: mongoose.Connection): mongoose.Model<FileManagerDocument> => {
+    useFactory: (
+        configService: ConfigService,
+        connection: mongoose.Connection,
+    ): mongoose.Model<FileManagerDocument> => {
         FileManagerSchema.virtual("url").get(function () {
             const serverAddress = configService.get<string>("server.address");
             const fileId = this.get("_id");

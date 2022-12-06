@@ -7,9 +7,11 @@ import { RolesGuard } from "../guard/system-role.guard";
 import { WorkspaceIpAddressGuard } from "../guard/workspace-ip-address.guard";
 import { ApiErrorDoc } from "./api.decorator";
 
-export const AllowSystemRoles = (...systemRoles: SystemRole[]) => SetMetadata("system-roles", systemRoles);
+export const AllowSystemRoles = (...systemRoles: SystemRole[]) =>
+    SetMetadata("system-roles", systemRoles);
 
-export const Authorization = () => applyDecorators(UseGuards(JwtAuthGuard, RolesGuard), ApiBearerAuth());
+export const Authorization = () =>
+    applyDecorators(UseGuards(JwtAuthGuard, RolesGuard), ApiBearerAuth());
 
 export const WorkspaceAuthorization = () =>
     applyDecorators(

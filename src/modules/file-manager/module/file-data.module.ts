@@ -5,7 +5,12 @@ import * as multer from "multer";
 import * as path from "path";
 import * as uuid from "uuid";
 import { ErrorData } from "../../../common/exception/error-data";
-import { AllowMimeTypes, FileManagerError, UploadType, UPLOAD_DIR } from "../common/file-manager.constant";
+import {
+    AllowMimeTypes,
+    FileManagerError,
+    UploadType,
+    UPLOAD_DIR,
+} from "../common/file-manager.constant";
 import { FileDataController } from "../controller/file-data.controller";
 import { FileUploadService } from "../service/file-upload.service";
 
@@ -16,7 +21,10 @@ import { FileUploadService } from "../service/file-upload.service";
                 destination: UPLOAD_DIR,
                 filename: (req: Express.Request, file: Express.Multer.File, cb) => {
                     if (AllowMimeTypes.data.findIndex((t) => t.type === file.mimetype) === -1) {
-                        return cb(ErrorData.BadRequest(FileManagerError.BAD_REQUEST_INVALID_MIME_TYPE), null);
+                        return cb(
+                            ErrorData.BadRequest(FileManagerError.BAD_REQUEST_INVALID_MIME_TYPE),
+                            null,
+                        );
                     }
                     const filename: string = crypto.SHA1(uuid.v4()).toString();
                     cb(null, `${UploadType.DATA}_${filename}${path.extname(file.originalname)}`);

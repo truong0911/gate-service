@@ -16,7 +16,11 @@ export class NotifyReadService {
 
     async readOne(user: UserAuthorizedDocument, dto: NotifyReadOne): Promise<NotifyReadDocument> {
         return this.notifyReadModel.findOneAndUpdate(
-            { userId: String(user._id), notificationId: dto.notificationId, type: NotifyReadType.ONE },
+            {
+                userId: String(user._id),
+                notificationId: dto.notificationId,
+                type: NotifyReadType.ONE,
+            },
             { $set: { readAt: new Date() } },
             { upsert: true, new: true },
         );

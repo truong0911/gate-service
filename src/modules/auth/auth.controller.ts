@@ -22,7 +22,10 @@ export class AuthController {
     @ApiBody({ type: LoginRequestDto })
     @Post("login/web")
     @ApiUnauthorizedDoc(
-        { errorCode: AuthErrorCode.UNAUTHORIZED_USERNAME_NOT_FOUND, errorDescription: "Không tìm thấy username" },
+        {
+            errorCode: AuthErrorCode.UNAUTHORIZED_USERNAME_NOT_FOUND,
+            errorDescription: "Không tìm thấy username",
+        },
         { errorCode: AuthErrorCode.UNAUTHORIZED_WRONG_PASSWORD, errorDescription: "Sai mật khẩu" },
     )
     async loginWeb(@ReqUser() user: UserDocument): Promise<LoginResultResponseDto> {
@@ -34,7 +37,10 @@ export class AuthController {
     @ApiBody({ type: LoginMobileRequestDto })
     @Post("login/mobile")
     @ApiUnauthorizedDoc(
-        { errorCode: AuthErrorCode.UNAUTHORIZED_USERNAME_NOT_FOUND, errorDescription: "Không tìm thấy username" },
+        {
+            errorCode: AuthErrorCode.UNAUTHORIZED_USERNAME_NOT_FOUND,
+            errorDescription: "Không tìm thấy username",
+        },
         { errorCode: AuthErrorCode.UNAUTHORIZED_WRONG_PASSWORD, errorDescription: "Sai mật khẩu" },
     )
     async loginMobile(

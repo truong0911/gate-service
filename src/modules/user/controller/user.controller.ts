@@ -58,7 +58,10 @@ export class UserController {
     }
 
     @Get(":id")
-    async findById(@Param("id") id: string, @ReqUser() user: UserDocument): Promise<UserResponseDto> {
+    async findById(
+        @Param("id") id: string,
+        @ReqUser() user: UserDocument,
+    ): Promise<UserResponseDto> {
         const data = await this.userService.userFindById(user, id);
         return ResponseDto.create(data);
     }
@@ -95,7 +98,10 @@ export class UserController {
 
     @Delete(":id")
     @AllowSystemRoles(SystemRole.ADMIN)
-    async deleteById(@ReqUser() user: UserDocument, @Param("id") id: string): Promise<UserResponseDto> {
+    async deleteById(
+        @ReqUser() user: UserDocument,
+        @Param("id") id: string,
+    ): Promise<UserResponseDto> {
         const data = await this.userService.userDeleteById(user, id);
         return ResponseDto.create(data);
     }

@@ -28,11 +28,15 @@ export class UserRepository extends MongoRepository<UserDocument> {
         return this.userModel
             .accessibleBy(this.userAbilityFactory.createForUser(user), "read")
             .find()
-            .select("-authorizationVersion -passwordReset -emailVerify -password -identifiedDeviceInfo");
+            .select(
+                "-authorizationVersion -passwordReset -emailVerify -password -identifiedDeviceInfo",
+            );
     }
 
     userFindById(user: UserDocument, id: string) {
-        return this.userModel.accessibleBy(this.userAbilityFactory.createForUser(user), "read").findOne({ _id: id });
+        return this.userModel
+            .accessibleBy(this.userAbilityFactory.createForUser(user), "read")
+            .findOne({ _id: id });
     }
 
     async userUpdateById(user: UserDocument, id: string, updateUserDto: UpdateUserDto) {
@@ -47,7 +51,9 @@ export class UserRepository extends MongoRepository<UserDocument> {
     }
 
     userDeleteById(user: UserDocument, id: string) {
-        return this.userModel.accessibleBy(this.userAbilityFactory.createForUser(user), "delete").findOneAndRemove({ _id: id });
+        return this.userModel
+            .accessibleBy(this.userAbilityFactory.createForUser(user), "delete")
+            .findOneAndRemove({ _id: id });
     }
 
     async userChangePassword(user: UserAuthorizedDocument, changePassword: ChangePasswordDto) {

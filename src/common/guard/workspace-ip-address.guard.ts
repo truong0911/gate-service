@@ -12,7 +12,9 @@ export class WorkspaceIpAddressGuard implements CanActivate {
     async canActivate(context: ExecutionContext): Promise<boolean> {
         const req = context.switchToHttp().getRequest<Request>();
         const clientIpAddress = String(req.headers["x-forwarded-for"] || req.socket.remoteAddress);
-        const workspaceIpAddress = await this.settingService.getSettingValue<string>(SettingKey.WORKSPACE_IP_ADDRESS);
+        const workspaceIpAddress = await this.settingService.getSettingValue<string>(
+            SettingKey.WORKSPACE_IP_ADDRESS,
+        );
         if (clientIpAddress.endsWith(workspaceIpAddress)) {
             return true;
         } else {

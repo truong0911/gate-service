@@ -63,7 +63,9 @@ export class UserService implements OnModuleInit {
         const result = this.userRepository
             .get(conditions)
             .setOptions(option)
-            .select("-authorizationVersion -passwordReset -emailVerify -password -identifiedDeviceInfo");
+            .select(
+                "-authorizationVersion -passwordReset -emailVerify -password -identifiedDeviceInfo",
+            );
         return Promise.all([total, result]).then((p) => PageableDto.create(option, p[0], p[1]));
     }
 
@@ -83,7 +85,10 @@ export class UserService implements OnModuleInit {
         return this.userRepository.userDeleteById(user, id);
     }
 
-    async changePassword(user: UserAuthorizedDocument, changePassword: ChangePasswordDto): Promise<LoginResultDto> {
+    async changePassword(
+        user: UserAuthorizedDocument,
+        changePassword: ChangePasswordDto,
+    ): Promise<LoginResultDto> {
         const newUser = await this.userRepository.userChangePassword(user, changePassword);
         const payload: JwtPayload = {
             sub: {

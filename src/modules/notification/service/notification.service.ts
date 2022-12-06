@@ -5,12 +5,22 @@ import { v4 } from "uuid";
 import { FetchQueryOption } from "../../../common/pipe/fetch-query-option.interface";
 import { DeviceDataDocument } from "../../device-data/entities/device-data.entity";
 import { OneSignalService } from "../../one-signal/one-signal.service";
-import { DB_DEVICE_DATA, DB_NOTIFICATION, DB_NOTIFY_READ, DB_TOPIC } from "../../repository/db-collection";
+import {
+    DB_DEVICE_DATA,
+    DB_NOTIFICATION,
+    DB_NOTIFY_READ,
+    DB_TOPIC,
+} from "../../repository/db-collection";
 import { SettingKey } from "../../setting/common/setting.constant";
 import { SettingService } from "../../setting/service/setting.service";
 import { UserAuthorizedDocument } from "../../user/dto/user-authorized.dto";
 import { InitTopicStatus } from "../common/notification";
-import { EVERYONE_TOPIC_ID, NotificationType, NotifyReadType, TopicType } from "../common/notification.constant";
+import {
+    EVERYONE_TOPIC_ID,
+    NotificationType,
+    NotifyReadType,
+    TopicType,
+} from "../common/notification.constant";
 import { CreateNotificationUser } from "../dto/create-notification-user.dto";
 import { CreateNotificationVaiTro } from "../dto/create-notification-vai-tro.dto";
 import { NotificationCondition } from "../dto/notification-condition.dto";
@@ -40,7 +50,10 @@ export class NotificationService implements OnModuleInit {
     ) {}
 
     async onModuleInit() {
-        const initStatus = (await this.settingService.getSettingValue<InitTopicStatus>(SettingKey.INIT_TOPIC_STATUS)) || {};
+        const initStatus =
+            (await this.settingService.getSettingValue<InitTopicStatus>(
+                SettingKey.INIT_TOPIC_STATUS,
+            )) || {};
         if (initStatus.everyone !== true) {
             this.initEveryoneTopic();
             initStatus.everyone = true;
@@ -77,7 +90,10 @@ export class NotificationService implements OnModuleInit {
      * @param sender Người gửi
      * @returns Document Notification
      */
-    async createNotifAll(dto: CreateNotificationUser, sender: UserAuthorizedDocument): Promise<NotificationDocument> {
+    async createNotifAll(
+        dto: CreateNotificationUser,
+        sender: UserAuthorizedDocument,
+    ): Promise<NotificationDocument> {
         const id = v4();
         const notifDto: Notification = {
             _id: id,
@@ -101,7 +117,10 @@ export class NotificationService implements OnModuleInit {
      * @param sender Người gửi
      * @returns Document Notification
      */
-    async createNotifUser(dto: CreateNotificationUser, sender: UserAuthorizedDocument): Promise<NotificationDocument> {
+    async createNotifUser(
+        dto: CreateNotificationUser,
+        sender: UserAuthorizedDocument,
+    ): Promise<NotificationDocument> {
         const id = v4();
         const notifDto: Notification = {
             _id: id,
@@ -125,7 +144,10 @@ export class NotificationService implements OnModuleInit {
      * @param sender Người gửi
      * @returns Document Notification
      */
-    async createNotifVaiTro(dto: CreateNotificationVaiTro, sender: UserAuthorizedDocument): Promise<NotificationDocument> {
+    async createNotifVaiTro(
+        dto: CreateNotificationVaiTro,
+        sender: UserAuthorizedDocument,
+    ): Promise<NotificationDocument> {
         const id = v4();
         const notifDto: Notification = {
             _id: id,
@@ -159,7 +181,10 @@ export class NotificationService implements OnModuleInit {
         return { $or };
     }
 
-    async getPageable(condition: NotificationCondition, option: FetchQueryOption): Promise<NotificationPageable> {
+    async getPageable(
+        condition: NotificationCondition,
+        option: FetchQueryOption,
+    ): Promise<NotificationPageable> {
         return this.notifRepo.getPaging(condition, option);
     }
 
@@ -188,7 +213,9 @@ export class NotificationService implements OnModuleInit {
                 .then((res) => new Set(res.map((read) => String(read.notificationId)))),
         ]);
         return notifList.map((notif) => {
-            const unread = !readOneSet.has(String(notif._id)) && (!readAll || readAll.readAt < notif.createdAt);
+            const unread =
+                !readOneSet.has(String(notif._id)) &&
+                (!readAll || readAll.readAt < notif.createdAt);
             notif.set("unread", unread, { strict: false });
             return notif;
         });
