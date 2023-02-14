@@ -6,7 +6,8 @@ import { FetchQueryOption } from "./fetch-query-option.interface";
 
 @Injectable()
 export class FetchPageableQueryPipe
-    implements PipeTransform<FetchPageableParam, Promise<FetchQueryOption>> {
+    implements PipeTransform<FetchPageableParam, Promise<FetchQueryOption>>
+{
     async transform(
         value: FetchPageableParam,
         metadata: ArgumentMetadata,

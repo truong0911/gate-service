@@ -6,9 +6,9 @@ import { NestExpressApplication } from "@nestjs/platform-express";
 import { DocumentBuilder, SwaggerModule } from "@nestjs/swagger";
 import { config as awsConfig } from "aws-sdk";
 import { json, urlencoded } from "body-parser";
-import * as helmet from "helmet";
-import * as mongoose from "mongoose";
-import * as morgan from "morgan";
+import helmet from "helmet";
+import mongoose from "mongoose";
+import morgan from "morgan";
 import { AppModule } from "./app.module";
 import { AWSConfiguration, Environment } from "./config/configuration";
 
@@ -16,7 +16,7 @@ async function bootstrap() {
     mongoose.plugin(accessibleRecordsPlugin);
     mongoose.plugin(accessibleFieldsPlugin);
     const app = await NestFactory.create<NestExpressApplication>(AppModule);
-    const configService = app.get(ConfigService);
+    const configService = app.get<ConfigService>(ConfigService);
     const environment = configService.get<Environment>("server.env");
     const project = configService.get<{ name: string }>("project");
     const serverAddress = configService.get<string>("server.address");

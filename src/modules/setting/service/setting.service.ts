@@ -5,7 +5,7 @@ import { PeriodOfTime, SettingKey } from "../common/setting.constant";
 import { SettingDocument } from "../entities/setting.entity";
 import { DB_SETTING } from "./../../repository/db-collection";
 import { CreateSettingDTO } from "./../dto/create-setting.dto";
-import * as moment from "moment";
+import moment from "moment";
 
 @Injectable()
 export class SettingService {

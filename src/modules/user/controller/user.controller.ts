@@ -4,7 +4,6 @@ import {
     ApiBadRequestDoc,
     ApiCondition,
     ApiPageableQuery,
-    ApiSortQuery,
     FetchPageableQuery,
     QueryCondition,
 } from "../../../common/decorator/api.decorator";

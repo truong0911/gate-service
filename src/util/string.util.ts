@@ -17,9 +17,7 @@ export class StringUtil {
             .join(" ");
     }
 
-    static getNameComponent(
-        name: string,
-    ): {
+    static getNameComponent(name: string): {
         fullname: string;
         firstname?: string;
         lastname?: string;

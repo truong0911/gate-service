@@ -1,10 +1,10 @@
 import { Injectable } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { InjectModel } from "@nestjs/mongoose";
-import * as fs from "fs";
+import fs from "fs";
 import { ObjectId } from "mongodb";
 import { Model } from "mongoose";
-import * as sharp from "sharp";
+import sharp from "sharp";
 import { ParamOption01 } from "../../../common/types";
 import { DB_FILE_MANAGER } from "../../repository/db-collection";
 import { UserPopulateDocument } from "../../user/dto/user-populate.dto";
