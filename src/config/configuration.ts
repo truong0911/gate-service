@@ -109,12 +109,12 @@ export default (): Configuration => {
     };
 
     // MINIO
-    const minioEndpoint = getEnv("MINIO_ENDPOINT");
-    const minioPort = parseInt(getEnv("MINIO_PORT"));
-    const minioAccessKey = getEnv("MINIO_ACCESS_KEY");
-    const minioSecretKey = getEnv("MINIO_SECRET_KEY");
+    // const minioEndpoint = getEnv("MINIO_ENDPOINT");
+    // const minioPort = parseInt(getEnv("MINIO_PORT"));
+    // const minioAccessKey = getEnv("MINIO_ACCESS_KEY");
+    // const minioSecretKey = getEnv("MINIO_SECRET_KEY");
 
-    const minioBucketName = getEnv("MINIO_BUCKET_NAME");
+    // const minioBucketName = getEnv("MINIO_BUCKET_NAME");
 
     return {
         project,

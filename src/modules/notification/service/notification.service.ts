@@ -74,6 +74,7 @@ export class NotificationService implements OnModuleInit {
             { $set: { name: "Everyone" } },
             { upsert: true, new: true },
         );
+        return res;
     }
 
     async userGetById(u: UserAuthorizedDocument, id: string) {
