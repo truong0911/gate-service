@@ -14,7 +14,8 @@ export class FetchQueryPipe implements PipeTransform<FetchParam, Promise<FetchQu
         }
         const result: FetchQueryOption = {};
         result.select = param.select && JSON.parse(param.select);
-        result.sort = (param.sort && JSON.parse(param.sort)) || { _id: -1 };
+        result.sort = (param.sort && JSON.parse(param.sort)) || {};
+        Object.assign(result.sort, { _id: -1 });
         return result;
     }
 }
