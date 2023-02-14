@@ -1,8 +1,6 @@
 import { AccessibleModel } from "@casl/mongoose";
 import { InjectModel } from "@nestjs/mongoose";
-import { mongo } from "mongoose";
 import { ErrorData } from "../../common/exception/error-data";
-import { JwtPayload } from "../auth/dto/jwt-payload";
 import { DB_USER } from "../repository/db-collection";
 import { MongoRepository } from "../repository/mongo-repository";
 import { UserAbilityFactory } from "./common/user.ability";

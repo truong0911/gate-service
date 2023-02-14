@@ -39,7 +39,7 @@ export class FileRetrieveService {
         const filePath = path.join(__dirname, "../../../..", retrievedFile.path);
 
         if (retrievedFile.public === false) {
-            const payload = this.validateJwt(req.headers.authorization);
+            // const payload = this.validateJwt(req.headers.authorization);
             // TODO: Implement authorization
         }
 

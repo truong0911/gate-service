@@ -10,7 +10,8 @@ export enum UploadType {
     DATA = "data",
 }
 
-const filenameRegex = /^[ 0-9a-z_\-aàáạảãâầấậẩẫăằắặẳẵeèéẹẻẽêềếệểễiìíịỉĩoòóọỏõôồốộổỗơờớợởỡuùúụủũưừứựửữyỳýỵỷỹdđ]{1,100}$/i;
+const filenameRegex =
+    /^[ 0-9a-z_\-aàáạảãâầấậẩẫăằắặẳẵeèéẹẻẽêềếệểễiìíịỉĩoòóọỏõôồốộổỗơờớợởỡuùúụủũưừứựửữyỳýỵỷỹdđ]{1,100}$/i;
 
 export const FilenameMatches = () =>
     applyDecorators(

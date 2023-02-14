@@ -8,7 +8,7 @@ import { SystemRole } from "./user.constant";
 @Injectable()
 export class UserAbilityFactory {
     createForUser(user: UserDocument) {
-        return defineAbility<Ability<[Action, any]>>((can, cannot) => {
+        return defineAbility<Ability<[Action, any]>>((can) => {
             if (user.hasSystemRole(SystemRole.ADMIN)) {
                 can("manage", DB_USER);
             } else if (user.hasSystemRole(SystemRole.USER)) {

@@ -8,7 +8,7 @@ import { UserDocument } from "../../user/entities/user.entity";
 @Injectable()
 export class ProfileAbitityFactory {
     createForUser(user: UserDocument) {
-        return defineAbility<Ability<[Action, any]>>((can, cannot) => {
+        return defineAbility<Ability<[Action, any]>>((can) => {
             if (user.hasSystemRole(SystemRole.ADMIN)) {
                 can("manage", DB_PROFILE);
             } else if (user.hasSystemRole(SystemRole.USER)) {

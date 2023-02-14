@@ -5,7 +5,7 @@ import { Type } from "class-transformer";
 import { IsEmail, IsEnum, IsOptional, IsString, ValidateNested } from "class-validator";
 import { Document } from "mongoose";
 import { Profile, ProfileSchema } from "../../profile/entities/profile.entity";
-import { DB_PROFILE, DB_USER } from "../../repository/db-collection";
+import { DB_USER } from "../../repository/db-collection";
 import { getExtendedSystemRoles, SystemRole } from "../common/user.constant";
 import { AuthorizationVersion, AuthorizationVersionSchema } from "./authorization-version.entity";
 import { EmailVerify, EmailVerifySchema } from "./email-verify.entity";

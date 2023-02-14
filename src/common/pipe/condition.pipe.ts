@@ -1,11 +1,11 @@
-import { ArgumentMetadata, BadRequestException, PipeTransform } from "@nestjs/common";
+import { BadRequestException, PipeTransform } from "@nestjs/common";
 import { ClassConstructor, plainToClass } from "class-transformer";
 import { validateOrReject } from "class-validator";
 
 export class ConditionPipe implements PipeTransform {
     constructor(private readonly schema: ClassConstructor<unknown>) {}
 
-    async transform(value: string, metadata: ArgumentMetadata) {
+    async transform(value: string) {
         try {
             const plain = JSON.parse(value ?? "{}");
             const condition: any = plainToClass(this.schema, plain);

@@ -6,7 +6,6 @@ import {
     HttpStatus,
     UnauthorizedException,
 } from "@nestjs/common";
-import { ApiProperty } from "@nestjs/swagger";
 
 export class ErrorData {
     // @ApiProperty()

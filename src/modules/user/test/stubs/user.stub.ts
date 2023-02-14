@@ -1,7 +1,7 @@
+import { ObjectId } from "bson";
 import { Gender } from "../../../profile/common/profile.constant";
 import { SystemRole } from "../../common/user.constant";
-import { User, UserDocument } from "../../entities/user.entity";
-import { ObjectId } from "bson";
+import { UserDocument } from "../../entities/user.entity";
 
 export const userStub = (): UserDocument => {
     return {

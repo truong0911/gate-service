@@ -1,4 +1,4 @@
-import { ArgumentMetadata, BadRequestException, Injectable, PipeTransform } from "@nestjs/common";
+import { BadRequestException, Injectable, PipeTransform } from "@nestjs/common";
 import { plainToClass } from "class-transformer";
 import { validate } from "class-validator";
 import { FetchPageableParam } from "./fetch-pageable-param";
@@ -8,10 +8,7 @@ import { FetchQueryOption } from "./fetch-query-option.interface";
 export class FetchPageableQueryPipe
     implements PipeTransform<FetchPageableParam, Promise<FetchQueryOption>>
 {
-    async transform(
-        value: FetchPageableParam,
-        metadata: ArgumentMetadata,
-    ): Promise<FetchQueryOption> {
+    async transform(value: FetchPageableParam): Promise<FetchQueryOption> {
         const param: FetchPageableParam = plainToClass(FetchPageableParam, value);
         const errors = await validate(param);
         if (errors.length > 0) {
