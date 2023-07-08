@@ -1,8 +1,8 @@
+import { JwtSsoPayload } from "@module/auth/dto/jwt-sso-payload";
 import { Injectable } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
 import { Model } from "mongoose";
 import { DB_NOTIFY_READ } from "../../repository/db-collection";
-import { UserAuthorizedDocument } from "../../user/dto/user-authorized.dto";
 import { NotifyReadType } from "../common/notification.constant";
 import { NotifyReadOne } from "../dto/notify-read-one.dto";
 import { NotifyReadDocument } from "../entities/notify-read.entity";
@@ -14,10 +14,10 @@ export class NotifyReadService {
         private readonly notifyReadModel: Model<NotifyReadDocument>,
     ) {}
 
-    async readOne(user: UserAuthorizedDocument, dto: NotifyReadOne): Promise<NotifyReadDocument> {
+    async readOne(user: JwtSsoPayload, dto: NotifyReadOne): Promise<NotifyReadDocument> {
         return this.notifyReadModel.findOneAndUpdate(
             {
-                userId: String(user._id),
+                userId: String(user.sub),
                 notificationId: dto.notificationId,
                 type: NotifyReadType.ONE,
             },
@@ -26,8 +26,8 @@ export class NotifyReadService {
         );
     }
 
-    async readAll(user: UserAuthorizedDocument): Promise<NotifyReadDocument> {
-        const userId = String(user._id);
+    async readAll(user: JwtSsoPayload): Promise<NotifyReadDocument> {
+        const userId = String(user.sub);
         return this.notifyReadModel
             .findOneAndUpdate(
                 { userId, type: NotifyReadType.ALL },

@@ -1,3 +1,4 @@
+import { JwtSsoPayload } from "@module/auth/dto/jwt-sso-payload";
 import { Injectable } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { InjectModel } from "@nestjs/mongoose";
@@ -7,8 +8,6 @@ import { Model } from "mongoose";
 import sharp from "sharp";
 import { ParamOption01 } from "../../../common/types";
 import { DB_FILE_MANAGER } from "../../repository/db-collection";
-import { UserPopulateDocument } from "../../user/dto/user-populate.dto";
-import { UserDocument } from "../../user/entities/user.entity";
 import { AllowMimeTypes, getFileUrl } from "../common/file-manager.constant";
 import { FileCreatedDto } from "../dto/file-created.dto";
 import { MultipleFileUploadDto } from "../dto/multiple-file-upload.dto";
@@ -30,7 +29,7 @@ export class FileUploadService {
     }
 
     async createSingleFile(
-        user: UserPopulateDocument,
+        user: JwtSsoPayload,
         fileUpload: Express.Multer.File,
         doc: SingleFileUploadDto,
     ): Promise<FileCreatedDto> {
@@ -40,10 +39,10 @@ export class FileUploadService {
             mimetype: fileUpload.mimetype,
             public: doc.public as boolean,
             author: {
-                username: user.username,
+                username: user.preferred_username,
                 email: user.email,
-                firstname: user.profile?.firstname,
-                lastname: user.profile?.lastname,
+                firstname: user.given_name,
+                lastname: user.family_name,
             },
         };
         const file = await this.fileManagerModel.create(fileDoc);
@@ -52,7 +51,7 @@ export class FileUploadService {
     }
 
     async createMultipleFiles(
-        user: UserPopulateDocument,
+        user: JwtSsoPayload,
         filesUpload: Express.Multer.File[],
         doc: MultipleFileUploadDto,
     ): Promise<FileCreatedDto[]> {
@@ -63,10 +62,10 @@ export class FileUploadService {
                 mimetype: file.mimetype,
                 public: doc.public as boolean,
                 author: {
-                    username: user.username,
+                    username: user.preferred_username,
                     email: user.email,
-                    firstname: user.profile?.firstname,
-                    lastname: user.profile?.lastname,
+                    firstname: user.given_name,
+                    lastname: user.family_name,
                 },
             };
             Object.assign(fileDoc, { _id: new ObjectId() });
@@ -82,7 +81,7 @@ export class FileUploadService {
     }
 
     async createSingleImageFile(
-        user: UserDocument,
+        user: JwtSsoPayload,
         fileUpload: Express.Multer.File,
         doc: SingleFileUploadDto,
         compress: ParamOption01,

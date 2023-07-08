@@ -46,6 +46,40 @@ async function bootstrap() {
         swaggerOptions: {
             displayRequestDuration: true,
             filter: true,
+            operationsSorter: (a: any, b: any) => {
+                const order: { [field: string]: string } = {
+                    get: "0",
+                    post: "1",
+                    put: "2",
+                    delete: "3",
+                };
+                const [pathA, methodA]: [string, string] = [
+                    a._root.entries[0][1],
+                    a._root.entries[1][1],
+                ];
+
+                const [pathB, methodB]: [string, string] = [
+                    b._root.entries[0][1],
+                    b._root.entries[1][1],
+                ];
+                return (
+                    `${pathA}/`.localeCompare(`${pathB}/`) ||
+                    order[methodA].localeCompare(order[methodB])
+                );
+            },
+            plugins: [
+                () => {
+                    return {
+                        fn: {
+                            opsFilter: (taggedOps: any, phrase: string) => {
+                                return taggedOps.filter((_: unknown, tag: string) => {
+                                    return tag.toLowerCase().includes(phrase.toLowerCase());
+                                });
+                            },
+                        },
+                    };
+                },
+            ],
         },
     });
 

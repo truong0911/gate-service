@@ -1,6 +1,6 @@
-import { UserAuthorizedDto } from "../../user/dto/user-authorized.dto";
+import { JwtSsoPayload } from "./jwt-sso-payload";
 
 export class LoginResultDto {
-    user: UserAuthorizedDto;
+    user: JwtSsoPayload;
     accessToken: string;
 }

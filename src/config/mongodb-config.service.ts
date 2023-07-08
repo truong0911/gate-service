@@ -17,6 +17,7 @@ export class MongooseConfigService implements MongooseOptionsFactory {
             useNewUrlParser: true,
             useFindAndModify: false,
             useCreateIndex: true,
+            directConnection: true,
             retryDelay: 5000,
         };
     }

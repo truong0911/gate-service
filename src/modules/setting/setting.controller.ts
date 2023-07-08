@@ -1,7 +1,7 @@
+import { SsoRole } from "@config/constant";
 import { Body, Controller, Get, Param, Post } from "@nestjs/common";
 import { ApiTags } from "@nestjs/swagger";
-import { Authorization, AllowSystemRoles } from "../../common/decorator/auth.decorator";
-import { SystemRole } from "../user/common/user.constant";
+import { AllowSsoRole, Authorization } from "../../common/decorator/auth.decorator";
 import { SettingKey } from "./common/setting.constant";
 import { CreateSettingDTO } from "./dto/create-setting.dto";
 import { Setting } from "./entities/setting.entity";
@@ -19,7 +19,7 @@ export class SettingController {
     }
 
     @Post("upsert")
-    @AllowSystemRoles(SystemRole.ADMIN)
+    @AllowSsoRole(SsoRole.ADMIN)
     async upsertSetting(@Body() data: CreateSettingDTO) {
         return this.settingService.setSetting(data);
     }

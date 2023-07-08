@@ -1,3 +1,4 @@
+import { JwtSsoPayload } from "@module/auth/dto/jwt-sso-payload";
 import { Injectable, Logger, OnModuleInit } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
 import { Model } from "mongoose";
@@ -13,7 +14,6 @@ import {
 } from "../../repository/db-collection";
 import { SettingKey } from "../../setting/common/setting.constant";
 import { SettingService } from "../../setting/service/setting.service";
-import { UserAuthorizedDocument } from "../../user/dto/user-authorized.dto";
 import { InitTopicStatus } from "../common/notification";
 import {
     EVERYONE_TOPIC_ID,
@@ -22,7 +22,6 @@ import {
     TopicType,
 } from "../common/notification.constant";
 import { CreateNotificationUser } from "../dto/create-notification-user.dto";
-import { CreateNotificationVaiTro } from "../dto/create-notification-vai-tro.dto";
 import { NotificationCondition } from "../dto/notification-condition.dto";
 import { NotificationPageable } from "../dto/notification-pageable.dto";
 import { Notification, NotificationDocument } from "../entities/notification.entity";
@@ -77,12 +76,12 @@ export class NotificationService implements OnModuleInit {
         return res;
     }
 
-    async userGetById(u: UserAuthorizedDocument, id: string) {
+    async userGetById(u: JwtSsoPayload, id: string) {
         const condition = {
             _id: id,
             ...(await this.userAccessCondition(u)),
         };
-        return this.notificationModel.findOne(condition);
+        return this.notificationModel.findOne(condition as any);
     }
 
     /**
@@ -93,13 +92,13 @@ export class NotificationService implements OnModuleInit {
      */
     async createNotifAll(
         dto: CreateNotificationUser,
-        sender: UserAuthorizedDocument,
+        sender: JwtSsoPayload,
     ): Promise<NotificationDocument> {
         const id = v4();
         const notifDto: Notification = {
             _id: id,
-            senderName: `${sender.profile?.lastname} ${sender.profile?.firstname}`,
-            senderId: String(sender._id),
+            senderName: `${sender.family_name} ${sender.given_name}`,
+            senderId: String(sender.sub),
             notifType: NotificationType.TAT_CA,
             ...dto,
             oneSignalData: {
@@ -120,13 +119,13 @@ export class NotificationService implements OnModuleInit {
      */
     async createNotifUser(
         dto: CreateNotificationUser,
-        sender: UserAuthorizedDocument,
+        sender: JwtSsoPayload,
     ): Promise<NotificationDocument> {
         const id = v4();
         const notifDto: Notification = {
             _id: id,
-            senderName: `${sender.profile?.lastname} ${sender.profile?.firstname}`,
-            senderId: String(sender._id),
+            senderName: `${sender.family_name} ${sender.given_name}`,
+            senderId: String(sender.sub),
             notifType: NotificationType.TAI_KHOAN,
             ...dto,
             oneSignalData: {
@@ -139,44 +138,17 @@ export class NotificationService implements OnModuleInit {
         return doc;
     }
 
-    /**
-     * Gửi thông báo tới các người dùng theo vai trò
-     * @param dto Dữ liệu gửi thông báo
-     * @param sender Người gửi
-     * @returns Document Notification
-     */
-    async createNotifVaiTro(
-        dto: CreateNotificationVaiTro,
-        sender: UserAuthorizedDocument,
-    ): Promise<NotificationDocument> {
-        const id = v4();
-        const notifDto: Notification = {
-            _id: id,
-            senderName: `${sender.profile?.lastname} ${sender.profile?.firstname}`,
-            senderId: String(sender._id),
-            notifType: NotificationType.VAI_TRO,
-            ...dto,
-            oneSignalData: {
-                id,
-                notifType: NotificationType.VAI_TRO,
-            },
-        };
-        const doc = await this.createNotification(notifDto);
-        this.oneSignalService.sendToVaiTro(doc, dto.roles);
-        return doc;
-    }
-
-    async userAccessCondition(u: UserAuthorizedDocument) {
+    async userAccessCondition(u: JwtSsoPayload) {
         const $or = [
             { notifType: NotificationType.TAT_CA },
             { notifType: NotificationType.HE_THONG },
             {
                 notifType: NotificationType.TAI_KHOAN,
-                userIds: String(u._id),
+                userIds: String(u.sub),
             },
             {
                 notifType: NotificationType.VAI_TRO,
-                roles: u.systemRole,
+                roles: u.realm_access.roles,
             },
         ];
         return { $or };
@@ -190,23 +162,23 @@ export class NotificationService implements OnModuleInit {
     }
 
     async userGetNotif(
-        u: UserAuthorizedDocument,
+        u: JwtSsoPayload,
         option: FetchQueryOption,
         condition: NotificationCondition,
     ): Promise<NotificationPageable> {
         const finalConditions = {
             $and: [await this.userAccessCondition(u), condition],
         };
-        const res = await this.notifRepo.getPaging(finalConditions, option);
+        const res = await this.notifRepo.getPaging(finalConditions as any, option);
         res.result = await this.assignReadStatus(u, res.result);
         return res;
     }
 
     private async assignReadStatus(
-        user: UserAuthorizedDocument,
+        user: JwtSsoPayload,
         notifList: NotificationDocument[],
     ): Promise<NotificationDocument[]> {
-        const userId = String(user._id);
+        const userId = String(user.sub);
         const [readAll, readOneSet] = await Promise.all([
             this.notifyReadModel.findOne({ userId, type: NotifyReadType.ALL }).select("readAt"),
             this.notifyReadModel

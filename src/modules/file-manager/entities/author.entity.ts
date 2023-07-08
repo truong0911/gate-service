@@ -1,7 +1,7 @@
+import { SsoRole } from "@config/constant";
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 import { IsEnum, IsOptional, IsString } from "class-validator";
 import { Document } from "mongoose";
-import { SystemRole } from "../../user/common/user.constant";
 
 @Schema()
 export class Author {
@@ -21,10 +21,10 @@ export class Author {
     @Prop()
     email: string;
 
-    @IsEnum(SystemRole)
-    @Prop({ type: String, enum: Object.values(SystemRole) })
+    @IsEnum(SsoRole)
+    @Prop({ type: String, enum: Object.values(SsoRole) })
     @IsOptional()
-    systemRole?: SystemRole;
+    SsoRole?: SsoRole;
 }
 
 export const AuthorSchema = SchemaFactory.createForClass(Author);

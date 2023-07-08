@@ -6,3 +6,8 @@ export enum ClientPlatform {
 export enum QueueName {
     ONE_SIGNAL = "ONE_SIGNAL",
 }
+
+export enum SsoRole {
+    ADMIN = "ADMIN",
+    ENUM = "ENUM",
+}

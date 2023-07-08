@@ -1,9 +1,9 @@
+import { SsoRole } from "@config/constant";
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 import { IsEnum, IsOptional, IsString } from "class-validator";
 import * as mongoose from "mongoose";
 import { v4 } from "uuid";
 import { DB_NOTIFICATION, DB_TOPIC } from "../../repository/db-collection";
-import { SystemRole } from "../../user/common/user.constant";
 import { NotificationType } from "../common/notification.constant";
 
 @Schema({ collection: DB_NOTIFICATION, timestamps: true })
@@ -55,10 +55,10 @@ export class Notification {
     @Prop([String])
     userIds?: string[];
 
-    @IsEnum(SystemRole, { each: true })
+    @IsEnum(SsoRole, { each: true })
     @IsOptional()
-    @Prop([{ type: String, enum: Object.values(SystemRole) }])
-    roles?: SystemRole[];
+    @Prop([{ type: String, enum: Object.values(SsoRole) }])
+    roles?: SsoRole[];
 
     @Prop({ type: mongoose.Schema.Types.Mixed })
     info?: any;

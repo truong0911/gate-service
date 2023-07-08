@@ -1,3 +1,4 @@
+import { JwtSsoPayload } from "@module/auth/dto/jwt-sso-payload";
 import {
     Body,
     Controller,
@@ -13,15 +14,14 @@ import { ApiBadRequestDoc } from "../../../common/decorator/api.decorator";
 import { Authorization } from "../../../common/decorator/auth.decorator";
 import { ReqUser } from "../../../common/decorator/user.decorator";
 import { ResponseDto } from "../../../common/dto/response/response.dto";
-import { FileUploadTransform } from "../pipe/file-upload.pipe";
-import { UserDocument } from "../../user/entities/user.entity";
 import { AllowMimeTypes, FileManagerError } from "../common/file-manager.constant";
+import { MultipleFileUploadDto } from "../dto/multiple-file-upload.dto";
 import { UploadFileParams } from "../dto/params/upload-file.params";
+import { FileCreatedListResponseDto } from "../dto/response/file-created-list-response.dto";
 import { FileCreatedResponseDto } from "../dto/response/file-created-response.dto";
 import { SingleFileUploadDto } from "../dto/single-file-upload.dto";
+import { FileUploadTransform } from "../pipe/file-upload.pipe";
 import { FileUploadService } from "../service/file-upload.service";
-import { FileCreatedListResponseDto } from "../dto/response/file-created-list-response.dto";
-import { MultipleFileUploadDto } from "../dto/multiple-file-upload.dto";
 
 @Controller("file/image")
 @ApiTags("file-image")
@@ -40,7 +40,7 @@ export class FileImageController {
     @UseInterceptors(FileInterceptor("file"))
     @ApiQuery({ name: "compress", required: false, enum: ["0", "1"] })
     async uploadImage(
-        @ReqUser() user: UserDocument,
+        @ReqUser() user: JwtSsoPayload,
         @UploadedFile() fileUpload: Express.Multer.File,
         @Body(FileUploadTransform) doc: SingleFileUploadDto,
         @Query() query: UploadFileParams,
@@ -64,7 +64,7 @@ export class FileImageController {
     @ApiConsumes("multipart/form-data")
     @UseInterceptors(FilesInterceptor("files", 10))
     async uploadMultipleImage(
-        @ReqUser() user: UserDocument,
+        @ReqUser() user: JwtSsoPayload,
         @UploadedFiles() filesUpload: Express.Multer.File[],
         @Body(FileUploadTransform) doc: MultipleFileUploadDto,
     ): Promise<FileCreatedListResponseDto> {

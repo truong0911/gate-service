@@ -1,3 +1,4 @@
+import { JwtSsoPayload } from "@module/auth/dto/jwt-sso-payload";
 import {
     Body,
     Controller,
@@ -12,7 +13,6 @@ import { ApiBadRequestDoc } from "../../../common/decorator/api.decorator";
 import { Authorization } from "../../../common/decorator/auth.decorator";
 import { ReqUser } from "../../../common/decorator/user.decorator";
 import { ResponseDto } from "../../../common/dto/response/response.dto";
-import { UserDocument } from "../../user/entities/user.entity";
 import { AllowMimeTypes, FileManagerError } from "../common/file-manager.constant";
 import { MultipleFileUploadDto } from "../dto/multiple-file-upload.dto";
 import { FileCreatedListResponseDto } from "../dto/response/file-created-list-response.dto";
@@ -37,7 +37,7 @@ export class FileDocumentController {
     @ApiConsumes("multipart/form-data")
     @UseInterceptors(FileInterceptor("file"))
     async uploadImage(
-        @ReqUser() user: UserDocument,
+        @ReqUser() user: JwtSsoPayload,
         @UploadedFile() file: Express.Multer.File,
         @Body(FileUploadTransform) doc: SingleFileUploadDto,
     ): Promise<FileCreatedResponseDto> {
@@ -55,7 +55,7 @@ export class FileDocumentController {
     @ApiConsumes("multipart/form-data")
     @UseInterceptors(FilesInterceptor("files", 10))
     async uploadMultipleImage(
-        @ReqUser() user: UserDocument,
+        @ReqUser() user: JwtSsoPayload,
         @UploadedFiles() filesUpload: Express.Multer.File[],
         @Body(FileUploadTransform) doc: MultipleFileUploadDto,
     ): Promise<FileCreatedListResponseDto> {

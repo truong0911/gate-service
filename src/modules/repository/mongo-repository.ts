@@ -21,11 +21,11 @@ export abstract class MongoRepository<T extends Document> {
         }
     }
 
-    get(condition: FilterQuery<T>): DocumentQuery<T[], T> {
+    get(condition: FilterQuery<T>) {
         return this.model.find(condition);
     }
 
-    getOne(condition: FilterQuery<T>): DocumentQuery<T, T> {
+    getOne(condition: FilterQuery<T>) {
         return this.model.findOne(condition);
     }
 

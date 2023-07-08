@@ -1,3 +1,5 @@
+import { SsoRole } from "@config/constant";
+import { JwtSsoPayload } from "@module/auth/dto/jwt-sso-payload";
 import { Body, Controller, Get, Param, Post } from "@nestjs/common";
 import { ApiTags } from "@nestjs/swagger";
 import {
@@ -6,15 +8,12 @@ import {
     FetchPageableQuery,
     QueryCondition,
 } from "../../common/decorator/api.decorator";
-import { AllowSystemRoles, Authorization } from "../../common/decorator/auth.decorator";
+import { AllowSsoRole, Authorization } from "../../common/decorator/auth.decorator";
 import { ReqUser } from "../../common/decorator/user.decorator";
 import { ResponseDto } from "../../common/dto/response/response.dto";
 import { FetchQueryOption } from "../../common/pipe/fetch-query-option.interface";
-import { SystemRole } from "../user/common/user.constant";
-import { UserAuthorizedDocument } from "../user/dto/user-authorized.dto";
 import { CreateNotificationAll } from "./dto/create-notification-all.dto";
 import { CreateNotificationUser } from "./dto/create-notification-user.dto";
-import { CreateNotificationVaiTro } from "./dto/create-notification-vai-tro.dto";
 import { NotificationCondition } from "./dto/notification-condition.dto";
 import { NotifyReadOne } from "./dto/notify-read-one.dto";
 import { NotificationPageableResponse } from "./dto/response/notification-pageable-response.dto";
@@ -41,7 +40,7 @@ export class NotificationController {
     @ApiCondition()
     @ApiPageableQuery()
     async userGetNotification(
-        @ReqUser() u: UserAuthorizedDocument,
+        @ReqUser() u: JwtSsoPayload,
         @QueryCondition(NotificationCondition) condition: any,
         @FetchPageableQuery() option: FetchQueryOption,
     ): Promise<NotificationPageableResponse> {
@@ -52,7 +51,7 @@ export class NotificationController {
     @Get("pageable")
     @ApiCondition()
     @ApiPageableQuery()
-    @AllowSystemRoles(SystemRole.ADMIN)
+    @AllowSsoRole(SsoRole.ADMIN)
     async getPageable(
         @QueryCondition(NotificationCondition) condition: any,
         @FetchPageableQuery() option: FetchQueryOption,
@@ -63,7 +62,7 @@ export class NotificationController {
 
     @Get(":id/me")
     async userGetById(
-        @ReqUser() u: UserAuthorizedDocument,
+        @ReqUser() u: JwtSsoPayload,
         @Param("id") id: string,
     ): Promise<NotificationResponse> {
         const data = await this.notificationService.userGetById(u, id);
@@ -71,9 +70,9 @@ export class NotificationController {
     }
 
     @Post("type/all")
-    @AllowSystemRoles(SystemRole.ADMIN)
+    @AllowSsoRole(SsoRole.ADMIN)
     async createNotificationAll(
-        @ReqUser() u: UserAuthorizedDocument,
+        @ReqUser() u: JwtSsoPayload,
         @Body() dto: CreateNotificationAll,
     ): Promise<NotificationResponse> {
         const data = await this.notificationService.createNotifAll(dto, u);
@@ -81,28 +80,18 @@ export class NotificationController {
     }
 
     @Post("type/user")
-    @AllowSystemRoles(SystemRole.ADMIN)
+    @AllowSsoRole(SsoRole.ADMIN)
     async createNotificationUser(
-        @ReqUser() u: UserAuthorizedDocument,
+        @ReqUser() u: JwtSsoPayload,
         @Body() dto: CreateNotificationUser,
     ): Promise<NotificationResponse> {
         const data = await this.notificationService.createNotifUser(dto, u);
         return ResponseDto.create(data);
     }
 
-    @Post("type/vai-tro")
-    @AllowSystemRoles(SystemRole.ADMIN)
-    async createNotificationVaiTro(
-        @ReqUser() u: UserAuthorizedDocument,
-        @Body() dto: CreateNotificationVaiTro,
-    ): Promise<NotificationResponse> {
-        const data = await this.notificationService.createNotifVaiTro(dto, u);
-        return ResponseDto.create(data);
-    }
-
     @Post("me/read/one")
     async userReadOne(
-        @ReqUser() u: UserAuthorizedDocument,
+        @ReqUser() u: JwtSsoPayload,
         @Body() dto: NotifyReadOne,
     ): Promise<NotifyReadResponse> {
         const data = await this.notifyReadService.readOne(u, dto);
@@ -110,7 +99,7 @@ export class NotificationController {
     }
 
     @Post("me/read/all")
-    async userReadAll(@ReqUser() u: UserAuthorizedDocument): Promise<NotifyReadResponse> {
+    async userReadAll(@ReqUser() u: JwtSsoPayload): Promise<NotifyReadResponse> {
         const data = await this.notifyReadService.readAll(u);
         return ResponseDto.create(data);
     }
