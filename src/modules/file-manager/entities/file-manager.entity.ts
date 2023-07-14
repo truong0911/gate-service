@@ -48,9 +48,19 @@ export class FileManager {
     @Type(() => Author)
     @Prop({ type: raw(AuthorSchema), required: true })
     author: Author;
+
+    @IsString()
+    @IsOptional()
+    @Prop({ default: () => "No" })
+    state?: string;
+
+    @IsString()
+    @Prop()
+    @IsOptional()
+    data?: string;
 }
 
-const FileManagerSchema = SchemaFactory.createForClass(FileManager);
+export const FileManagerSchema = SchemaFactory.createForClass(FileManager);
 export type FileManagerDocument = FileManager & mongoose.Document;
 
 export const FileManagerProvider: Provider = {

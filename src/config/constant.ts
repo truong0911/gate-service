@@ -9,5 +9,5 @@ export enum QueueName {
 
 export enum SsoRole {
     ADMIN = "ADMIN",
-    ENUM = "ENUM",
+    USER = "USER",
 }

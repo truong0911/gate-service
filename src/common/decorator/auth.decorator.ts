@@ -7,7 +7,9 @@ import { SsoRolesGuard } from "../guard/sso-role.guard";
 import { WorkspaceIpAddressGuard } from "../guard/workspace-ip-address.guard";
 import { ApiErrorDoc } from "./api.decorator";
 
-export const AllowSsoRole = (...ssoRoles: SsoRole[]) => SetMetadata("sso-roles", ssoRoles);
+export const AllowSsoRole = (...ssoRoles: SsoRole[]) => {
+    return SetMetadata("sso-roles", ssoRoles);
+};
 
 export const Authorization = () =>
     applyDecorators(

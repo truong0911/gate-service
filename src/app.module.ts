@@ -14,6 +14,7 @@ import { NotificationModule } from "./modules/notification/notification.module";
 import { OneSignalModule } from "./modules/one-signal/one-signal.module";
 import { RepositoryModule } from "./modules/repository/repository.module";
 import { SettingModule } from "./modules/setting/setting.module";
+import { DichVuModule } from "./modules/dich-vu/dich-vu.module";
 
 @Module({
     imports: [
@@ -34,6 +35,7 @@ import { SettingModule } from "./modules/setting/setting.module";
         DeviceDataModule,
         NotificationModule,
         OneSignalModule,
+        DichVuModule,
     ],
     providers: [
         {

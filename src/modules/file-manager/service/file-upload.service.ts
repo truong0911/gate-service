@@ -13,6 +13,7 @@ import { FileCreatedDto } from "../dto/file-created.dto";
 import { MultipleFileUploadDto } from "../dto/multiple-file-upload.dto";
 import { SingleFileUploadDto } from "../dto/single-file-upload.dto";
 import { FileManager, FileManagerDocument } from "../entities/file-manager.entity";
+import { UpdateFileDto } from "../dto/update-file.dto";
 
 @Injectable()
 export class FileUploadService {
@@ -44,6 +45,7 @@ export class FileUploadService {
                 firstname: user.given_name,
                 lastname: user.family_name,
             },
+            state: "No",
         };
         const file = await this.fileManagerModel.create(fileDoc);
         file.path = undefined;
@@ -112,5 +114,15 @@ export class FileUploadService {
             });
         }
         return this.createSingleFile(user, fileUpload, doc);
+    }
+
+    async capPhep(dto: UpdateFileDto, fileId: string) {
+        const res = await this.fileManagerModel.findById(fileId);
+        res.state = dto.state;
+        return await this.fileManagerModel.findByIdAndUpdate(fileId, res);
+    }
+
+    async xoaFile(fileid: string) {
+        return await this.fileManagerModel.findByIdAndDelete(fileid);
     }
 }

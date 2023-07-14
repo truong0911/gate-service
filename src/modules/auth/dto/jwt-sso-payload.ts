@@ -5,6 +5,7 @@ export class JwtSsoPayload {
     "jti": string;
     "iss": string;
     "aud": string;
+    //Id
     "sub": string;
     "typ": string;
     "azp": string;

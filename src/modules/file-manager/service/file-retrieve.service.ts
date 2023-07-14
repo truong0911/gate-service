@@ -57,4 +57,8 @@ export class FileRetrieveService {
             res.status(HttpStatus.NOT_FOUND).send("not-found");
         });
     }
+
+    async getFile(): Promise<any> {
+        return await this.fileManagerModel.find({ state: "Yes" });
+    }
 }

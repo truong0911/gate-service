@@ -9,6 +9,10 @@ import { NotifyReadSchema } from "../notification/entities/notify-read.entity";
 import { TopicSchema } from "../notification/entities/topic/topic.entity";
 import { SettingSchema } from "../setting/entities/setting.entity";
 import * as db from "./db-collection";
+import { DichVuSchema } from "@module/dich-vu/entities/dich-vu.entity";
+import { DichVuUserSchema } from "@module/dich-vu/entities/dich-vu-user.entity";
+import { HoaDonSchema } from "@module/dich-vu/entities/dich-vu-hoa-don.entity";
+import { FileManagerSchema } from "../file-manager/entities/file-manager.entity";
 
 @Global()
 @Module({
@@ -21,6 +25,10 @@ import * as db from "./db-collection";
             { name: db.DB_TOPIC, schema: TopicSchema },
             { name: db.DB_JOIN_TOPIC, schema: JoinTopicSchema },
             { name: db.DB_NOTIFY_READ, schema: NotifyReadSchema },
+            { name: db.DB_DICH_VU, schema: DichVuSchema },
+            { name: db.DB_Dich_VU_USER, schema: DichVuUserSchema },
+            { name: db.DB_DICH_VU_HOA_DON, schema: HoaDonSchema },
+            { name: db.DB_FILE_MANAGER, schema: FileManagerSchema },
         ]),
     ],
     providers: [FileManagerProvider],

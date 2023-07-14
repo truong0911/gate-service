@@ -11,13 +11,11 @@ export class SsoRolesGuard implements CanActivate {
         const ssoRole =
             this.reflector.get<string[]>("sso-roles", context.getHandler()) ||
             this.reflector.get<string[]>("sso-roles", context.getClass());
-
         if (ssoRole === undefined) {
             return true;
         }
 
         const user = context.switchToHttp().getRequest<Request>().user as JwtSsoPayload;
         return user.realm_access.roles.some((role) => ssoRole.includes(role));
-        return false;
     }
 }

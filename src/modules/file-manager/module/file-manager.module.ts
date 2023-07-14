@@ -6,6 +6,7 @@ import { FileDocumentModule } from "./file-document.module";
 import { FileImageModule } from "./file-image.module";
 import { FileRetrieveService } from "../service/file-retrieve.service";
 import { FileDataModule } from "./file-data.module";
+import { FileUploadService } from "../service/file-upload.service";
 
 @Module({
     imports: [
@@ -16,7 +17,7 @@ import { FileDataModule } from "./file-data.module";
         FileImageModule,
         FileDataModule,
     ],
-    providers: [FileRetrieveService],
+    providers: [FileRetrieveService, FileUploadService],
     controllers: [FileController],
 })
 export class FileManagerModule {}
